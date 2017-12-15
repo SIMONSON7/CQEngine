@@ -1,4 +1,4 @@
 # CQEngine
-CQEngine : a game engine
+CQEngine : a 3D game engine;
 
-Test commit from git bash.
+
