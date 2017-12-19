@@ -7,8 +7,8 @@
 
 
 #if defined( _DEBUG ) || defined (__DEBUG__)
-#   ifndef DEBUG
-#       define DEBUG
+#   ifndef CQ_DEBUG
+#       define CQ_DEBUG
 #   endif
 #endif
 
@@ -21,7 +21,7 @@
 
 
 
-#if defined(DEBUG)
+#if defined(CQ_DEBUG)
 #   if defined(_MSC_VER)
 #       define CQASSERT( x )           if ( !((void)0,(x))) { __debugbreak(); }
 #   elif defined (ANDROID_NDK)
