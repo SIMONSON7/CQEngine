@@ -9,15 +9,15 @@
 /// @name namespace CQEngine
 /// @{
 #ifdef __cplusplus
-	#define NS_CQ_BEGIN                     namespace CQEngine {
-	#define NS_CQ_END                       }
-	#define USING_NS_CQ                     using namespace CQEngine
-	#define NS_CQ                           ::CQEngine
+#	define NS_CQ_BEGIN                     namespace CQEngine {
+#	define NS_CQ_END                       }
+#	define USING_NS_CQ                     using namespace CQEngine
+#	define NS_CQ                           ::CQEngine
 #else
-	#define NS_CQ_BEGIN 
-	#define NS_CQ_END 
-	#define USING_NS_CQ 
-	#define NS_CQ
+#	define NS_CQ_BEGIN 
+#	define NS_CQ_END 
+#	define USING_NS_CQ 
+#	define NS_CQ
 #endif 
 //  end of namespace group
 /// @}
