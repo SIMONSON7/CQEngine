@@ -6,6 +6,23 @@
 #define __CQMACROS_H__
 
 
+/// @name namespace CQEngine
+/// @{
+#ifdef __cplusplus
+	#define NS_CQ_BEGIN                     namespace CQEngine {
+	#define NS_CQ_END                       }
+	#define USING_NS_CQ                     using namespace CQEngine
+	#define NS_CQ                           ::CQEngine
+#else
+	#define NS_CQ_BEGIN 
+	#define NS_CQ_END 
+	#define USING_NS_CQ 
+	#define NS_CQ
+#endif 
+//  end of namespace group
+/// @}
+
+
 #if defined( _DEBUG ) || defined (__DEBUG__)
 #   ifndef CQDEBUG
 #       define CQDEBUG
@@ -16,8 +33,6 @@
 #   pragma warning(push)
 #   pragma warning(disable: 4251)
 #endif
-
-
 
 
 
@@ -34,7 +49,6 @@
 #else
 #   define CQASSERT( x )               {}
 #endif
-
 
 
 #endif /* __CQMACROS_H__ */
