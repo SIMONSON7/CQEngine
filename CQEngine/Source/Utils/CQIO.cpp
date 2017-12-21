@@ -45,5 +45,15 @@ Data* CQIO::cvLoadFile(std::string _fileName)
 	return loadFile(_fileName, "rb");;
 }
 
+std::string CQIO::getCurDir()
+{
+	char buff[MAX_PATH];
+	char *path = getcwd(buff, MAX_PATH);
+	CQASSERT(path)
+	return path;
+}
+
+
+
 
 

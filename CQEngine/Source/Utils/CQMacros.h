@@ -50,5 +50,11 @@
 #   define CQASSERT( x )               {}
 #endif
 
+#define MAX_PATH 512
+
+#if defined(_MSC_VER)
+#	define getcwd(d, s) (_getcwd(d, s))
+#endif
+
 
 #endif /* __CQMACROS_H__ */

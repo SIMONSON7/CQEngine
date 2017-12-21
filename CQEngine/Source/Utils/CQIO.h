@@ -6,7 +6,9 @@
 #define __COIO_H__
 
 #include "CQMacros.h"
+#include <stdio.h>
 #include <string>
+#include <direct.h>
 
 NS_CQ_BEGIN
 
@@ -59,6 +61,11 @@ public :
 
 	static
 	Data* loadFile(std::string _fileName,std::string _mode);
+
+public:
+	static
+	std::string getCurDir();
+
 };
 
 NS_CQ_END
