@@ -5,10 +5,13 @@
 #ifndef __COIO_H__
 #define __COIO_H__
 
-#include "CQMacros.h"
 #include <stdio.h>
-#include <string>
 #include <direct.h>
+#include <stdlib.h>
+#include <string>
+#include <vector>
+#include <map>
+#include "CQMacros.h"
 
 NS_CQ_BEGIN
 
@@ -64,8 +67,29 @@ public :
 
 public:
 	static
+	bool addSearchPath(std::string _path);
+
+	static
 	std::string getCurDir();
 
+	static
+	bool isAbsolutePath(std::string _path);
+
+	static
+	bool isFileExist(std::string _path);
+
+private:
+	/*
+	
+	
+	*/
+	static
+	std::string __searchFileFullPath(std::string _fileName);
+private:
+	static
+	std::vector<std::string>				searchPath_;
+	static
+	std::map<std::string, std::string>		fullPathCache_;
 };
 
 NS_CQ_END
