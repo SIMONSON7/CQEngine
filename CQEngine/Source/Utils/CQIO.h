@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "CQAllocator.h"
 #include "CQMacros.h"
 
 NS_CQ_BEGIN
