@@ -1,6 +1,6 @@
 #include "CQIO.h"
 
-USING_NS_CQ;
+USING_NS_CQ
 
 std::vector<std::string>			CQIO::searchPath_;
 std::map<std::string, std::string>	CQIO::fullPathCache_;

@@ -11,7 +11,7 @@
 #ifdef __cplusplus
 #	define NS_CQ_BEGIN                     namespace CQEngine {
 #	define NS_CQ_END                       }
-#	define USING_NS_CQ                     using namespace CQEngine
+#	define USING_NS_CQ                     using namespace CQEngine;
 #	define NS_CQ                           ::CQEngine
 #else
 #	define NS_CQ_BEGIN 
