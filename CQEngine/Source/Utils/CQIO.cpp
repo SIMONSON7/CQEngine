@@ -11,7 +11,7 @@ Data* CQIO::loadFile(std::string _fileName, std::string _mode)
 	Data *data = nullptr;
 	std::string fileFullPath = "";
 	
-	data = new Data();
+	data = Data::CREATE();
 	fileFullPath = __searchFileFullPath(_fileName);
 	fp = fopen(fileFullPath.c_str(), _mode.c_str());
 	if (!fp)

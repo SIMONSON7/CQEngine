@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "CQAllocator.h"
+#include "CQMemory.h"
 #include "CQMacros.h"
 
 NS_CQ_BEGIN
@@ -38,12 +38,12 @@ struct Data
 		//RELEASE(this);
 	}
 
-	//static 
-	//Data* CREATE()
-	//{
-	//	Data* data = new Data();
-	//	return data;
-	//}
+	static 
+	Data* CREATE()
+	{
+		Data *data = CQ_NEW(Data);
+		return data;
+	}
 
 	//static 
 	//void RELEASE(Data* _data)
