@@ -6,6 +6,7 @@
 #define __CQMEMORY_H__
 
 #include <new>
+#include <stdarg.h>
 #include "CQAllocator.h"
 
 NS_CQ_BEGIN
@@ -16,7 +17,12 @@ public:
 	static AllocatorI *g_allocator;
 
 public:
+	template <typename T>
+	T* New1(const size_t _size1,...);
 
+public:
+	template <typename T>
+	void Delete1();
 
 };
 
@@ -30,10 +36,11 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 
 #define CQ_RAW_NEW(_type,...)				::new _type(##__VA_ARGS__);
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0)
-#define CQ_NEW(_type,...)					CQ_PLACEMENT_NEW(CQEngine::Memory::g_allocator->alloc(sizeof(_type)),_type,##__VA_ARGS__);
+#define CQ_NEW0(_type,...)					CQ_NEW(_type,##__VA_ARGS__)
+#define CQ_NEW(_type,...)					CQ_PLACEMENT_NEW(CQEngine::Memory::g_allocator->alloc(sizeof(_type)),_type,##__VA_ARGS__)
 #define CQ_DELETE(_ptr)						CQ_RAW_DELETE(_ptr)
-#define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__); 
-
+#define CQ_NEW1(_type,_size1,...)			CQEngine::Memory().New1<_type>(_size1,##__VA_ARGS__);
+#define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
  
 
 #include "CQMemory.inl"
