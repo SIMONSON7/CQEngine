@@ -41,7 +41,7 @@ struct Data
 	static 
 	Data* CREATE()
 	{
-		Data *data = CQ_NEW(Data);
+		Data *data = CQ_NEW(Data)
 		return data;
 	}
 
