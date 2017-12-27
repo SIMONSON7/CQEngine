@@ -31,11 +31,13 @@ struct Data
 		buff_(nullptr),
 		size_(0),
 		staus_(LOAD_UNKNOW)
-	{}
+	{
+		puts("Data ctor.");
+	}
 
 	~Data()
 	{
-		
+		puts("Data dtor.");
 	}
 
 	static 
@@ -50,7 +52,7 @@ struct Data
 	{
 		CQASSERT(_data && _data->buff_);
 		CQ_RAW_DELETE1(_data->buff_);
-		CQ_RAW_DELETE(_data);
+		CQ_DELETE0(_data,Data);
 	}
 
 	char*			buff_;

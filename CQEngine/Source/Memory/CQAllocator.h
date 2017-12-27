@@ -5,6 +5,7 @@
 #ifndef __CQALLOCATOR_H__
 #define __CQALLOCATOR_H__
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "CQMacros.h"
 

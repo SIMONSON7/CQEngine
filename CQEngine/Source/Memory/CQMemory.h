@@ -38,6 +38,7 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 	CQEngine::Memory::g_allocator->setSize1(_size1);\
 
 #define CQ_RAW_NEW(_type,...)				::new _type(##__VA_ARGS__);
+#define CQ_RAW_NEW0(_type,...)				CQ_RAW_NEW(_type,##__VA_ARGS__);
 #define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
 #define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
 
@@ -68,38 +69,6 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 #define CQ_RAW_DELETE1(_ptr)				do{ if(_ptr){::delete[] _ptr;_ptr=nullptr;} }while(0) 
 
 #include "CQMemory.inl"
-
-/*
-#define CQ_NEW1(_ptr,_type,_size1,...)	\
-_ptr = (_type*)CQEngine::Memory::g_allocator->alloc(_size1); \
-_type* obj = _ptr; \
-for (int i = 0 ; i < _size1; ++i ,++obj) \
-{ \
-obj = CQ_NEW0(_type,##__VA_ARGS__) ; \
-} \
-CQEngine::Memory::g_allocator->setSize1(_size1);\
-*/
-
-
-
-
-/*
-#define CQ_DELETE1(_ptr,_type) \
-if(_ptr) \
-{\
-size_t size = CQEngine::Memory::g_allocator->getSize1();\
-_type* obj = _ptr; \
-for(int i = 0; i < size; ++i ,++obj ) \
-{ \
-CQ_DELETE(obj,_type) \
-} \
-}\
-CQ_DELETE(_ptr,_type); \
-_ptr = nullptr; \
-
-
-*/
-
 
 #endif /*__CQMEMORY_H__*/
 

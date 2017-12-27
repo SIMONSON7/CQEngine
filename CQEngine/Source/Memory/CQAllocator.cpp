@@ -15,7 +15,7 @@ void* DefaultAllocator::alloc(size_t _size)
 void DefaultAllocator::free(void *_ptr)
 {
 	CQASSERT(_ptr)
-	free(_ptr);
+	::free(_ptr);
 }
 
 size_t DefaultAllocator::getSize1()
