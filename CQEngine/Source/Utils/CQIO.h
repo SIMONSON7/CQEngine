@@ -35,22 +35,23 @@ struct Data
 
 	~Data()
 	{
-		//RELEASE(this);
+		
 	}
 
 	static 
 	Data* CREATE()
 	{
-		Data *data = CQ_NEW(Data)
+		Data *data = CQ_NEW0(Data);
 		return data;
 	}
 
-	//static 
-	//void RELEASE(Data* _data)
-	//{
-	//	CQASSERT(_data && _data->buff_)
-	//	delete[] _data->buff_;
-	//}
+	static 
+	void RELEASE(Data* _data)
+	{
+		CQASSERT(_data && _data->buff_);
+		CQ_RAW_DELETE1(_data->buff_);
+		CQ_RAW_DELETE(_data);
+	}
 
 	char*			buff_;
 	size_t			size_;

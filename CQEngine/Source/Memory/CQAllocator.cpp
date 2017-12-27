@@ -18,6 +18,15 @@ void DefaultAllocator::free(void *_ptr)
 	free(_ptr);
 }
 
+size_t DefaultAllocator::getSize1()
+{
+	return size1_;
+}
+
+void DefaultAllocator::setSize1(const size_t _size1)
+{
+	size1_ = _size1;
+}
 
 
 

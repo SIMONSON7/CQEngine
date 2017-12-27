@@ -19,6 +19,10 @@ public:
 
 	virtual void free(void *_ptr) = 0;
 
+	virtual size_t getSize1() = 0;
+
+	virtual void setSize1(const size_t _size1) = 0;
+
 };
 
 class DefaultAllocator : public AllocatorI
@@ -32,6 +36,14 @@ public:
 	void* alloc(size_t _size);
 
 	void free(void *_ptr);
+
+public:
+	size_t getSize1();
+
+	void setSize1(const size_t _size1);
+
+private:
+	size_t size1_;
 
 };
 
