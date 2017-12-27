@@ -29,7 +29,7 @@ Data* CQIO::loadFile(std::string _fileName, std::string _mode)
 		return data;
 	}
 
-	data->buff_ = CQ_NEW1(char, fileLength + 1)
+	CQ_NEW1(data->buff_,char, fileLength + 1)
 	size_t len = fread(data->buff_,sizeof(char),fileLength,fp);
 	if (len != fileLength)
 	{
