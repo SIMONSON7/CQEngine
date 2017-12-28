@@ -5,16 +5,18 @@
 #ifndef __CQDEBUG_H__
 #define __CQDEBUG_H__
 
+#include "CQMacros.h"
+
+NS_CQ_BEGIN
+
+void dbgPuts(const char *_str);
+
+void dbgPrintf(const char *_format,...);
 
 
 
 
 
-
-
-
-
-
-
+NS_CQ_END
 
 #endif /*__CQDEBUG_H__*/

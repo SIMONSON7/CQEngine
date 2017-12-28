@@ -51,6 +51,7 @@
 #endif
 
 #define MAX_PATH 512
+#define MAX_STRBUFF_SIZE 2048
 
 #if defined(_MSC_VER)
 #	define getcwd(d, s) (_getcwd(d, s))
