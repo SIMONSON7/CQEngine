@@ -14,8 +14,9 @@ void* DefaultAllocator::alloc(size_t _size)
 
 void* DefaultAllocator::alloc(size_t _size, const char *_file, size_t _line)
 {
-	dbgPrintf("\n [alloc]: \n FILE: %s \n LINE: %d \n", _file, _line);
-	return alloc(_size);
+	void *ret = alloc(_size);
+	dbgPrintf("\n [ALLOC]: \n FILE: %s\n LINE: %d\n PTR: %p\n SIZE: %d BYTE\n", _file, _line, ret, _size);
+	return ret;
 }
 
 void DefaultAllocator::free(void *_ptr)
@@ -26,7 +27,7 @@ void DefaultAllocator::free(void *_ptr)
 
 void DefaultAllocator::free(void *_ptr, const char *_file, size_t _line)
 {
-	dbgPrintf("\n [free]: \n FILE: %s \n LINE: %d \n", _file, _line);
+	dbgPrintf("\n [FREE]: \n FILE: %s\n LINE: %d\n PTR: %p\n", _file, _line,_ptr);
 	free(_ptr);
 }
 
