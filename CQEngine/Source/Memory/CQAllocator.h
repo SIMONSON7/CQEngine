@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <map>
 #include "CQMacros.h"
 
 NS_CQ_BEGIN
@@ -18,15 +19,15 @@ public:
 
 	virtual void* alloc(size_t _size) = 0;
 
-	virtual void* alloc(size_t _size, const char *_file,size_t _line) = 0;
+	virtual void* alloc(size_t _size, const char *_file, size_t _line) = 0;
 
 	virtual void free(void *_ptr) = 0;
 
 	virtual void free(void *_ptr, const char *_file, size_t _line) = 0;
 
-	virtual size_t getSize1() = 0;
+	virtual size_t getSize1(void *_ptr) = 0;
 
-	virtual void setSize1(const size_t _size1) = 0;
+	virtual void setSize1(void *_ptr, const size_t _size1) = 0;
 
 };
 
@@ -46,13 +47,12 @@ public:
 
 	void free(void *_ptr, const char *_file, size_t _line);
 
-public:
-	size_t getSize1();
+	size_t getSize1(void *_ptr);
 
-	void setSize1(const size_t _size1);
+	void setSize1(void *_ptr, const size_t _size1);
 
 private:
-	size_t size1_;
+	std::map<void *, size_t> map_;
 
 };
 

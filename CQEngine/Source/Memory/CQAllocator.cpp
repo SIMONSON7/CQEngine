@@ -14,9 +14,7 @@ void* DefaultAllocator::alloc(size_t _size)
 
 void* DefaultAllocator::alloc(size_t _size, const char *_file, size_t _line)
 {
-#ifdef CQDEBUG
 	dbgPrintf("\n [alloc]: \n FILE: %s \n LINE: %d \n", _file, _line);
-#endif
 	return alloc(_size);
 }
 
@@ -28,20 +26,18 @@ void DefaultAllocator::free(void *_ptr)
 
 void DefaultAllocator::free(void *_ptr, const char *_file, size_t _line)
 {
-#ifdef CQDEBUG
 	dbgPrintf("\n [free]: \n FILE: %s \n LINE: %d \n", _file, _line);
-#endif
 	free(_ptr);
 }
 
-size_t DefaultAllocator::getSize1()
+size_t DefaultAllocator::getSize1(void *_ptr)
 {
-	return size1_;
+	return map_[_ptr];
 }
 
-void DefaultAllocator::setSize1(const size_t _size1)
+void DefaultAllocator::setSize1(void *_ptr, const size_t _size1)
 {
-	size1_ = _size1;
+	map_[_ptr] = _size1;
 }
 
 
