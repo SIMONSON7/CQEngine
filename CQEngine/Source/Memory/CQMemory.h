@@ -22,15 +22,23 @@ NS_CQ_END
 //----------------------------------------------------------------------------
 
 #define DEFAULT_ALLOCATOR CQEngine::Memory::g_allocator
+#ifdef CQDEBUG
+#define DEFAULT_ALLOCATOR_ALLOC(_size1) DEFAULT_ALLOCATOR->alloc(_size1,__FILE__,__LINE__)
+#define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr,__FILE__,__LINE__)
+#elif
+#define DEFAULT_ALLOCATOR_ALLOC(_size1) DEFAULT_ALLOCATOR->alloc(_size1)
+#define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr)
+#endif
+
 
 namespace CQEngine { struct CQPlacemenNewTag {}; } // For placement new
 inline void* operator new(size_t, CQEngine::CQPlacemenNewTag, void *_ptr);
 inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) throw();
 
-#define CQ_NEW(_type,...)					CQ_PLACEMENT_NEW(DEFAULT_ALLOCATOR->alloc(sizeof(_type)),_type,##__VA_ARGS__)
+#define CQ_NEW(_type,...)					CQ_PLACEMENT_NEW(DEFAULT_ALLOCATOR_ALLOC(sizeof(_type)),_type,##__VA_ARGS__)
 #define CQ_NEW0(_type,...)					CQ_NEW(_type,##__VA_ARGS__)
 #define CQ_NEW1(_ptr,_type,_size1,...)	\
-	_ptr = (_type*)DEFAULT_ALLOCATOR->alloc(_size1*sizeof(_type)); \
+	_ptr = (_type*)DEFAULT_ALLOCATOR_ALLOC(_size1*sizeof(_type)); \
 	_type *obj = _ptr; \
 	for (int i = 0 ; i < _size1; ++i ,++obj) \
 	{ \
@@ -47,7 +55,7 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 	if(_ptr) \
 	{ \
 		_ptr->~_type(); \
-		DEFAULT_ALLOCATOR->free(_ptr); \
+		DEFAULT_ALLOCATOR_FREE(_ptr); \
 		_ptr = nullptr; \
 	} \
 
@@ -62,7 +70,7 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 			obj->~_type(); \
 		}\
 	}\
-	DEFAULT_ALLOCATOR->free(_ptr); \
+	DEFAULT_ALLOCATOR_FREE(_ptr); \
 	_ptr = nullptr; \
 
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 

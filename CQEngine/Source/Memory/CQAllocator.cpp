@@ -7,22 +7,31 @@ DefaultAllocator::DefaultAllocator() {}
 
 DefaultAllocator::~DefaultAllocator() {}
 
-
 void* DefaultAllocator::alloc(size_t _size)
 {
-#ifdef CQDEBUG
-	dbgPrintf("\n [alloc]: \n FILE: %s \n LINE: %d \n", __FILE__, __LINE__);
-#endif
 	return malloc(_size);
+}
+
+void* DefaultAllocator::alloc(size_t _size, const char *_file, size_t _line)
+{
+#ifdef CQDEBUG
+	dbgPrintf("\n [alloc]: \n FILE: %s \n LINE: %d \n", _file, _line);
+#endif
+	return alloc(_size);
 }
 
 void DefaultAllocator::free(void *_ptr)
 {
-#ifdef CQDEBUG
-	dbgPrintf("\n [free]: \n FILE: %s \n LINE: %d \n", __FILE__, __LINE__);
-#endif
 	CQASSERT(_ptr)
 	::free(_ptr);
+}
+
+void DefaultAllocator::free(void *_ptr, const char *_file, size_t _line)
+{
+#ifdef CQDEBUG
+	dbgPrintf("\n [free]: \n FILE: %s \n LINE: %d \n", _file, _line);
+#endif
+	free(_ptr);
 }
 
 size_t DefaultAllocator::getSize1()

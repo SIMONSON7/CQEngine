@@ -18,7 +18,11 @@ public:
 
 	virtual void* alloc(size_t _size) = 0;
 
+	virtual void* alloc(size_t _size, const char *_file,size_t _line) = 0;
+
 	virtual void free(void *_ptr) = 0;
+
+	virtual void free(void *_ptr, const char *_file, size_t _line) = 0;
 
 	virtual size_t getSize1() = 0;
 
@@ -36,7 +40,11 @@ public:
 public:
 	void* alloc(size_t _size);
 
+	void* alloc(size_t _size, const char *_file, size_t _line);
+
 	void free(void *_ptr);
+
+	void free(void *_ptr, const char *_file, size_t _line);
 
 public:
 	size_t getSize1();
