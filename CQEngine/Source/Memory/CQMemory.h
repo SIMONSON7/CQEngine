@@ -60,7 +60,6 @@ NS_CQ_END
 
 #define CQ_DELETE0(_ptr,_type)					CQ_DELETE(_ptr,_type)
 #define CQ_DELETE1(_ptr,_type) \
-do{ \
 	if(_ptr) \
 	{\
 		size_t size = DEFAULT_ALLOCATOR_GETSIZE1(_ptr);\
@@ -69,10 +68,9 @@ do{ \
 		{\
 			obj->~_type(); \
 		}\
+		DEFAULT_ALLOCATOR_FREE(_ptr); \
+		_ptr = nullptr; \
 	}\
-	DEFAULT_ALLOCATOR_FREE(_ptr); \
-	_ptr = nullptr; \
-}while(0) \
 
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 
 #define CQ_RAW_DELETE0(_ptr)				CQ_RAW_DELETE(_ptr)
