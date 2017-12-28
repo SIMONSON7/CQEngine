@@ -50,7 +50,7 @@ struct Data
 	static 
 	void RELEASE(Data* _data)
 	{
-		CQASSERT(_data && _data->buff_);
+		CQASSERT(_data);
 		CQ_RAW_DELETE1(_data->buff_);
 		CQ_DELETE0(_data,Data);
 	}
