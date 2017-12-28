@@ -6,7 +6,6 @@
 #define __CQMEMORY_H__
 
 #include <new>
-#include <stdarg.h>
 #include "CQAllocator.h"
 
 NS_CQ_BEGIN
