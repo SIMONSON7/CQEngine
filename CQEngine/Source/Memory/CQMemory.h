@@ -25,13 +25,14 @@ NS_CQ_END
 #define DEFAULT_ALLOCATOR_SETSIZE1(_ptr,_size1) DEFAULT_ALLOCATOR->setSize1(_ptr,_size1) 
 #define DEFAULT_ALLOCATOR_GETSIZE1(_ptr) DEFAULT_ALLOCATOR->getSize1(_ptr)
 #ifdef CQDEBUG
-#define DEFAULT_ALLOCATOR_ALLOC(_size1) DEFAULT_ALLOCATOR->alloc(_size1,__FILE__,__LINE__)
+#define DEFAULT_ALLOCATOR_ALLOC(_size) DEFAULT_ALLOCATOR->alloc(_size,__FILE__,__LINE__)
 #define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr,__FILE__,__LINE__)
 #elif
 #define DEFAULT_ALLOCATOR_ALLOC(_size1) DEFAULT_ALLOCATOR->alloc(_size1)
 #define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr)
 #endif
 
+#define CQ_MALLOC(_size)					DEFAULT_ALLOCATOR_ALLOC(_size)
 #define CQ_NEW(_type,...)					CQ_PLACEMENT_NEW(DEFAULT_ALLOCATOR_ALLOC(sizeof(_type)),_type,##__VA_ARGS__)
 #define CQ_NEW0(_type,...)					CQ_NEW(_type,##__VA_ARGS__)
 #define CQ_NEW1(_ptr,_type,_size1,...)	\
@@ -50,6 +51,7 @@ NS_CQ_END
 #define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
 #define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
 
+#define CQ_FREE(_ptr)						DEFAULT_ALLOCATOR_FREE(_ptr)
 #define CQ_DELETE(_ptr,_type)	\
 	if(_ptr) \
 	{ \
