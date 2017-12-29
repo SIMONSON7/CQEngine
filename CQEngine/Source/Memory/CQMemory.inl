@@ -21,7 +21,7 @@ T** Memory::cvNew2(const size_t _size1, const size_t _size2)
 	CQASSERT(size >= 0);
 
 	ret = (T**)CQ_MALLOC(sizeof(T*)*_size1);
-	ret[0] = (T*)CQ_NEW1(ret[0],T,sizeof(T)*size);
+	ret[0] = (T*)CQ_NEW1(ret[0],T,size);
 
 	for (int i = 0; i < _size1; ++i)
 	{
