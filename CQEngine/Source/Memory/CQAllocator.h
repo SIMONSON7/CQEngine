@@ -54,8 +54,9 @@ public:
 	void setSize4(void *_ptr, const size_t _size1);
 
 private:
-	std::map<void *, size_t> map_;
-
+	struct Info
+	{ size_t size_[4] = {};};
+	std::map<void *, Info> map_;
 };
 
 NS_CQ_END
