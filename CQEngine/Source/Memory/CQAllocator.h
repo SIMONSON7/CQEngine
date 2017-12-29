@@ -25,10 +25,6 @@ public:
 
 	virtual void free(void *_ptr, const char *_file, size_t _line) = 0;
 
-	virtual size_t getSize1(void *_ptr) = 0;
-
-	virtual void setSize1(void *_ptr, const size_t _size1) = 0;
-
 };
 
 class DefaultAllocator : public AllocatorI
@@ -46,10 +42,16 @@ public:
 	void free(void *_ptr);
 
 	void free(void *_ptr, const char *_file, size_t _line);
-
+public:
 	size_t getSize1(void *_ptr);
+	size_t getSize2(void *_ptr);
+	size_t getSize3(void *_ptr);
+	size_t getSize4(void *_ptr) ;
 
 	void setSize1(void *_ptr, const size_t _size1);
+	void setSize2(void *_ptr, const size_t _size1);
+	void setSize3(void *_ptr, const size_t _size1);
+	void setSize4(void *_ptr, const size_t _size1);
 
 private:
 	std::map<void *, size_t> map_;

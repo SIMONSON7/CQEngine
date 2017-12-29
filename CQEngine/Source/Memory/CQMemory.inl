@@ -17,6 +17,9 @@ template <typename T>
 T** Memory::cvNew2(const size_t _size1, const size_t _size2)
 {
 
+
+
+
 	return nullptr;
 }
 

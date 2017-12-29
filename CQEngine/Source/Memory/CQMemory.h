@@ -31,7 +31,7 @@ NS_CQ_END
 
 //----------------------------------------------------------------------------
 
-#define DEFAULT_ALLOCATOR CQEngine::Memory::g_allocator
+#define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::Memory::g_allocator)
 #define DEFAULT_ALLOCATOR_SETSIZE1(_ptr,_size1) DEFAULT_ALLOCATOR->setSize1(_ptr,_size1) 
 #define DEFAULT_ALLOCATOR_GETSIZE1(_ptr) DEFAULT_ALLOCATOR->getSize1(_ptr)
 #ifdef CQDEBUG
