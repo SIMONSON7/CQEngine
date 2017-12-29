@@ -13,11 +13,18 @@ NS_CQ_BEGIN
 class Memory
 {
 public:
-	static AllocatorI *g_allocator;
+	static 
+	AllocatorI *g_allocator;
 public:
+	/* Just for default Constructor (NO parameters). */
+	template <typename T>
+	static
+	T** cvNew2(const size_t _size1,const size_t _size2);
 
-
-
+public:
+	template <typename T>
+	static
+	void cvDelete2(T** _ptr);
 };
 
 NS_CQ_END
@@ -49,6 +56,7 @@ NS_CQ_END
 		DEFAULT_ALLOCATOR_SETSIZE1(_ptr,_size1);\
 	} \
 
+#define CQ_NEW2(_type,_size1,_size2)		Memory::cvNew2<_type>(_size1,_size2)
 #define CQ_RAW_NEW(_type,...)				::new _type(##__VA_ARGS__);
 #define CQ_RAW_NEW0(_type,...)				CQ_RAW_NEW(_type,##__VA_ARGS__);
 #define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
@@ -77,9 +85,11 @@ NS_CQ_END
 		_ptr = nullptr; \
 	}\
 
+#define CQ_DELETE2(_ptr)					Memory::cvDelete2<_type>(_ptr)
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 
 #define CQ_RAW_DELETE0(_ptr)				CQ_RAW_DELETE(_ptr)
 #define CQ_RAW_DELETE1(_ptr)				do{ if(_ptr){::delete[] _ptr;_ptr=nullptr;} }while(0) 
+
 
 namespace CQEngine { struct CQPlacemenNewTag {}; } // For placement new
 inline void* operator new(size_t, CQEngine::CQPlacemenNewTag, void *_ptr);

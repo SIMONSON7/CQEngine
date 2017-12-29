@@ -12,3 +12,16 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 {
 	CQASSERT(false);
 }
+
+template <typename T>
+T** Memory::cvNew2(const size_t _size1, const size_t _size2)
+{
+
+	return nullptr;
+}
+
+template <typename T>
+void Memory::cvDelete2(T** _ptr)
+{
+
+}
