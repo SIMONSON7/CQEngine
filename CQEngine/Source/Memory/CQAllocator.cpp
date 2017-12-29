@@ -66,25 +66,22 @@ void DefaultAllocator::setSize1(void *_ptr, const size_t _size1)
 void DefaultAllocator::setSize2(void *_ptr, const size_t _size2)
 {
 	CQASSERT(_ptr && (_size2 >= 0));
-	Info info;
-	info.size_[1] = _size2;
-	map_[_ptr] = info;
+	CQASSERT(map_[_ptr].size_);
+	map_[_ptr].size_[1] = _size2;
 }
 
 void DefaultAllocator::setSize3(void *_ptr, const size_t _size3)
 {
 	CQASSERT(_ptr && (_size3 >= 0));
-	Info info;
-	info.size_[2] = _size3;
-	map_[_ptr] = info;
+	CQASSERT(map_[_ptr].size_);
+	map_[_ptr].size_[2] = _size3;
 }
 
 void DefaultAllocator::setSize4(void *_ptr, const size_t _size4)
 {
 	CQASSERT(_ptr && (_size4 >= 0));
-	Info info;
-	info.size_[3] = _size4;
-	map_[_ptr] = info;
+	CQASSERT(map_[_ptr].size_);
+	map_[_ptr].size_[3] = _size4;
 }
 
 
