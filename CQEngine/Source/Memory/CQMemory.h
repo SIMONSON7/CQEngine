@@ -62,7 +62,7 @@ NS_CQ_END
 #define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
 #define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
 
-#define CQ_FREE(_ptr)						DEFAULT_ALLOCATOR_FREE(_ptr)
+#define CQ_FREE(_ptr)						do{ if(_ptr){DEFAULT_ALLOCATOR_FREE(_ptr);_ptr=nullptr;} }while(0) 
 #define CQ_DELETE(_ptr,_type)	\
 	if(_ptr) \
 	{ \
@@ -85,7 +85,7 @@ NS_CQ_END
 		_ptr = nullptr; \
 	}\
 
-#define CQ_DELETE2(_ptr)					Memory::cvDelete2<_type>(_ptr)
+#define CQ_DELETE2(_ptr,_type)				Memory::cvDelete2<_type>(_ptr)
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 
 #define CQ_RAW_DELETE0(_ptr)				CQ_RAW_DELETE(_ptr)
 #define CQ_RAW_DELETE1(_ptr)				do{ if(_ptr){::delete[] _ptr;_ptr=nullptr;} }while(0) 
