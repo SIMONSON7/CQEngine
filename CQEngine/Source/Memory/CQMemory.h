@@ -32,8 +32,8 @@ NS_CQ_END
 //----------------------------------------------------------------------------
 
 #define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::Memory::g_allocator)
-#define DEFAULT_ALLOCATOR_SETSIZE1(_ptr,_size1) DEFAULT_ALLOCATOR->setSize1(_ptr,_size1) 
-#define DEFAULT_ALLOCATOR_GETSIZE1(_ptr) DEFAULT_ALLOCATOR->getSize1(_ptr)
+#define DEFAULT_ALLOCATOR_SETSIZE(N,_ptr,_size1) DEFAULT_ALLOCATOR->setSize##N(_ptr,_size1) 
+#define DEFAULT_ALLOCATOR_GETSIZE(N,_ptr) DEFAULT_ALLOCATOR->getSize##N(_ptr)
 #ifdef CQDEBUG
 #define DEFAULT_ALLOCATOR_ALLOC(_size) DEFAULT_ALLOCATOR->alloc(_size,__FILE__,__LINE__)
 #define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr,__FILE__,__LINE__)
@@ -53,7 +53,7 @@ NS_CQ_END
 		{ \
 			CQ_PLACEMENT_NEW(obj,_type,##__VA_ARGS__); \
 		} \
-		DEFAULT_ALLOCATOR_SETSIZE1(_ptr,_size1);\
+		DEFAULT_ALLOCATOR_SETSIZE(1,_ptr,_size1);\
 	} \
 
 #define CQ_NEW2(_type,_size1,_size2)		Memory::cvNew2<_type>(_size1,_size2)
@@ -75,7 +75,7 @@ NS_CQ_END
 #define CQ_DELETE1(_ptr,_type) \
 	if(_ptr) \
 	{\
-		size_t size = DEFAULT_ALLOCATOR_GETSIZE1(_ptr);\
+		size_t size = DEFAULT_ALLOCATOR_GETSIZE(1,_ptr);\
 		_type *obj = _ptr; \
 		for(int i = 0; i < size; ++i ,++obj ) \
 		{\
