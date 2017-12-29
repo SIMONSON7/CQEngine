@@ -56,7 +56,7 @@ NS_CQ_END
 		DEFAULT_ALLOCATOR_SETSIZE(1,_ptr,_size1);\
 	} \
 
-#define CQ_NEW2(_type,_size1,_size2)		Memory::cvNew2<_type>(_size1,_size2)
+#define CQ_NEW2(_ptr,_type,_size1,_size2)	Memory::cvNew2<_type>(_size1,_size2)
 #define CQ_RAW_NEW(_type,...)				::new _type(##__VA_ARGS__);
 #define CQ_RAW_NEW0(_type,...)				CQ_RAW_NEW(_type,##__VA_ARGS__);
 #define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
