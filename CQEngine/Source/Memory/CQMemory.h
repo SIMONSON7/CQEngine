@@ -15,6 +15,9 @@ class Memory
 public:
 	static AllocatorI *g_allocator;
 public:
+
+
+
 };
 
 NS_CQ_END
