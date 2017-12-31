@@ -21,10 +21,26 @@ public:
 	static
 	T** cvNew2(const size_t _size1,const size_t _size2);
 
+	template <typename T>
+	static
+	T*** cvNew3(const size_t _size1, const size_t _size2, const size_t _size3);
+
+	template <typename T>
+	static
+	T**** cvNew4(const size_t _size1, const size_t _size2, const size_t _size3, const size_t _size4);
+
 public:
 	template <typename T>
 	static
 	void cvDelete2(T** _ptr);
+
+	template <typename T>
+	static
+	void cvDelete3(T*** _ptr);
+
+	template <typename T>
+	static
+	void cvDelete4(T**** _ptr);
 };
 
 NS_CQ_END
@@ -56,13 +72,15 @@ NS_CQ_END
 		DEFAULT_ALLOCATOR_SETSIZE(1,_ptr,_size1);\
 	} \
 
-#define CQ_NEW2(_ptr,_type,_size1,_size2)	Memory::cvNew2<_type>(_size1,_size2)
-#define CQ_RAW_NEW(_type,...)				::new _type(##__VA_ARGS__);
-#define CQ_RAW_NEW0(_type,...)				CQ_RAW_NEW(_type,##__VA_ARGS__);
-#define CQ_RAW_NEW1(_type,_size)			::new _type[_size];
-#define CQ_PLACEMENT_NEW(_ptr,_type,...)	::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
+#define CQ_NEW2(_ptr,_type,_size1,_size2)				Memory::cvNew2<_type>(_size1,_size2)
+#define CQ_NEW3(_ptr,_type,_size1,_size2,_size3)		Memory::cvNew3<_type>(_size1,_size2,_size3)
+#define CQ_NEW4(_ptr,_type,_size1,_size2,_size3,_size4)	Memory::cvNew4<_type>(_size1,_size2,_size3,_size4)
+#define CQ_RAW_NEW(_type,...)							::new _type(##__VA_ARGS__);
+#define CQ_RAW_NEW0(_type,...)							CQ_RAW_NEW(_type,##__VA_ARGS__);
+#define CQ_RAW_NEW1(_type,_size)						::new _type[_size];
+#define CQ_PLACEMENT_NEW(_ptr,_type,...)				::new(CQEngine::CQPlacemenNewTag(),_ptr) _type(__VA_ARGS__);
 
-#define CQ_FREE(_ptr)						do{ if(_ptr){DEFAULT_ALLOCATOR_FREE(_ptr);_ptr=nullptr;} }while(0) 
+#define CQ_FREE(_ptr)									do{ if(_ptr){DEFAULT_ALLOCATOR_FREE(_ptr);_ptr=nullptr;} }while(0) 
 #define CQ_DELETE(_ptr,_type)	\
 	if(_ptr) \
 	{ \
@@ -86,6 +104,8 @@ NS_CQ_END
 	}\
 
 #define CQ_DELETE2(_ptr,_type)				Memory::cvDelete2<_type>(_ptr)
+#define CQ_DELETE3(_ptr,_type)				Memory::cvDelete3<_type>(_ptr)
+#define CQ_DELETE4(_ptr,_type)				Memory::cvDelete4<_type>(_ptr)
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 
 #define CQ_RAW_DELETE0(_ptr)				CQ_RAW_DELETE(_ptr)
 #define CQ_RAW_DELETE1(_ptr)				do{ if(_ptr){::delete[] _ptr;_ptr=nullptr;} }while(0) 
