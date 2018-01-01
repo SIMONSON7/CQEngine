@@ -79,7 +79,6 @@ T**** Memory::cvNew4(const size_t _size1, const size_t _size2, const size_t _siz
 	{
 		ret[0][0][i] = &ret[0][0][0][i*_size4];
 	}
-
 	return ret;
 }
 
