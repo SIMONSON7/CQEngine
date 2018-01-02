@@ -64,23 +64,23 @@ class CQIO
 {
 public :
 	static
-	Data* cvLoadFile(std::string _fileName);
+	Data* cvLoadFile(const std::string _fileName);
 
 	static
-	Data* loadFile(std::string _fileName,std::string _mode);
+	Data* loadFile(const std::string _fileName,const char *_mode);
 
 public:
 	static
-	bool addSearchPath(std::string _path);
+	bool addSearchPath(const std::string _path);
 
 	static
 	std::string getCurDir();
 
 	static
-	bool isAbsolutePath(std::string _path);
+	bool isAbsolutePath(const std::string _path);
 
 	static
-	bool isFileExist(std::string _path);
+	bool isFileExist(const std::string _path);
 
 private:
 	/*
@@ -88,7 +88,7 @@ private:
 	
 	*/
 	static
-	std::string __searchFileFullPath(std::string _fileName);
+	std::string __searchFileFullPath(const std::string _fileName);
 private:
 	static
 	std::vector<std::string>				searchPath_;

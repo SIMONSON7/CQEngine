@@ -5,7 +5,7 @@ USING_NS_CQ
 std::vector<std::string>			CQIO::searchPath_;
 std::map<std::string, std::string>	CQIO::fullPathCache_;
 
-Data* CQIO::loadFile(std::string _fileName, std::string _mode)
+Data* CQIO::loadFile(const std::string _fileName, const char *_mode)
 {
 	FILE *fp = nullptr;
 	Data *data = nullptr;
@@ -13,7 +13,7 @@ Data* CQIO::loadFile(std::string _fileName, std::string _mode)
 	
 	data = Data::CREATE();
 	fileFullPath = __searchFileFullPath(_fileName);
-	fp = fopen(fileFullPath.c_str(), _mode.c_str());
+	fp = fopen(fileFullPath.c_str(), _mode);
 	if (!fp)
 	{
 		data->staus_ = Data::LOAD_FILE_OPEN_FAILURE;
@@ -45,12 +45,12 @@ Data* CQIO::loadFile(std::string _fileName, std::string _mode)
 	return data;
 }
 
-Data* CQIO::cvLoadFile(std::string _fileName)
+Data* CQIO::cvLoadFile(const std::string _fileName)
 {
 	return loadFile(_fileName, "rb");;
 }
 
-bool CQIO::addSearchPath(std::string _path)
+bool CQIO::addSearchPath(const std::string _path)
 {
 	if (isAbsolutePath(_path))
 	{
@@ -67,7 +67,7 @@ std::string CQIO::getCurDir()
 	return path;
 }
 
-bool CQIO::isAbsolutePath(std::string _path)
+bool CQIO::isAbsolutePath(const std::string _path)
 {
 #ifdef _MSC_VER
 	if (_path.length() > 2 && isalpha(_path[0]) && _path[1] == ':')
@@ -80,7 +80,7 @@ bool CQIO::isAbsolutePath(std::string _path)
 #endif
 }
 
-bool CQIO::isFileExist(std::string _path)
+bool CQIO::isFileExist(const std::string _path)
 {
 	FILE *fp = fopen(_path.c_str(), "r");
 	if (fp)
@@ -91,7 +91,7 @@ bool CQIO::isFileExist(std::string _path)
 	return false;
 }
 
-std::string CQIO::__searchFileFullPath(std::string _fileName)
+std::string CQIO::__searchFileFullPath(const std::string _fileName)
 {
 	std::string fileFullPath = _fileName;
 

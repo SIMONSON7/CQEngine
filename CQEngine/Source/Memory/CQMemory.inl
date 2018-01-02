@@ -94,7 +94,7 @@ template <typename T>
 void Memory::cvDelete3(T*** _ptr)
 {
 	CQASSERT((_ptr) && (_ptr[0]) &&(_ptr[0][0]));
-	CQ_DELETE1(_ptr[0][0], T);
+	CQ_DELETE1(_ptr[0][0],T);
 	CQ_FREE(_ptr[0]);
 	CQ_FREE(_ptr);
 }
@@ -103,7 +103,7 @@ template <typename T>
 void Memory::cvDelete4(T**** _ptr)
 {
 	CQASSERT((_ptr) && (_ptr[0]) && (_ptr[0][0]) && (_ptr[0][0][0]));
-	CQ_DELETE1(_ptr[0][0][0], T);
+	CQ_DELETE1(_ptr[0][0][0],T);
 	CQ_FREE(_ptr[0][0]);
 	CQ_FREE(_ptr[0]);
 	CQ_FREE(_ptr);
