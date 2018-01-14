@@ -7,7 +7,7 @@
 #endif
 #include <stdio.h>
 
-
+#if 1
 int main(int argc,char *argv[])
 {
 	WORD ver = MAKEWORD(2, 2);
@@ -35,6 +35,7 @@ int main(int argc,char *argv[])
 	puts("CONNECT SERVER SUCCESS.");
 
 	char cmdBuf[512] = {};
+	char recvBuf[512] = {};
 	do
 	{
 		scanf("%s",cmdBuf);
@@ -44,9 +45,13 @@ int main(int argc,char *argv[])
 			break;
 		}
 
+		send(sock, cmdBuf, sizeof(cmdBuf), 0);
 
-
-
+		size_t len = recv(sock, recvBuf, sizeof(recvBuf), 0);
+		if (len > 0)
+		{
+			printf("RECV FROM SERVER :%s",recvBuf);
+		}
 
 	} while (true);
 
@@ -56,3 +61,4 @@ int main(int argc,char *argv[])
 	puts("Bay.");
 	return 0;
 }
+#endif
