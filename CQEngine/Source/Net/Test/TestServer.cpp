@@ -6,8 +6,10 @@
 	#pragma comment(lib,"ws2_32.lib")
 #endif
 #include <stdio.h>
+#include "c2s.h"
+#include "s2c.h"
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
 	WORD ver = MAKEWORD(2, 2);
@@ -46,17 +48,21 @@ int main(int argc, char *argv[])
 	sockaddr_in cAddr = {};
 	int cAddrLen = sizeof(sockaddr_in);
 	SOCKET cSock = INVALID_SOCKET;
-	char msgBuf[] = "HI,client.";
+	char cMsgBuf[512] = {};
+	char sMsgBuf[512] = {};
+
+	cSock = accept(sock, (sockaddr*)&cAddr, &cAddrLen);
+	if (cSock == INVALID_SOCKET)
+	{
+		puts("SERVER ACCEPT CLIENT ERROR.");
+	}
+	printf("SERVER ACCEPT THE CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
+
 	do
 	{
-		cSock = accept(sock, (sockaddr*)&cAddr, &cAddrLen);
-		if (cSock == INVALID_SOCKET)
-		{
-			puts("SERVER ACCEPT CLIENT ERROR.");
-		}
-		printf("SERVER ACCEPT THE CLIENT FROM :%s\n",inet_ntoa(cAddr.sin_addr));
-
-		send(cSock, msgBuf,sizeof(msgBuf),0);
+		recv(cSock, cMsgBuf, sizeof(cMsgBuf), 0);
+		
+		send(cSock, cMsgBuf,sizeof(cMsgBuf),0);
 	} while (true);
 
 	closesocket(sock);

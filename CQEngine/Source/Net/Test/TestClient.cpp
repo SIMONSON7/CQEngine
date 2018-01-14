@@ -6,6 +6,8 @@
 	#pragma comment(lib,"ws2_32.lib")
 #endif
 #include <stdio.h>
+#include "c2s.h"
+#include "s2c.h"
 
 #if 1
 int main(int argc,char *argv[])
