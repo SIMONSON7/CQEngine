@@ -5,6 +5,7 @@ enum C2S_CODE
 {
 	HEART = 0,
 	LOGIN,
+	LOGIN_RET,
 	LOGOUT
 };
 
@@ -38,6 +39,16 @@ struct LoginPackage : public Package
 
 	char name_[32];
 	char pwd_[32];
+};
+
+struct LoginRetPackage : public Package
+{
+	LoginRetPackage()
+	{
+		head_.code_ = LOGIN_RET;
+		head_.len_ = sizeof(LoginRetPackage);
+	}
+	char result_[64];
 };
 
 

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "proto.h"
 
-#if 1
+#if 0
 int main(int argc,char *argv[])
 {
 	WORD ver = MAKEWORD(2, 2);
@@ -36,7 +36,6 @@ int main(int argc,char *argv[])
 	puts("CONNECT SERVER SUCCESS.");
 
 	char cmdBuf[512] = {};
-	char recvBuf[512] = {};
 	do
 	{
 		scanf("%s",cmdBuf);
@@ -45,13 +44,20 @@ int main(int argc,char *argv[])
 		{
 			break;
 		}
-
-		send(sock, cmdBuf, sizeof(cmdBuf), 0);
-
-		size_t len = recv(sock, recvBuf, sizeof(recvBuf), 0);
-		if (len > 0)
+		
+		if (!strcmp(cmdBuf, "login"))
 		{
-			printf("RECV FROM SERVER :%s",recvBuf);
+			LoginPackage login = {};
+			strcpy(login.name_, "simon");
+			strcpy(login.pwd_, "pwd");
+			send(sock, (char*)&login, sizeof(LoginPackage), 0);
+
+			LoginRetPackage loginRet = {};
+			size_t len = recv(sock, (char*)&loginRet, sizeof(LoginPackage), 0);
+			if (len > 0)
+			{
+				printf("RECV FROM SERVER :%s", loginRet.result_);
+			}
 		}
 
 	} while (true);

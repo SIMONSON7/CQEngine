@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "proto.h"
 
-#if 0
+#if 1
 int main(int argc, char *argv[])
 {
 	WORD ver = MAKEWORD(2, 2);
@@ -59,9 +59,29 @@ int main(int argc, char *argv[])
 
 	do
 	{
-		recv(cSock, cMsgBuf, sizeof(cMsgBuf), 0);
+		Header head = {};
+		recv(cSock, (char*)&head, sizeof(Header), 0);
+		printf("client package size = %d.\n",head.len_);
+
+		switch (head.code_)
+		{
+			case LOGIN :
+			{
+				LoginPackage login = {};
+				recv(cSock, (char*)&login + sizeof(Header), head.len_ - sizeof(Header), 0);
+				printf("client login name = %s,pwd = %s.",login.name_,login.pwd_);
+
+				LoginRetPackage ret = {};
+				strcpy(ret.result_, "token is right!");
+				send(cSock, (char*)&ret, sizeof(ret), 0);
+			}
+				break;
+			default:
+				break;
+		}
+
+
 		
-		send(cSock, cMsgBuf,sizeof(cMsgBuf),0);
 	} while (true);
 
 	closesocket(sock);
