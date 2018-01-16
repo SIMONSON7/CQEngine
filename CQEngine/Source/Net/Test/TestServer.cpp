@@ -44,21 +44,19 @@ int main(int argc, char *argv[])
 	puts("SERVER LISTEN SUCCESS.");
 	puts("===== SERVER INIT SUCCESS ======");
 
-	sockaddr_in cAddr = {};
-	int cAddrLen = sizeof(sockaddr_in);
-	SOCKET cSock = INVALID_SOCKET;
-	char cMsgBuf[512] = {};
-	char sMsgBuf[512] = {};
-
-	cSock = accept(sock, (sockaddr*)&cAddr, &cAddrLen);
-	if (cSock == INVALID_SOCKET)
-	{
-		puts("SERVER ACCEPT CLIENT ERROR.");
-	}
-	printf("SERVER ACCEPT THE CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
-
 	do
 	{
+		sockaddr_in cAddr = {};
+		int cAddrLen = sizeof(sockaddr_in);
+		SOCKET cSock = INVALID_SOCKET;
+
+		cSock = accept(sock, (sockaddr*)&cAddr, &cAddrLen);
+		if (cSock == INVALID_SOCKET)
+		{
+			puts("SERVER ACCEPT CLIENT ERROR.");
+		}
+		printf("SERVER ACCEPT THE CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
+
 		Header head = {};
 		recv(cSock, (char*)&head, sizeof(Header), 0);
 		printf("client package size = %d.\n",head.len_);
@@ -69,7 +67,7 @@ int main(int argc, char *argv[])
 			{
 				LoginPackage login = {};
 				recv(cSock, (char*)&login + sizeof(Header), head.len_ - sizeof(Header), 0);
-				printf("client login name = %s,pwd = %s.",login.name_,login.pwd_);
+				printf("client login name = %s,pwd = %s.\n",login.name_,login.pwd_);
 
 				LoginRetPackage ret = {};
 				strcpy(ret.result_, "token is right!");
@@ -77,6 +75,7 @@ int main(int argc, char *argv[])
 			}
 				break;
 			default:
+				puts("ERROR : CLIENT DATA INVAILD.");
 				break;
 		}
 
