@@ -9,11 +9,24 @@
 #include <vector>
 #include "proto.h"
 
-void work(SOCKET _cSock)
+int work(SOCKET _cSock)
 {
 	Header head = {};
-	recv(_cSock, (char*)&head, sizeof(Header), 0);
-	printf("client package size = %d.\n", head.len_);
+	int len = recv(_cSock, (char*)&head, sizeof(Header), 0);
+	if (len > 0)
+	{
+		printf("client package size = %d.\n", head.len_);
+	}
+	else if (len == 0)
+	{
+		puts("client close.");
+		return 0;
+	}
+	else
+	{
+		puts("recv msg header error.");
+		return -1;
+	}
 
 	switch (head.code_)
 	{
@@ -27,11 +40,13 @@ void work(SOCKET _cSock)
 		strcpy(ret.result_, "token is right!");
 		send(_cSock, (char*)&ret, sizeof(ret), 0);
 	}
-		return;
+		return 1;
 	default:
 		puts("ERROR : CLIENT DATA INVAILD.");
-		return;
+		return 0;
 	}
+
+	return 1;
 }
 
 #if 1
@@ -41,8 +56,8 @@ int main(int argc, char *argv[])
 	WSADATA dat;
 	WSAStartup(ver, &dat);
 
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET)
+	SOCKET s_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (s_sock == INVALID_SOCKET)
 	{
 		puts("CREATE SOCKET FAIL.");
 		return -1;
@@ -53,7 +68,7 @@ int main(int argc, char *argv[])
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(4567);
 	sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-	int ret = bind(sock, (sockaddr*)&sin, sizeof(sockaddr_in));
+	int ret = bind(s_sock, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
 		printf("BIND SOCKET FAIL, RET_CODE = %d.\n", ret);
@@ -61,7 +76,7 @@ int main(int argc, char *argv[])
 	}
 	puts("SERVER BIND SUCCESS.");
 
-	ret = listen(sock, 100);
+	ret = listen(s_sock, 100);
 	if (ret == SOCKET_ERROR)
 	{
 		printf("LISTEN SOCKET FAIL, RET_CODE = %d.\n", ret);
@@ -73,55 +88,71 @@ int main(int argc, char *argv[])
 	std::vector<SOCKET> c_socks;
 	do
 	{
-		// SELECT //
-		fd_set read_fd;
-		fd_set write_fd;
-		fd_set exp_fd;
+		// init fd_set
+		fd_set r_fd_set;
+		fd_set w_fd_set;
+		fd_set exp_fd_set;
 
-		FD_ZERO(&read_fd);
-		FD_ZERO(&write_fd);
-		FD_ZERO(&exp_fd);
+		FD_ZERO(&r_fd_set);
+		FD_ZERO(&w_fd_set);
+		FD_ZERO(&exp_fd_set);
 
-		FD_SET(sock, &read_fd);
-		FD_SET(sock, &write_fd);
-		FD_SET(sock, &exp_fd);
+		FD_SET(s_sock, &r_fd_set);
+		FD_SET(s_sock, &w_fd_set);
+		FD_SET(s_sock, &exp_fd_set);
 
 		for (int i = 0 ; i < c_socks.size();++i)
 		{
-			FD_SET(c_socks[i], &read_fd);
+			FD_SET(c_socks[i], &r_fd_set);
 		}
 
-		int ret = select(sock + 1,&read_fd,&write_fd,&exp_fd,nullptr);
+		// select
+		int ret = select(s_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,nullptr);
 		if (ret < 0)
 		{
 			puts("SERVER SELECT ERROR.");
 			break;
 		}
-		if (FD_ISSET(sock, &read_fd))
+		// handle server sock : new client accept
+		if (FD_ISSET(s_sock, &r_fd_set))
 		{
-			FD_CLR(sock, &read_fd);
+			FD_CLR(s_sock, &r_fd_set);
 
 			sockaddr_in cAddr = {};
 			int cAddrLen = sizeof(sockaddr_in);
-			SOCKET cSock = INVALID_SOCKET;
-
-			cSock = accept(sock, (sockaddr*)&cAddr, &cAddrLen);
-			if (cSock == INVALID_SOCKET)
+			SOCKET sock = INVALID_SOCKET;
+			sock = accept(s_sock, (sockaddr*)&cAddr, &cAddrLen);
+			if (sock == INVALID_SOCKET)
 			{
 				puts("SERVER ACCEPT CLIENT ERROR.");
 			}
-			c_socks.push_back(cSock);
-			printf("SERVER ACCEPT THE CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
+			c_socks.push_back(sock);
+			printf("SERVER ACCEPT NEW CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
 		}
 
-		for (int i = 0; i < read_fd.fd_count; ++i)
+		// handle clients sock : recv message
+		for (int i = 0; i < c_socks.size(); ++i)
 		{
-			work(read_fd.fd_array[i]);
+			if (FD_ISSET(c_socks[i], &r_fd_set))
+			{
+				int ret = work(c_socks[i]);
+				if (ret <= 0)
+				{
+					closesocket(c_socks[i]);
+					c_socks.erase(c_socks.begin() + i);
+				}
+			}
+
 		}
 		
 	} while (true);
 
-	closesocket(sock);
+	// clean
+	for (int i = 0; i < c_socks.size(); ++i)
+	{
+		closesocket(c_socks[i]);
+	}
+	closesocket(s_sock);
 	WSACleanup();
 
 	puts("Bay.");
