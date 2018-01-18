@@ -19,12 +19,12 @@ int work(SOCKET _cSock)
 	}
 	else if (len == 0)
 	{
-		puts("client close.");
+		puts("client exit.");
 		return 0;
 	}
 	else
 	{
-		puts("recv msg header error.");
+		puts("recv msg exception.");
 		return -1;
 	}
 
@@ -97,10 +97,10 @@ int main(int argc, char *argv[])
 		FD_ZERO(&w_fd_set);
 		FD_ZERO(&exp_fd_set);
 
+		// set fd_Set
 		FD_SET(s_sock, &r_fd_set);
 		FD_SET(s_sock, &w_fd_set);
 		FD_SET(s_sock, &exp_fd_set);
-
 		for (int i = 0 ; i < c_socks.size();++i)
 		{
 			FD_SET(c_socks[i], &r_fd_set);
@@ -140,9 +140,9 @@ int main(int argc, char *argv[])
 				{
 					closesocket(c_socks[i]);
 					c_socks.erase(c_socks.begin() + i);
+					puts("close client socket.");
 				}
 			}
-
 		}
 		
 	} while (true);
