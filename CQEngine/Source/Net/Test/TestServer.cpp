@@ -107,7 +107,8 @@ int main(int argc, char *argv[])
 		}
 
 		// select
-		int ret = select(s_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,nullptr);
+		timeval tv = {0,0};
+		int ret = select(s_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,&tv);
 		if (ret < 0)
 		{
 			puts("SERVER SELECT ERROR.");
