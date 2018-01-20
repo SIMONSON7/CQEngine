@@ -127,8 +127,11 @@ int main(int argc, char *argv[])
 			{
 				puts("SERVER ACCEPT CLIENT ERROR.");
 			}
-			c_socks.push_back(sock);
-			printf("SERVER ACCEPT NEW CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
+			else
+			{
+				c_socks.push_back(sock);
+				printf("SERVER ACCEPT NEW CLIENT FROM :%s\n", inet_ntoa(cAddr.sin_addr));
+			}
 		}
 
 		// handle clients sock : recv message
