@@ -34,8 +34,6 @@
 #   pragma warning(disable: 4251)
 #endif
 
-
-
 #if defined(CQDEBUG)
 #   if defined(_MSC_VER)
 #       define CQASSERT( x )           if ( !((void)0,(x))) { __debugbreak(); }
@@ -49,6 +47,19 @@
 #else
 #   define CQASSERT( x )               {}
 #endif
+
+// C++11 features
+#if defined(_MSC_VER)
+#	if (_MSC_VER) >= 1700
+#		define CQ_USE_CPP11 1 
+#	else
+#		define CQ_USE_CPP11 0
+#	endif
+#else 
+#
+#
+#endif
+
 
 #define MAX_PATH 512
 #define MAX_STRBUFF_SIZE 2048
