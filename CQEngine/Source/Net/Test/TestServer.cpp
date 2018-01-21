@@ -33,12 +33,15 @@ int work(SOCKET _cSock)
 	case LOGIN:
 	{
 		LoginPackage login = {};
-		recv(_cSock, (char*)&login + sizeof(Header), head.len_ - sizeof(Header), 0);
-		printf("client login name = %s,pwd = %s.\n", login.name_, login.pwd_);
+		int ret = recv(_cSock, (char*)&login + sizeof(Header), head.len_ - sizeof(Header), 0);
+		if (len > 0)
+		{
+			printf("client login name = %s,pwd = %s.\n", login.name_, login.pwd_);
+		}
 
-		LoginRetPackage ret = {};
-		strcpy(ret.result_, "token is right!");
-		send(_cSock, (char*)&ret, sizeof(ret), 0);
+		LoginRetPackage retPak = {};
+		strcpy(retPak.result_, "token is right!");
+		send(_cSock, (char*)&retPak, sizeof(retPak), 0);
 	}
 		return 1;
 	default:
@@ -49,7 +52,7 @@ int work(SOCKET _cSock)
 	return 1;
 }
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
 	WORD ver = MAKEWORD(2, 2);
