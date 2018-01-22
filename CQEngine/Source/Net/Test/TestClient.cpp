@@ -6,6 +6,14 @@
 	#include<WinSock2.h>
 
 	#pragma comment(lib,"ws2_32.lib")
+#else
+	#include <unistd.h>
+	#include <arpa/inet.h>
+	#include <string>
+
+	#define SOCKET int
+	#define INVALID_SOCKET  (SOCKET)(~0)
+	#define SOCKET_ERROR            (-1)
 #endif
 
 #if defined CQ_USE_CPP11
@@ -81,10 +89,11 @@ int cWork(SOCKET _sock)
 #if 1
 int main(int argc,char *argv[])
 {
+#if defined(_MSC_VER)
 	WORD ver = MAKEWORD(2, 2);
 	WSADATA dat;
 	WSAStartup(ver, &dat);
-
+#endif
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == INVALID_SOCKET)
 	{
@@ -96,7 +105,11 @@ int main(int argc,char *argv[])
 	sockaddr_in sin = {};
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(4567);
+#if defined(_MSC_VER)
 	sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+#else
+	sin.sin_addr.s_addr = inet_addr("127.0.0.1");
+#endif
 	int ret = connect(sock, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
@@ -147,8 +160,13 @@ int main(int argc,char *argv[])
 		}
 	} while (!g_bExit);
 
+	// clean
+#if defined(_MSC_VER)
 	closesocket(sock);
 	WSACleanup();
+#else
+	close(sock);
+#endif
 	
 	puts("Bay.");
 	return 0;
