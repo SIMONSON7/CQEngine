@@ -49,17 +49,11 @@
 #endif
 
 // C++11 features
-#if defined(_MSC_VER)
-#	if (_MSC_VER) >= 1700
-#		define CQ_USE_CPP11 1 
-#	else
-#		define CQ_USE_CPP11 0
-#	endif
-#else 
-#
-#
+#if defined(_MSC_VER) && ((_MSC_VER) >= 1700)
+#	define CQ_USE_CPP11 1 
+#else
+#	define CQ_USE_CPP11 0
 #endif
-
 
 #define MAX_PATH 512
 #define MAX_STRBUFF_SIZE 2048
