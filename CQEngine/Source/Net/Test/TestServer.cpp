@@ -4,7 +4,16 @@
 	#include<WinSock2.h>
 
 	#pragma comment(lib,"ws2_32.lib")
+#else
+	#include<unistd.h> 
+	#include<arpa/inet.h>
+	#include<string.h>
+
+	#define SOCKET int
+	#define INVALID_SOCKET  (SOCKET)(~0)
+	#define SOCKET_ERROR            (-1)
 #endif
+
 #include <stdio.h>
 #include <vector>
 #include "proto.h"
@@ -52,13 +61,14 @@ int work(SOCKET _cSock)
 	return 1;
 }
 
-#if 0
+#if 1
 int main(int argc, char *argv[])
 {
+#if defined(_MSC_VER)
 	WORD ver = MAKEWORD(2, 2);
 	WSADATA dat;
 	WSAStartup(ver, &dat);
-
+#endif
 	SOCKET s_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (s_sock == INVALID_SOCKET)
 	{
@@ -70,7 +80,11 @@ int main(int argc, char *argv[])
 	sockaddr_in sin = {};
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(4567);
+#if defined(_MSC_VER)
 	sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+#else
+	sin.sin_addr.s_addr = INADDR_ANY;
+#endif
 	int ret = bind(s_sock, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
@@ -125,7 +139,11 @@ int main(int argc, char *argv[])
 			sockaddr_in cAddr = {};
 			int cAddrLen = sizeof(sockaddr_in);
 			SOCKET sock = INVALID_SOCKET;
+#if defined(_MSC_VER)
 			sock = accept(s_sock, (sockaddr*)&cAddr, &cAddrLen);
+#else
+			sock = accept(s_sock, (sockaddr*)&cAddr, (socklen_t *)&cAddrLen);
+#endif
 			if (sock == INVALID_SOCKET)
 			{
 				puts("SERVER ACCEPT CLIENT ERROR.");
@@ -145,7 +163,11 @@ int main(int argc, char *argv[])
 				int ret = work(c_socks[i]);
 				if (ret <= 0)
 				{
+#if defined(_MSC_VER)
 					closesocket(c_socks[i]);
+#else
+					close(c_socks[i]);
+#endif
 					c_socks.erase(c_socks.begin() + i);
 					puts("close client socket.");
 				}
@@ -155,13 +177,20 @@ int main(int argc, char *argv[])
 	} while (true);
 
 	// clean
+#if defined(_MSC_VER)
 	for (int i = 0; i < c_socks.size(); ++i)
 	{
 		closesocket(c_socks[i]);
 	}
 	closesocket(s_sock);
 	WSACleanup();
-
+#else
+	for (int i = 0; i < c_socks.size(); ++i)
+	{
+		close(c_socks[i]);
+	}
+	close(s_sock);
+#endif
 	puts("Bay.");
 	return 0;
 }
