@@ -118,14 +118,17 @@ int main(int argc, char *argv[])
 		FD_SET(s_sock, &r_fd_set);
 		FD_SET(s_sock, &w_fd_set);
 		FD_SET(s_sock, &exp_fd_set);
+
+		SOCKET max_sock = s_sock;
 		for (int i = 0 ; i < c_socks.size();++i)
 		{
 			FD_SET(c_socks[i], &r_fd_set);
+			max_sock = max_sock < c_socks[i] ? c_socks[i] : max_sock;
 		}
 
 		// select
 		timeval tv = {0,0};
-		int ret = select(s_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,&tv);
+		int ret = select(max_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,&tv);
 		if (ret < 0)
 		{
 			puts("SERVER SELECT ERROR.");
