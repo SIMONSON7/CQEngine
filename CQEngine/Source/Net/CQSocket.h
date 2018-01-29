@@ -5,6 +5,8 @@
 #ifndef __CQSOCKET_H__
 #define __CQSOCKET_H__
 
+#include <string>
+
 #if defined(_MSC_VER)
 	#define WIN32_LEAN_AND_MEAN
 	#include<windows.h>
@@ -25,10 +27,49 @@
 
 NS_CQ_BEGIN
 
+class CQSocket
+{
+public:
+	enum TYPE 
+	{
+		TCP,
+		UDP
+	};
+
+public:
+	CQSocket();
+
+	virtual ~CQSocket();
+public:
+	///
+	void Init();
+
+	///
+	void Clean();
+
+	///
+	bool Connect(const std::string _ip,const short port);
+
+	///
+	void Send();
+
+	///
+	void Recv();
+
+	///
+	void Listen();
+
+	///
+	void Bind();
+
+	///
+	bool IsValid();
+
+private:
 
 
-
-
+	SOCKET socket_;
+};
 
 NS_CQ_END
 
