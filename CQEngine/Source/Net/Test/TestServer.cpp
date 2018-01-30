@@ -61,7 +61,7 @@ int work(SOCKET _cSock)
 	return 1;
 }
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
 #if defined(_MSC_VER)

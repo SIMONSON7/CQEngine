@@ -62,10 +62,16 @@ public:
 	bool Connect(const std::string _ip,const short _port);
 
 	///
-	void Send();
+	int Send(const char *_buf, const int _bufLen, int _sig = 0);
 
 	///
-	void Recv();
+	int Recv(char *_buf, int _bufLen, int _sig = 0);
+
+	///
+	bool IsReadAble();
+
+	///
+	bool IsWriteAble();
 
 	///
 	void Listen();
@@ -77,7 +83,6 @@ public:
 	bool IsValid();
 
 private:
-
 
 	SOCKET socket_;
 };
