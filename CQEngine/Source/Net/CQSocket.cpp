@@ -114,6 +114,7 @@ bool CQSocket::IsReadAble()
 	// select
 	timeval tv = { 0,0 };
 	int ret = select(socket_ + 1, &r_fd_set, 0, 0, &tv);
+	
 	if (ret > 0)
 	{
 		if (FD_ISSET(socket_, &r_fd_set))
@@ -122,12 +123,13 @@ bool CQSocket::IsReadAble()
 			return true;
 		}
 	}
-	else
+	// ret == 0 : select time out
+	// ret == -1
+	if (ret == -1)
 	{
-		//puts("[CQSOCKET] CLIENT SELECT ISREADABEL ERROR.");
-		return false;
+		puts("[CQSocket] SELECT READ_SET OCCUR ERROR.");
 	}
-	return true;
+	return false;
 }
 
 bool CQSocket::IsWriteAble()
@@ -144,7 +146,7 @@ bool CQSocket::IsWriteAble()
 	// select
 	timeval tv = { 0,0 };
 	int ret = select(socket_ + 1, 0, &w_fd_set, 0, &tv);
-	if (ret > 0)
+	if (ret >= 0)
 	{
 		if (FD_ISSET(socket_, &w_fd_set))
 		{

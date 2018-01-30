@@ -71,22 +71,24 @@ int cWork(CQSocket _socket)
 	// recv from server
 	switch (head.code_)
 	{
-	case LOGIN_RET:
-	{
-		/*LoginRetPackage loginRet = {};
-		int len = _socket.Recv((char *)(&loginRet + sizeof(Header)), 64);*/
-		char buf[64];
-		int len = _socket.Recv(buf, 64);
-		if (len > 0)
+		case LOGIN_RET:
 		{
-			//printf("recv from server :%s", loginRet.result_);
-			printf("recv from server :%s", buf);
+			/*LoginRetPackage loginRet = {};
+			int len = _socket.Recv((char *)(&loginRet + sizeof(Header)), 64);*/
+			char buf[64];
+			int len = _socket.Recv(buf, 64);
+			if (len > 0)
+			{
+				//printf("recv from server :%s", loginRet.result_);
+				printf("recv from server :%s\n", buf);
+			}
 		}
-	}
-	return 1;
-	default:
-		puts("ERROR : server data invalid.");
-		return 0;
+		break;
+		default:
+		{
+			puts("ERROR : server data invalid.");
+			return -1;
+		}
 	}
 
 	return 1;
@@ -113,7 +115,7 @@ int main(int argc, char *argv[])
 	td.detach();
 	do
 	{
-		if (socket.IsReadAble() || socket.IsWriteAble())
+		if (socket.IsReadAble() /*|| socket.IsWriteAble()*/)
 		{
 			int ret = cWork(socket);
 			if (ret <= 0)
