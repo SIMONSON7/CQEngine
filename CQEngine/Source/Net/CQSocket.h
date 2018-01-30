@@ -30,25 +30,36 @@ NS_CQ_BEGIN
 class CQSocket
 {
 public:
-	enum TYPE 
+	enum PROTO_TYPE 
 	{
 		TCP,
 		UDP
 	};
 
+	enum IP_TYPE
+	{
+		IPV4,
+		IPV6
+	};
+
 public:
 	CQSocket();
 
+	CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType);
+
 	virtual ~CQSocket();
 public:
-	///
+	/// idempotent ///
 	void Init();
 
-	///
+	/// idempotent ///
+	void Init(PROTO_TYPE _pType,IP_TYPE _ipType);
+
+	/// idempotent ///
 	void Clean();
 
 	///
-	bool Connect(const std::string _ip,const short port);
+	bool Connect(const std::string _ip,const short _port);
 
 	///
 	void Send();
