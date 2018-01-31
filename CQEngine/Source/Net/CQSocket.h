@@ -28,8 +28,12 @@
 NS_CQ_BEGIN
 
 #if defined(_MSC_VER)
+#	define CQSOCKET_START() \
+	do { WORD ver = MAKEWORD(2, 2); WSADATA dat; WSAStartup(ver, &dat); } while(0)
+
 #	define CQSOCKET_CLEAN() WSACleanup()
 #else
+#	define CQSOCKET_START()
 #	define CQSOCKET_CLEAN()
 #endif
 

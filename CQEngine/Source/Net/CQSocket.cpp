@@ -34,12 +34,6 @@ bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 		return true;
 	}
 
-#if defined(_MSC_VER)
-	WORD ver = MAKEWORD(2, 2);
-	WSADATA dat;
-	WSAStartup(ver, &dat);
-#endif
-
 	socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (_pType == CQEngine::CQSocket::UDP)
 	{

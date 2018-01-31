@@ -97,6 +97,8 @@ int cWork(CQSocket *_socket)
 #if 1
 int main(int argc, char *argv[])
 {
+	CQSOCKET_START();
+
 	CQSocket socket;
 	socket.Connect("127.0.0.1", 4567);
 	
