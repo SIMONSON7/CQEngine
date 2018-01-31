@@ -73,13 +73,10 @@ int cWork(CQSocket *_socket)
 	{
 		case LOGIN_RET:
 		{
-			/*LoginRetPackage loginRet = {};
-			int len = _socket.Recv((char *)(&loginRet + sizeof(Header)), 64);*/
 			char buf[64];
 			int len = _socket->Recv(buf, 64);
 			if (len > 0)
 			{
-				//printf("recv from server :%s", loginRet.result_);
 				printf("recv from server :%s\n", buf);
 			}
 		}
@@ -106,7 +103,8 @@ int main(int argc, char *argv[])
 	td.detach();
 	do
 	{
-		if (socket.IsReadAble() /*|| socket.IsWriteAble()*/)
+		// client loop begine //
+		if (socket.IsReadAble())
 		{
 			int ret = cWork(&socket);
 			if (ret <= 0)
@@ -115,6 +113,11 @@ int main(int argc, char *argv[])
 				break;
 			}
 		}
+		if (socket.IsWriteAble())
+		{
+			//puts("client socket is writeable.");
+		}
+		// client loop end //
 
 	} while (!g_bExit);
 
