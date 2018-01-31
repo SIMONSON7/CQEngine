@@ -92,6 +92,9 @@ public:
 	///
 	bool IsValid();
 
+public:
+
+
 private:
 
 	SOCKET socket_;

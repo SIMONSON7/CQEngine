@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <Windows.h>
+
+#if defined(_MSC_VER)
+	#include <Windows.h>
+#else
+	#include <errno.h>
+#endif
 #include "CQDebug.h"
 
 NS_CQ_BEGIN
@@ -10,7 +15,8 @@ void dbgPuts(const char *_str)
 	CQASSERT(_str);
 #ifdef _MSC_VER
 	OutputDebugStringA(_str);
-#elif
+#else
+	puts(_str);
 #endif
 }
 
@@ -25,6 +31,15 @@ void dbgPrintf(const char *_format, ...)
 	str[len] = '\0';
 	dbgPuts(str);
 	va_end(list);
+}
+
+int getSocketError(int *_errno = 0)
+{
+#ifdef _MSC_VER
+	return WSAGetLastError();
+#else
+	return *errno;
+#endif
 }
 
 NS_CQ_END

@@ -13,7 +13,7 @@ void dbgPuts(const char *_str);
 
 void dbgPrintf(const char *_format,...);
 
-
+int getSocketError(int *_errno = 0);
 
 
 
