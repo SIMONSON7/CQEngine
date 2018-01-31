@@ -21,14 +21,18 @@ CQSocket::~CQSocket()
 	Clean();
 }
 
-void CQSocket::Init()
+bool CQSocket::Init()
 {
-	Init(CQEngine::CQSocket::TCP, CQEngine::CQSocket::IPV4);
+	return Init(CQEngine::CQSocket::TCP, CQEngine::CQSocket::IPV4);
 }
 
-void CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
+bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 {
-	if (IsValid()) return;
+	if (IsValid())
+	{
+		puts("[CQSOCKET] SOCKET INIT ALREADY.");
+		return true;
+	}
 
 #if defined(_MSC_VER)
 	WORD ver = MAKEWORD(2, 2);
@@ -48,29 +52,36 @@ void CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 
 	if (socket_ == INVALID_SOCKET)
 	{
-		puts("[CQSOCKET] CREATE SOCKET FAIL.");
-		return;
+		printf("[CQSocket] SOCKET INIT ERROR :%d\n", WSAGetLastError());
+		return false;
 	}
-	puts("[CQSOCKET] INIT SOCKET SUCCESS.");
+	puts("[CQSOCKET] SOCKET INIT SUCCESS.");
+	return true;
 }
 
 void CQSocket::Clean()
 {
-	if (!IsValid()) return;
+	if (!IsValid())
+	{
+		puts("[CQSOCKET] SOCKET CLEAN ALREADY.");
+		return;
+	}
+
 #if defined(_MSC_VER)
 	closesocket(socket_);
-	WSACleanup();
 #else
 	close(socket_);
 #endif
 
 	socket_ = INVALID_SOCKET;
+	puts("[CQSOCKET] SOCKET CLEAN SUCCESS.");
 }
 
 bool CQSocket::Connect(const std::string _ip, const short _port)
 {
 	if (!IsValid())
 	{
+		puts("[CQSOCKET] SOCKET CONNECT FAIL.");
 		return false;
 	}
 
@@ -85,11 +96,10 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	int ret = connect(socket_, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
-		printf("[CQSOCKET] CONNECT SOCKET FAIL, RET_CODE = %d.\n", ret);
+		printf("[CQSocket] SOCKET CONNECT ERROR :%d\n", WSAGetLastError());
 		return false;
 	}
-
-	puts("[CQSOCKET] CONNECT SERVER SUCCESS.");
+	puts("[CQSOCKET] SOCKET CONNECT SUCCESS.");
 	return true;
 }
 
@@ -133,7 +143,6 @@ bool CQSocket::IsReadAble()
 	if (ret == -1)
 	{
 		printf("[CQSocket] SOCKET ISREADABLE ERROR :%d\n", WSAGetLastError());
-		puts("[CQSocket] SELECT READ_SET OCCUR ERROR.");
 	}
 	return false;
 }
@@ -152,7 +161,8 @@ bool CQSocket::IsWriteAble()
 	// select
 	timeval tv = { 0,0 };
 	int ret = select(socket_ + 1, 0, &w_fd_set, 0, &tv);
-	if (ret >= 0)
+
+	if (ret > 0)
 	{
 		if (FD_ISSET(socket_, &w_fd_set))
 		{
@@ -160,12 +170,14 @@ bool CQSocket::IsWriteAble()
 			return true;
 		}
 	}
-	else
+
+	// ret == 0 : select time out
+	// ret == -1
+	if (ret == -1)
 	{
-		//puts("[CQSOCKET] CLIENT SELECT ISWRITEDABEL ERROR.");
-		return false;
+		printf("[CQSocket] SOCKET ISWRITEABEL ERROR :%d\n", WSAGetLastError());
 	}
-	return true;
+	return false;
 }
 
 bool CQSocket::IsValid()

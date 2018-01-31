@@ -26,7 +26,7 @@
 USING_NS_CQ
 
 bool g_bExit = false;
-void inputWork(CQSocket _socket)
+void inputWork(CQSocket *_socket)
 {
 	do
 	{
@@ -43,16 +43,16 @@ void inputWork(CQSocket _socket)
 			LoginPackage login = {};
 			strcpy(login.name_, "simon");
 			strcpy(login.pwd_, "pwd");
-			_socket.Send((const char *)&login, login.head_.len_);
+			_socket->Send((const char *)&login, login.head_.len_);
 		}
 
 	} while (!g_bExit);
 }
 
-int cWork(CQSocket _socket)
+int cWork(CQSocket *_socket)
 {
 	Header head = {};
-	int len = _socket.Recv((char *)&head, sizeof(Header));
+	int len = _socket->Recv((char *)&head, sizeof(Header));
 	if (len > 0)
 	{
 		printf("server package size = %d.\n", head.len_);
@@ -76,7 +76,7 @@ int cWork(CQSocket _socket)
 			/*LoginRetPackage loginRet = {};
 			int len = _socket.Recv((char *)(&loginRet + sizeof(Header)), 64);*/
 			char buf[64];
-			int len = _socket.Recv(buf, 64);
+			int len = _socket->Recv(buf, 64);
 			if (len > 0)
 			{
 				//printf("recv from server :%s", loginRet.result_);
@@ -98,26 +98,15 @@ int cWork(CQSocket _socket)
 int main(int argc, char *argv[])
 {
 	CQSocket socket;
-	socket.Init();
-	if (!socket.IsValid())
-	{
-		puts("CQSocket Init fail.");
-		return -1;
-	}
-
-	if (!socket.Connect("127.0.0.1", 4567))
-	{
-		puts("CQSocket connect fail.");
-		return -2;
-	}
-
-	std::thread td(inputWork, socket);
+	socket.Connect("127.0.0.1", 4567);
+	
+	std::thread td(inputWork, &socket);
 	td.detach();
 	do
 	{
 		if (socket.IsReadAble() /*|| socket.IsWriteAble()*/)
 		{
-			int ret = cWork(socket);
+			int ret = cWork(&socket);
 			if (ret <= 0)
 			{
 				puts("client exit.");
@@ -128,7 +117,7 @@ int main(int argc, char *argv[])
 	} while (!g_bExit);
 
 	// clean
-	socket.Clean();
+	CQSOCKET_CLEAN();
 
 	puts("Bay.");
 	return 0;

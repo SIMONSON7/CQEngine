@@ -27,6 +27,12 @@
 
 NS_CQ_BEGIN
 
+#if defined(_MSC_VER)
+#	define CQSOCKET_CLEAN() WSACleanup()
+#else
+#	define CQSOCKET_CLEAN()
+#endif
+
 class CQSocket
 {
 public:
@@ -50,10 +56,10 @@ public:
 	virtual ~CQSocket();
 public:
 	/// idempotent ///
-	void Init();
+	bool Init();
 
 	/// idempotent ///
-	void Init(PROTO_TYPE _pType,IP_TYPE _ipType);
+	bool Init(PROTO_TYPE _pType,IP_TYPE _ipType);
 
 	/// idempotent ///
 	void Clean();
