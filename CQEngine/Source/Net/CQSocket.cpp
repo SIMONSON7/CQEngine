@@ -5,16 +5,24 @@ USING_NS_CQ
 
 CQSocket::CQSocket()
 	: 
-	socket_(INVALID_SOCKET)
+	socket_(INVALID_SOCKET),
+	desc_("CQSOCKET")
 {
-	Init();
+	if (!Init())
+	{
+		Clean();
+	}
 }
 
 CQSocket::CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType)
 	: 
-	socket_(INVALID_SOCKET)
+	socket_(INVALID_SOCKET),
+	desc_("CQSOCKET")
 {
-	Init(_pType,_ipType);
+	if (!Init(_pType, _ipType))
+	{
+		Clean();
+	}
 }
 
 CQSocket::~CQSocket() 

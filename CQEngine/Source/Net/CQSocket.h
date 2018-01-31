@@ -93,9 +93,19 @@ public:
 	bool IsValid();
 
 public:
+	inline void setDesc(const std::string& _desc)
+	{
+		desc_ = _desc;
+	}
 
+	inline std::string getDesc() 
+	{
+		return desc_;
+	}
 
 private:
+
+	std::string desc_;
 
 	SOCKET socket_;
 };
