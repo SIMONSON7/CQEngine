@@ -33,7 +33,7 @@ void dbgPrintf(const char *_format, ...)
 	va_end(list);
 }
 
-int getSocketError(int *_errno = 0)
+int getSocketError(int *_errno )
 {
 #ifdef _MSC_VER
 	return WSAGetLastError();

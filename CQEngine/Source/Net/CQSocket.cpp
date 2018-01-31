@@ -1,4 +1,5 @@
 #include "CQSocket.h"
+#include "CQDebug.h"
 
 USING_NS_CQ
 
@@ -46,7 +47,7 @@ bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 
 	if (socket_ == INVALID_SOCKET)
 	{
-		printf("[CQSocket] SOCKET INIT ERROR :%d\n", WSAGetLastError());
+		printf("[CQSocket] SOCKET INIT ERROR :%d\n", getSocketError());
 		return false;
 	}
 	puts("[CQSOCKET] SOCKET INIT SUCCESS.");
@@ -90,7 +91,7 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	int ret = connect(socket_, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
-		printf("[CQSocket] SOCKET CONNECT ERROR :%d\n", WSAGetLastError());
+		printf("[CQSocket] SOCKET CONNECT ERROR :%d\n", getSocketError());
 		return false;
 	}
 	puts("[CQSOCKET] SOCKET CONNECT SUCCESS.");
@@ -136,7 +137,7 @@ bool CQSocket::IsReadAble()
 	// ret == -1
 	if (ret == -1)
 	{
-		printf("[CQSocket] SOCKET ISREADABLE ERROR :%d\n", WSAGetLastError());
+		printf("[CQSocket] SOCKET ISREADABLE ERROR :%d\n", getSocketError());
 	}
 	return false;
 }
@@ -169,7 +170,7 @@ bool CQSocket::IsWriteAble()
 	// ret == -1
 	if (ret == -1)
 	{
-		printf("[CQSocket] SOCKET ISWRITEABEL ERROR :%d\n", WSAGetLastError());
+		printf("[CQSocket] SOCKET ISWRITEABEL ERROR :%d\n", getSocketError());
 	}
 	return false;
 }
