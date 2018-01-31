@@ -2,12 +2,16 @@
 
 USING_NS_CQ
 
-CQSocket::CQSocket() 
+CQSocket::CQSocket()
+	: 
+	socket_(INVALID_SOCKET)
 {
 	Init();
 }
 
 CQSocket::CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType)
+	: 
+	socket_(INVALID_SOCKET)
 {
 	Init(_pType,_ipType);
 }
@@ -24,7 +28,8 @@ void CQSocket::Init()
 
 void CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 {
-	if (!IsValid()) return;
+	if (IsValid()) return;
+
 #if defined(_MSC_VER)
 	WORD ver = MAKEWORD(2, 2);
 	WSADATA dat;
@@ -127,6 +132,7 @@ bool CQSocket::IsReadAble()
 	// ret == -1
 	if (ret == -1)
 	{
+		printf("[CQSocket] SOCKET ISREADABLE ERROR :%d\n", WSAGetLastError());
 		puts("[CQSocket] SELECT READ_SET OCCUR ERROR.");
 	}
 	return false;
