@@ -104,6 +104,7 @@ public:
 	}
 
 private:
+	bool isIPV6_;
 
 	std::string desc_;
 

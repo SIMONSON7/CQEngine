@@ -6,7 +6,8 @@ USING_NS_CQ
 CQSocket::CQSocket()
 	: 
 	socket_(INVALID_SOCKET),
-	desc_("CQSOCKET")
+	desc_("CQSOCKET"),
+	isIPV6_(false)
 {
 	if (!Init())
 	{
@@ -17,7 +18,9 @@ CQSocket::CQSocket()
 CQSocket::CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType)
 	: 
 	socket_(INVALID_SOCKET),
-	desc_("CQSOCKET")
+	desc_("CQSOCKET"),
+	isIPV6_(false)
+
 {
 	if (!Init(_pType, _ipType))
 	{
@@ -43,16 +46,22 @@ bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 		return true;
 	}
 
-	socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	int family = AF_INET;
+	int type = SOCK_STREAM;
+	int protocol = IPPROTO_TCP;
+
 	if (_pType == CQEngine::CQSocket::UDP)
 	{
-		//socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+		type = SOCK_DGRAM;
+		protocol = IPPROTO_UDP;
 	}
 	if (_ipType == CQEngine::CQSocket::IPV6)
 	{
-		//socket_ = socket(AF_INET6, SOCK_STREAM, IPPROTO_UDP);
+		isIPV6_ = true;
+		family = AF_INET6;
 	}
 
+	socket_ = socket(family,type,protocol);
 	if (socket_ == INVALID_SOCKET)
 	{
 		printf("[CQSocket] SOCKET INIT ERROR :%d\n", getSocketError());
@@ -90,12 +99,14 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 
 	sockaddr_in sin = {};
 	sin.sin_family = AF_INET;
+	if (isIPV6_) sin.sin_family = AF_INET6;
 	sin.sin_port = htons(_port);
 #if defined(_MSC_VER)
 	sin.sin_addr.S_un.S_addr = inet_addr(_ip.c_str());
 #else
 	sin.sin_addr.s_addr = inet_addr(_ip.c_str());
 #endif
+
 	int ret = connect(socket_, (sockaddr*)&sin, sizeof(sockaddr_in));
 	if (ret == SOCKET_ERROR)
 	{
