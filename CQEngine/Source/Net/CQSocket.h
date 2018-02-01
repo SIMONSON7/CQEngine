@@ -14,6 +14,8 @@
 
 	#pragma comment(lib,"ws2_32.lib")
 #else
+	#include <stdio.h>
+	#include <stdlib.h>
 	#include <unistd.h>
 	#include <arpa/inet.h>
 	#include <string.h>
