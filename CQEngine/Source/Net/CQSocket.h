@@ -100,11 +100,15 @@ public:
 		desc_ = _desc;
 	}
 
-	inline std::string getDesc() 
+	inline const std::string& getDesc() const
 	{
 		return desc_;
 	}
 
+	inline const int GetSocekt() const
+	{
+		return socket_;
+	}
 private:
 	bool isIPV6_;
 
