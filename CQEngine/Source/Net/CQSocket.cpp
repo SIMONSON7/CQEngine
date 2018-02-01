@@ -47,19 +47,13 @@ bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
 	}
 
 	int family = AF_INET;
-	int type = SOCK_STREAM;
-	int protocol = IPPROTO_TCP;
-
-	if (_pType == CQEngine::CQSocket::UDP)
-	{
-		type = SOCK_DGRAM;
-		protocol = IPPROTO_UDP;
-	}
 	if (_ipType == CQEngine::CQSocket::IPV6)
 	{
 		isIPV6_ = true;
 		family = AF_INET6;
 	}
+	int type = _pType == CQEngine::CQSocket::UDP ? SOCK_DGRAM : SOCK_STREAM;
+	int protocol = _pType == CQEngine::CQSocket::UDP ? IPPROTO_UDP : IPPROTO_TCP;
 
 	socket_ = socket(family,type,protocol);
 	if (socket_ == INVALID_SOCKET)
