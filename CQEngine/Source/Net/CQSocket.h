@@ -70,26 +70,26 @@ public:
 	/// idempotent ///
 	void Clean();
 
-	///
+	/// Only for client.
 	bool Connect(const std::string _ip,const short _port);
 
-	///
-	int Send(const char *_buf, const int _bufLen, int _sig = 0);
+	/// Only for server.
+	bool Bind(const sockaddr *_sAddr);
+
+	/// Only for server.
+	bool Listen(const short _port);
 
 	///
-	int Recv(char *_buf, int _bufLen, int _sig = 0);
+	int Send(const char *_buf, const int _bufLen, int _sig = 0, SOCKET _socket = INVALID_SOCKET);
+
+	///
+	int Recv(char *_buf, int _bufLen, int _sig = 0, SOCKET _socket = INVALID_SOCKET);
 
 	///
 	bool IsReadAble();
 
 	///
 	bool IsWriteAble();
-
-	///
-	void Listen();
-
-	///
-	void Bind();
 
 	///
 	bool IsValid();
