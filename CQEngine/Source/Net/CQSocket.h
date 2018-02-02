@@ -77,7 +77,7 @@ public:
 	bool Bind(const sockaddr *_sAddr);
 
 	/// Only for server.
-	bool Listen(const short _port);
+	bool Listen(const int _backLog);
 
 	///
 	int Send(const char *_buf, const int _bufLen, int _sig , SOCKET _socket = INVALID_SOCKET);

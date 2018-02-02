@@ -117,9 +117,9 @@ bool CQSocket::Bind(const sockaddr *_sAddr)
 	return ret;
 }
 
-bool CQSocket::Listen(const short _port)
+bool CQSocket::Listen(const int _backLog)
 {
-	int ret = listen(socket_, _port);
+	int ret = listen(socket_, _backLog);
 	return ret;
 }
 
