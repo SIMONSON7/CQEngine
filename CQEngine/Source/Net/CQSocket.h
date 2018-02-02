@@ -57,7 +57,7 @@ public:
 public:
 	CQSocket();
 
-	CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType);
+	CQSocket(const PROTO_TYPE _pType, const IP_TYPE _ipType);
 
 	virtual ~CQSocket();
 public:
@@ -65,7 +65,7 @@ public:
 	bool Init();
 
 	/// idempotent ///
-	bool Init(PROTO_TYPE _pType,IP_TYPE _ipType);
+	bool Init(const PROTO_TYPE _pType,const IP_TYPE _ipType);
 
 	/// idempotent ///
 	void Clean();
@@ -74,13 +74,13 @@ public:
 	bool Connect(const std::string _ip,const short _port);
 
 	/// Only for server.
-	int Bind(const sockaddr *_sAddr);
+	int Bind(const std::string _ip, const short _port);
 
 	/// Only for server.
 	int Listen(const int _backLog);
 
 	/// Only for server.
-	int Accept();
+	SOCKET Accept(sockaddr_in *_cAddr);
 
 	///
 	int Send(const char *_buf, const int _bufLen, int _sig , SOCKET _socket = INVALID_SOCKET);

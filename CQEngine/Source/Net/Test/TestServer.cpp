@@ -1,22 +1,15 @@
-#if defined(_MSC_VER)
-	#define WIN32_LEAN_AND_MEAN
-	#include<windows.h>
-	#include<WinSock2.h>
+#include "CQMacros.h"
 
-	#pragma comment(lib,"ws2_32.lib")
-#else
-	#include<unistd.h> 
-	#include<arpa/inet.h>
-	#include<string.h>
-
-	#define SOCKET int
-	#define INVALID_SOCKET  (SOCKET)(~0)
-	#define SOCKET_ERROR            (-1)
+#if defined CQ_USE_CPP11
+#include <thread>
 #endif
-
 #include <stdio.h>
 #include <vector>
 #include "proto.h"
+#include "CQSocket.h"
+#include "CQDebug.h"
+
+USING_NS_CQ
 
 int work(SOCKET _cSock)
 {
@@ -61,45 +54,29 @@ int work(SOCKET _cSock)
 	return 1;
 }
 
-#if 0
+#if 1
 int main(int argc, char *argv[])
 {
-#if defined(_MSC_VER)
-	WORD ver = MAKEWORD(2, 2);
-	WSADATA dat;
-	WSAStartup(ver, &dat);
-#endif
-	SOCKET s_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (s_sock == INVALID_SOCKET)
-	{
-		puts("CREATE SOCKET FAIL.");
-		return -1;
-	}
-	puts("INIT SOCKET SUCCESS.");
+	CQSOCKET_START();
 
-	sockaddr_in sin = {};
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(4567);
-#if defined(_MSC_VER)
-	sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-#else
-	sin.sin_addr.s_addr = INADDR_ANY;
-#endif
-	int ret = bind(s_sock, (sockaddr*)&sin, sizeof(sockaddr_in));
+	CQSocket s_sock(CQSocket::TCP,CQSocket::IPV4);
+
+	// bind //
+	int ret = s_sock.Bind("127.0.0.1",4567);
 	if (ret == SOCKET_ERROR)
 	{
-		printf("BIND SOCKET FAIL, RET_CODE = %d.\n", ret);
+		printf("server bind socket error :%d\n", getSocketError());
 		return -1;
 	}
-	puts("SERVER BIND SUCCESS.");
+	puts("server bind success.");
 
-	ret = listen(s_sock, 100);
+	ret = s_sock.Listen(100);
 	if (ret == SOCKET_ERROR)
 	{
-		printf("LISTEN SOCKET FAIL, RET_CODE = %d.\n", ret);
+		printf("server listen socket error :%d\n", getSocketError());
 		return -1;
 	}
-	puts("SERVER LISTEN SUCCESS.");
+	puts("server listen success.");
 	puts("===== SERVER INIT SUCCESS ======");
 
 	std::vector<SOCKET> c_socks;
@@ -107,19 +84,10 @@ int main(int argc, char *argv[])
 	{
 		// init fd_set
 		fd_set r_fd_set;
-		fd_set w_fd_set;
-		fd_set exp_fd_set;
-
 		FD_ZERO(&r_fd_set);
-		FD_ZERO(&w_fd_set);
-		FD_ZERO(&exp_fd_set);
+		FD_SET(s_sock.GetSocekt(), &r_fd_set);
 
-		// set fd_Set
-		FD_SET(s_sock, &r_fd_set);
-		FD_SET(s_sock, &w_fd_set);
-		FD_SET(s_sock, &exp_fd_set);
-
-		SOCKET max_sock = s_sock;
+		SOCKET max_sock = s_sock.GetSocekt();
 		for (int i = 0 ; i < c_socks.size();++i)
 		{
 			FD_SET(c_socks[i], &r_fd_set);
@@ -128,25 +96,19 @@ int main(int argc, char *argv[])
 
 		// select
 		timeval tv = {0,0};
-		int ret = select(max_sock + 1,&r_fd_set,&w_fd_set,&exp_fd_set,&tv);
+		int ret = select(max_sock + 1,&r_fd_set,0,0,&tv);
 		if (ret < 0)
 		{
 			puts("SERVER SELECT ERROR.");
 			break;
 		}
 		// handle server sock : new client accept
-		if (FD_ISSET(s_sock, &r_fd_set))
+		if (FD_ISSET(s_sock.GetSocekt(), &r_fd_set))
 		{
-			FD_CLR(s_sock, &r_fd_set);
+			FD_CLR(s_sock.GetSocekt(), &r_fd_set);
 
 			sockaddr_in cAddr = {};
-			int cAddrLen = sizeof(sockaddr_in);
-			SOCKET sock = INVALID_SOCKET;
-#if defined(_MSC_VER)
-			sock = accept(s_sock, (sockaddr*)&cAddr, &cAddrLen);
-#else
-			sock = accept(s_sock, (sockaddr*)&cAddr, (socklen_t *)&cAddrLen);
-#endif
+			SOCKET sock = s_sock.Accept(&cAddr);
 			if (sock == INVALID_SOCKET)
 			{
 				puts("SERVER ACCEPT CLIENT ERROR.");
@@ -180,19 +142,17 @@ int main(int argc, char *argv[])
 	} while (true);
 
 	// clean
+	CQSOCKET_CLEAN();
 #if defined(_MSC_VER)
 	for (int i = 0; i < c_socks.size(); ++i)
 	{
 		closesocket(c_socks[i]);
 	}
-	closesocket(s_sock);
-	WSACleanup();
 #else
 	for (int i = 0; i < c_socks.size(); ++i)
 	{
 		close(c_socks[i]);
 	}
-	close(s_sock);
 #endif
 	puts("Bay.");
 	return 0;

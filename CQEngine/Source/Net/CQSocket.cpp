@@ -15,7 +15,7 @@ CQSocket::CQSocket()
 	}
 }
 
-CQSocket::CQSocket(PROTO_TYPE _pType, IP_TYPE _ipType)
+CQSocket::CQSocket(const PROTO_TYPE _pType, const IP_TYPE _ipType)
 	: 
 	socket_(INVALID_SOCKET),
 	desc_("CQSOCKET"),
@@ -38,7 +38,7 @@ bool CQSocket::Init()
 	return Init(CQEngine::CQSocket::TCP, CQEngine::CQSocket::IPV4);
 }
 
-bool CQSocket::Init(PROTO_TYPE _pType, IP_TYPE _ipType)
+bool CQSocket::Init(const PROTO_TYPE _pType, const IP_TYPE _ipType)
 {
 	if (IsValid())
 	{
@@ -111,9 +111,18 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	return true;
 }
 
-int CQSocket::Bind(const sockaddr *_sAddr)
+int CQSocket::Bind(const std::string _ip, const short _port)
 {
-	int ret = bind(socket_, (sockaddr*)_sAddr, sizeof(sockaddr_in));
+	sockaddr_in sin = {};
+	sin.sin_family = AF_INET;
+	if (isIPV6_) sin.sin_family = AF_INET6;
+	sin.sin_port = htons(_port);
+#if defined(_MSC_VER)
+	sin.sin_addr.S_un.S_addr = inet_addr(_ip.c_str());
+#else
+	sin.sin_addr.s_addr = INADDR_ANY;
+#endif
+	int ret = bind(socket_, (sockaddr*)&sin, sizeof(sockaddr_in));
 	return ret;
 }
 
@@ -121,6 +130,18 @@ int CQSocket::Listen(const int _backLog)
 {
 	int ret = listen(socket_, _backLog);
 	return ret;
+}
+
+SOCKET CQSocket::Accept(sockaddr_in *_cAddr)
+{
+	int cAddrLen = sizeof(sockaddr_in);
+	SOCKET sock = INVALID_SOCKET;
+#if defined(_MSC_VER)
+	sock = accept(socket_, (sockaddr*)_cAddr, &cAddrLen);
+#else
+	sock = accept(socket_, (sockaddr*)_cAddr, (socklen_t *)&cAddrLen);
+#endif
+	return sock;
 }
 
 int CQSocket::Send(const char *_buf, const int _bufLen, int _sig, SOCKET _socket /* = INVALID_SOCKET*/)
