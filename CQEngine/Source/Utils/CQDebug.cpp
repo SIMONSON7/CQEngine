@@ -38,7 +38,7 @@ int getSocketError(int *_errno )
 #ifdef _MSC_VER
 	return WSAGetLastError();
 #else
-	return *errno;
+	return (*_errno);
 #endif
 }
 
