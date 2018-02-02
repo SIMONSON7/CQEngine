@@ -111,6 +111,18 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	return true;
 }
 
+bool CQSocket::Bind(const sockaddr *_sAddr)
+{
+	int ret = bind(socket_, (sockaddr*)&_sAddr, sizeof(sockaddr_in));
+	return ret;
+}
+
+bool CQSocket::Listen(const short _port)
+{
+	int ret = listen(socket_, _port);
+	return ret;
+}
+
 int CQSocket::Send(const char *_buf, const int _bufLen, int _sig, SOCKET _socket /* = INVALID_SOCKET*/)
 {
 	int sock = _socket == INVALID_SOCKET ? socket_ : _socket;
