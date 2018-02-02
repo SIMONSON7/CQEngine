@@ -74,10 +74,13 @@ public:
 	bool Connect(const std::string _ip,const short _port);
 
 	/// Only for server.
-	bool Bind(const sockaddr *_sAddr);
+	int Bind(const sockaddr *_sAddr);
 
 	/// Only for server.
-	bool Listen(const int _backLog);
+	int Listen(const int _backLog);
+
+	/// Only for server.
+	int Accept();
 
 	///
 	int Send(const char *_buf, const int _bufLen, int _sig , SOCKET _socket = INVALID_SOCKET);

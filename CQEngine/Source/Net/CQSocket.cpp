@@ -111,13 +111,13 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	return true;
 }
 
-bool CQSocket::Bind(const sockaddr *_sAddr)
+int CQSocket::Bind(const sockaddr *_sAddr)
 {
-	int ret = bind(socket_, (sockaddr*)&_sAddr, sizeof(sockaddr_in));
+	int ret = bind(socket_, (sockaddr*)_sAddr, sizeof(sockaddr_in));
 	return ret;
 }
 
-bool CQSocket::Listen(const int _backLog)
+int CQSocket::Listen(const int _backLog)
 {
 	int ret = listen(socket_, _backLog);
 	return ret;
