@@ -111,14 +111,14 @@ bool CQSocket::Connect(const std::string _ip, const short _port)
 	return true;
 }
 
-int CQSocket::Send(const char *_buf, const int _bufLen, int _sig /*= 0*/, SOCKET _socket /* = INVALID_SOCKET*/)
+int CQSocket::Send(const char *_buf, const int _bufLen, int _sig, SOCKET _socket /* = INVALID_SOCKET*/)
 {
 	int sock = _socket == INVALID_SOCKET ? socket_ : _socket;
 	int ret = send(sock, _buf, _bufLen, _sig);
 	return ret;
 }
 
-int CQSocket::Recv(char *_buf, int _bufLen, int _sig /*= 0*/, SOCKET _socket /* = INVALID_SOCKET*/)
+int CQSocket::Recv(char *_buf, int _bufLen, int _sig, SOCKET _socket /* = INVALID_SOCKET*/)
 {
 	int sock = _socket == INVALID_SOCKET ? socket_ : _socket;
 	int ret = recv(sock, _buf, _bufLen, _sig);

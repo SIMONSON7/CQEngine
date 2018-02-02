@@ -27,7 +27,7 @@ void inputWork(CQSocket *_socket)
 			LoginPackage login = {};
 			strcpy(login.name_, "simon");
 			strcpy(login.pwd_, "pwd");
-			_socket->Send((const char *)&login, login.head_.len_);
+			_socket->Send((const char *)&login, login.head_.len_,0);
 		}
 
 	} while (!g_bExit);
@@ -36,7 +36,7 @@ void inputWork(CQSocket *_socket)
 int cWork(CQSocket *_socket)
 {
 	Header head = {};
-	int len = _socket->Recv((char *)&head, sizeof(Header));
+	int len = _socket->Recv((char *)&head, sizeof(Header),0);
 	if (len > 0)
 	{
 		printf("server package size = %d.\n", head.len_);
@@ -58,7 +58,7 @@ int cWork(CQSocket *_socket)
 		case LOGIN_RET:
 		{
 			char buf[64];
-			int len = _socket->Recv(buf, 64);
+			int len = _socket->Recv(buf, 64,0,_socket->GetSocekt());
 			if (len > 0)
 			{
 				printf("recv from server :%s\n", buf);

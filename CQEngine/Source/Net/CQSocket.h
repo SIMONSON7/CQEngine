@@ -80,10 +80,10 @@ public:
 	bool Listen(const short _port);
 
 	///
-	int Send(const char *_buf, const int _bufLen, int _sig = 0, SOCKET _socket = INVALID_SOCKET);
+	int Send(const char *_buf, const int _bufLen, int _sig , SOCKET _socket = INVALID_SOCKET);
 
 	///
-	int Recv(char *_buf, int _bufLen, int _sig = 0, SOCKET _socket = INVALID_SOCKET);
+	int Recv(char *_buf, int _bufLen, int _sig , SOCKET _socket = INVALID_SOCKET);
 
 	///
 	bool IsReadAble();
@@ -105,7 +105,7 @@ public:
 		return desc_;
 	}
 
-	inline const int GetSocekt() const
+	inline const SOCKET GetSocekt() const
 	{
 		return socket_;
 	}
