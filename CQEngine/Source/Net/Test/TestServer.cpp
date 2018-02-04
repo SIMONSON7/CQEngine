@@ -46,6 +46,16 @@ int work(SOCKET _cSock)
 		send(_cSock, (char*)&retPak, sizeof(retPak), 0);
 	}
 		return 1;
+	case STICKPKG_TEST:
+	{
+		StickPackageTest sp = {};
+		int ret = recv(_cSock, (char*)&sp + sizeof(Header), head.len_ - sizeof(Header), 0);
+		if (len > 0)
+		{
+			printf("client stickPackage data = %s\n.", sp.data_);
+		}
+	}
+		return 1;
 	default:
 		puts("ERROR : CLIENT DATA INVAILD.");
 		return 0;

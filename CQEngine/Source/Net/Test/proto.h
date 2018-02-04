@@ -6,7 +6,9 @@ enum C2S_CODE
 	HEART = 0,
 	LOGIN,
 	LOGIN_RET,
-	LOGOUT
+	LOGOUT,
+
+	STICKPKG_TEST
 };
 
 struct Header
@@ -51,5 +53,14 @@ struct LoginRetPackage : public Package
 	char result_[64];
 };
 
+struct StickPackageTest : public Package
+{
+	StickPackageTest()
+	{
+		head_.code_ = STICKPKG_TEST;
+		head_.len_ = sizeof(StickPackageTest);
+	}
+	char data_[20480];
+};
 
 #endif

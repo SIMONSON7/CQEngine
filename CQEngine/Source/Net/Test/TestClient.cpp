@@ -9,6 +9,8 @@
 
 USING_NS_CQ
 
+#define _STICKPKG_TEST_ 1
+
 bool g_bExit = false;
 void inputWork(CQSocket *_socket)
 {
@@ -87,6 +89,11 @@ int main(int argc, char *argv[])
 	td.detach();
 	do
 	{
+#if _STICKPKG_TEST_
+		StickPackageTest sp = {};
+		strcpy(sp.data_, "This is a long long long long long long long long long long long long text for test.");
+		socket.Send((const char *)&sp, sp.head_.len_, 0);
+#endif
 		// client loop begine //
 		if (socket.IsReadAble())
 		{
