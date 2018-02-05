@@ -64,7 +64,7 @@ int work(SOCKET _cSock)
 	return 1;
 }
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
 	CQSOCKET_START();
