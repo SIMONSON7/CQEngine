@@ -12,12 +12,16 @@ NS_CQ_BEGIN
 class CQAppI
 {
 public:
+	virtual ~CQAppI() = 0;
+public:
 	virtual void Run() = 0;
 
 
 };
 
 NS_CQ_END
+
+#include "CQApplication.inl"
 
 extern NS_CQ::CQAppI *g_app;
 
