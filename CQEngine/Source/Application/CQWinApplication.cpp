@@ -21,6 +21,11 @@ void CQWinApp::Run()
 	WNDCLASSEX wc = {};
 	MSG msg;
 
+	WCHAR wszAppName[256];
+	memset(wszAppName, 0, sizeof(wszAppName));
+	MultiByteToWideChar(CP_ACP, 0, appName_, strlen(appName_) + 1, wszAppName,
+		sizeof(wszAppName) / sizeof(wszAppName[0]));
+
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = WndProc;
@@ -28,7 +33,7 @@ void CQWinApp::Run()
 	wc.hInstance = hInstance_;
 	wc.hbrBackground = (HBRUSH)GetStockObject(COLOR_WINDOW + 1);
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = TEXT(appName_);
+	wc.lpszClassName = wszAppName;
 	wc.hIcon = wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
@@ -40,8 +45,8 @@ void CQWinApp::Run()
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
+		winWidth_,
+		winHeight_,
 		NULL,
 		NULL,
 		hInstance_,
