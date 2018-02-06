@@ -27,6 +27,9 @@ public:
 	static LRESULT CALLBACK  WndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
 
 private:
+	void __createWnd();
+
+private:
 	HINSTANCE hInstance_;
 	HWND hWnd_;
 	int winWidth_;

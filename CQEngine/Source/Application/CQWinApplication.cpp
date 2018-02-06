@@ -17,9 +17,24 @@ CQWinApp::~CQWinApp()
 
 void CQWinApp::Run()
 {
+	MSG msg = {};
+
+	__createWnd();
+
+	while (true)
+	{
+		if (!GetMessage(&msg, 0, 0, 0))break;
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	return ;
+}
+
+void CQWinApp::__createWnd()
+{
 	hInstance_ = GetModuleHandle(NULL);
 	WNDCLASSEX wc = {};
-	MSG msg;
 
 	WCHAR wszAppName[256];
 	memset(wszAppName, 0, sizeof(wszAppName));
@@ -54,15 +69,6 @@ void CQWinApp::Run()
 
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
-
-	while (true)
-	{
-		if (!GetMessage(&msg, 0, 0, 0))break;
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-
-	return ;
 }
 
 LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
