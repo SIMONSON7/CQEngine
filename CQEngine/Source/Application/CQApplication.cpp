@@ -1,10 +1,11 @@
-#include "CQWinApplication.h"
+#include "CQApplication.h"
+#include "CQMacros.h"
 
+USING_NS_CQ
 
 int main(int argc,char *argv[])
 {
-	//CQWinApp app;
-	//app.run();
-
+	CQASSERT(g_app);
+	g_app->Run();
 	return 0;
 }

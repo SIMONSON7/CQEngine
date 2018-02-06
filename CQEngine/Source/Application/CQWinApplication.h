@@ -11,7 +11,10 @@ NS_CQ_BEGIN
 
 class CQWinApp :public CQAppI
 {
-
+public:
+	//virtual bool Initialize();
+public:
+	virtual void Run();
 
 
 
