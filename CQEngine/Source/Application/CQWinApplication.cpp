@@ -4,67 +4,60 @@
 USING_NS_CQ
 
 CQWinApp::CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _height)
-{
-	HINSTANCE hInstance_;
-	HWND	  hWnd_;
-	//appName_ = (title);
-	winWidth_ = _width;
-	winHeight_ = _height;
-}
+	:
+	appName_(_title),
+	winWidth_(_width),
+	winHeight_(_height),
+	hInstance_(0),
+	hWnd_(0)
+{}
 
 CQWinApp::~CQWinApp()
-{
-
-}
+{}
 
 void CQWinApp::Run()
 {
-	CreateWnd();
-	RegisterWnd();
-	DisplayWnd();
+	hInstance_ = GetModuleHandle(NULL);
+	WNDCLASSEX wc = {};
+	MSG msg;
 
-}
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WndProc;
+	wc.cbClsExtra = wc.cbWndExtra = NULL;
+	wc.hInstance = hInstance_;
+	wc.hbrBackground = (HBRUSH)GetStockObject(COLOR_WINDOW + 1);
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = TEXT(appName_);
+	wc.hIcon = wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
-void CQWinApp::CreateWnd()
-{
-	hInstance_ = (HINSTANCE)GetModuleHandle(NULL);
-	hWnd_ = CreateWindowA(
-		"",
-		"",
-		WS_OVERLAPPEDWINDOW  & ~WS_MAXIMIZEBOX ^ WS_THICKFRAME,
+	RegisterClassEx(&wc);
+
+	hWnd_ = CreateWindowEx(NULL,
+		wc.lpszClassName,
+		wc.lpszClassName,
+		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		winWidth_,
-		winHeight_, NULL, NULL,
-		hInstance_, NULL);
-}
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		NULL,
+		NULL,
+		hInstance_,
+		NULL);
 
-void CQWinApp::RegisterWnd()
-{
-	WNDCLASSEX wce = { 0 };
-	wce.cbSize = sizeof(wce);
-	wce.cbClsExtra = 0;
-	wce.cbWndExtra = 0;
-	wce.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	wce.hCursor = NULL;
-	wce.hIcon = LoadCursor(hInstance_, IDI_APPLICATION);
-	wce.hIconSm = NULL;
-	wce.hInstance = hInstance_;
-	wce.lpfnWndProc = WndProc;
-	wce.lpszClassName = "";
-	wce.lpszMenuName = NULL;
-	wce.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
-	ATOM nAtom = RegisterClassEx(&wce);
-	if (0 == nAtom)
-	{
-		return;
-	}
-}
-
-void CQWinApp::DisplayWnd()
-{
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
+
+	while (true)
+	{
+		if (!GetMessage(&msg, 0, 0, 0))break;
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	return ;
 }
 
 LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)

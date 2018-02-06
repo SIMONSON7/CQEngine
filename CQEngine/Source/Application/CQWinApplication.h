@@ -6,6 +6,7 @@
 #define __CQWINAPPLICATION_H__
 
 #include <windows.h>
+#pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
 #include "CQApplication.h"
 
 NS_CQ_BEGIN
@@ -19,23 +20,18 @@ public:
 
 	//virtual bool Initialize();
 public:
+	///
 	virtual void Run();
 
+	///
 	static LRESULT CALLBACK  WndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
-private:
-	void CreateWnd();
-
-	void RegisterWnd();
-
-	void DisplayWnd();
 
 private:
 	HINSTANCE hInstance_;
-	HWND	  hWnd_;
-	TCHAR*	  appName_;
-
-	int		  winWidth_;
-	int		  winHeight_;
+	HWND hWnd_;
+	int winWidth_;
+	int	winHeight_;
+	const char *appName_;
 };
 
 NS_CQ_END
