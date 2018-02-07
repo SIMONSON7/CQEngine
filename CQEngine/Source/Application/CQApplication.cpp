@@ -8,7 +8,7 @@ int main(int argc,char *argv[])
 	g_app->Run();
 
 	//CLEAN 
-	delete g_app;
+	CQ_RAW_DELETE(g_app);
 	return 0;
 }
 

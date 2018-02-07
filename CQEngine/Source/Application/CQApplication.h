@@ -6,6 +6,7 @@
 #define __CQAPPLICATION_H__
 
 #include "CQMacros.h"
+#include "CQMemory.h"
 
 NS_CQ_BEGIN
 

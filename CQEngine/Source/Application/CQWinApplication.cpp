@@ -1,5 +1,4 @@
 #include "CQWinApplication.h"
-#include "CQMemory.h"
 
 USING_NS_CQ
 
@@ -93,7 +92,7 @@ LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM l
 		break;
 	case WM_LBUTTONDOWN:
 	{
-
+		
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -136,5 +135,5 @@ LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM l
 }
 
 ///
-CQAppI *g_app = new CQWinApp("CQEngine",0,0,800,600);
+CQAppI *g_app = CQ_RAW_NEW(CQWinApp,"CQEngine",0,0,800,600);
 
