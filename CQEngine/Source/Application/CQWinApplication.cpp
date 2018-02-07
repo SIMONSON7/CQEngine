@@ -3,6 +3,8 @@
 
 USING_NS_CQ
 
+bool CQWinApp::isExit_ = false;
+
 CQWinApp::CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _height)
 	:
 	appName_(_title),
@@ -21,11 +23,13 @@ void CQWinApp::Run()
 
 	__createWnd();
 
-	while (true)
+	while (!isExit_)
 	{
-		if (!GetMessage(&msg, 0, 0, 0))break;
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 
 	return ;
@@ -121,7 +125,10 @@ LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM l
 	}
 	break;
 	case WM_DESTROY:
+	{
+		isExit_ = true;
 		PostQuitMessage(0);
+	}
 		break;
 	}
 	return DefWindowProc(hWnd, nMsg,

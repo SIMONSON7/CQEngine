@@ -40,6 +40,8 @@ private:
 	int winWidth_;
 	int	winHeight_;
 	const char *appName_;
+
+	static bool isExit_;
 };
 
 NS_CQ_END
