@@ -5,7 +5,12 @@
 #ifndef __CQWINAPPLICATION_H__
 #define __CQWINAPPLICATION_H__
 
+// avoid Visual Studio settings :
+// project-> Properties-> Configuration Properties-> General-> Character Set;
+// default Unicode.
+#define UNICODE 
 #include <windows.h>
+// NO console window
 #pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
 #include "CQApplication.h"
 
