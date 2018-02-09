@@ -14,7 +14,11 @@ class CQMemory
 {
 public:
 	static 
-	AllocatorI *g_allocator;
+	AllocatorI* shareAllocator();
+
+	static
+	void releaseAllocator();
+
 public:
 	/* Just for default Constructor (NO parameters). */
 	template <typename T>
@@ -47,7 +51,7 @@ NS_CQ_END
 
 //----------------------------------------------------------------------------
 
-#define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::CQMemory::g_allocator)
+#define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::CQMemory::shareAllocator())
 #define DEFAULT_ALLOCATOR_SETSIZE(N,_ptr,_size1) DEFAULT_ALLOCATOR->setSize##N(_ptr,_size1) 
 #define DEFAULT_ALLOCATOR_GETSIZE(N,_ptr) DEFAULT_ALLOCATOR->getSize##N(_ptr)
 #ifdef CQDEBUG
