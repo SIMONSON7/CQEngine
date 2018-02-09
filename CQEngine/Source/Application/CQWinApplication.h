@@ -34,7 +34,7 @@ public:
 private:
 	void __createWnd();
 
-private:
+public:
 	HINSTANCE hInstance_;
 	HWND hWnd_;
 	int winWidth_;

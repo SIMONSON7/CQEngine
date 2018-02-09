@@ -74,12 +74,13 @@ void CQWinApp::__createWnd()
 	UpdateWindow(hWnd_);
 }
 
-LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK CQWinApp::WndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
-	switch (nMsg)
+	switch (_nMsg)
 	{
 	case WM_CREATE:
 	{
+
 
 	}
 	break;
@@ -89,6 +90,9 @@ LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM l
 	}
 	break;
 	case WM_PAINT:
+	{
+
+	}
 		break;
 	case WM_LBUTTONDOWN:
 	{
@@ -130,8 +134,8 @@ LRESULT CALLBACK CQWinApp::WndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM l
 	}
 		break;
 	}
-	return DefWindowProc(hWnd, nMsg,
-		wParam, lParam);
+	return DefWindowProc(_hWnd, _nMsg,
+		_wParam, _lParam);
 }
 
 ///
