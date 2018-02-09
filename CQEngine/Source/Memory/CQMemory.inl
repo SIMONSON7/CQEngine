@@ -14,7 +14,7 @@ inline void operator delete(void *, CQEngine::CQPlacemenNewTag, void *_ptr) thro
 }
 
 template <typename T>
-T** Memory::cvNew2(const size_t _size1, const size_t _size2)
+T** CQMemory::cvNew2(const size_t _size1, const size_t _size2)
 {
 	T**		ret = nullptr;
 	size_t size = _size1*_size2;
@@ -31,7 +31,7 @@ T** Memory::cvNew2(const size_t _size1, const size_t _size2)
 }
 
 template <typename T>
-T*** Memory::cvNew3(const size_t _size1, const size_t _size2, const size_t _size3)
+T*** CQMemory::cvNew3(const size_t _size1, const size_t _size2, const size_t _size3)
 {
 	T*** ret = nullptr;
 	size_t size12 = _size1*_size2;
@@ -54,7 +54,7 @@ T*** Memory::cvNew3(const size_t _size1, const size_t _size2, const size_t _size
 }
 
 template <typename T>
-T**** Memory::cvNew4(const size_t _size1, const size_t _size2, const size_t _size3,const size_t _size4)
+T**** CQMemory::cvNew4(const size_t _size1, const size_t _size2, const size_t _size3,const size_t _size4)
 {
 	T**** ret = nullptr;
 	size_t size12	= _size1*_size2;
@@ -83,7 +83,7 @@ T**** Memory::cvNew4(const size_t _size1, const size_t _size2, const size_t _siz
 }
 
 template <typename T>
-void Memory::cvDelete2(T** _ptr)
+void CQMemory::cvDelete2(T** _ptr)
 {
 	CQASSERT((_ptr) && (_ptr[0]));
 	CQ_DELETE1(_ptr[0],T);
@@ -91,7 +91,7 @@ void Memory::cvDelete2(T** _ptr)
 }
 
 template <typename T>
-void Memory::cvDelete3(T*** _ptr)
+void CQMemory::cvDelete3(T*** _ptr)
 {
 	CQASSERT((_ptr) && (_ptr[0]) &&(_ptr[0][0]));
 	CQ_DELETE1(_ptr[0][0],T);
@@ -100,7 +100,7 @@ void Memory::cvDelete3(T*** _ptr)
 }
 
 template <typename T>
-void Memory::cvDelete4(T**** _ptr)
+void CQMemory::cvDelete4(T**** _ptr)
 {
 	CQASSERT((_ptr) && (_ptr[0]) && (_ptr[0][0]) && (_ptr[0][0][0]));
 	CQ_DELETE1(_ptr[0][0][0],T);

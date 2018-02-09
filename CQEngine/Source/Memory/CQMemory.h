@@ -10,7 +10,7 @@
 
 NS_CQ_BEGIN
 
-class Memory
+class CQMemory
 {
 public:
 	static 
@@ -47,7 +47,7 @@ NS_CQ_END
 
 //----------------------------------------------------------------------------
 
-#define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::Memory::g_allocator)
+#define DEFAULT_ALLOCATOR ((CQEngine::DefaultAllocator*)CQEngine::CQMemory::g_allocator)
 #define DEFAULT_ALLOCATOR_SETSIZE(N,_ptr,_size1) DEFAULT_ALLOCATOR->setSize##N(_ptr,_size1) 
 #define DEFAULT_ALLOCATOR_GETSIZE(N,_ptr) DEFAULT_ALLOCATOR->getSize##N(_ptr)
 #ifdef CQDEBUG
@@ -72,9 +72,9 @@ NS_CQ_END
 		DEFAULT_ALLOCATOR_SETSIZE(1,_ptr,_size1);\
 	} \
 
-#define CQ_NEW2(_ptr,_type,_size1,_size2)				Memory::cvNew2<_type>(_size1,_size2)
-#define CQ_NEW3(_ptr,_type,_size1,_size2,_size3)		Memory::cvNew3<_type>(_size1,_size2,_size3)
-#define CQ_NEW4(_ptr,_type,_size1,_size2,_size3,_size4)	Memory::cvNew4<_type>(_size1,_size2,_size3,_size4)
+#define CQ_NEW2(_ptr,_type,_size1,_size2)				CQMemory::cvNew2<_type>(_size1,_size2)
+#define CQ_NEW3(_ptr,_type,_size1,_size2,_size3)		CQMemory::cvNew3<_type>(_size1,_size2,_size3)
+#define CQ_NEW4(_ptr,_type,_size1,_size2,_size3,_size4)	CQMemory::cvNew4<_type>(_size1,_size2,_size3,_size4)
 #define CQ_RAW_NEW(_type,...)							::new _type(##__VA_ARGS__);
 #define CQ_RAW_NEW0(_type,...)							CQ_RAW_NEW(_type,##__VA_ARGS__);
 #define CQ_RAW_NEW1(_type,_size)						::new _type[_size];
@@ -103,9 +103,9 @@ NS_CQ_END
 		_ptr = nullptr; \
 	}\
 
-#define CQ_DELETE2(_ptr,_type)				Memory::cvDelete2<_type>(_ptr)
-#define CQ_DELETE3(_ptr,_type)				Memory::cvDelete3<_type>(_ptr)
-#define CQ_DELETE4(_ptr,_type)				Memory::cvDelete4<_type>(_ptr)
+#define CQ_DELETE2(_ptr,_type)				CQMemory::cvDelete2<_type>(_ptr)
+#define CQ_DELETE3(_ptr,_type)				CQMemory::cvDelete3<_type>(_ptr)
+#define CQ_DELETE4(_ptr,_type)				CQMemory::cvDelete4<_type>(_ptr)
 #define CQ_RAW_DELETE(_ptr)					do{ if(_ptr){::delete _ptr;_ptr=nullptr;} }while(0) 
 #define CQ_RAW_DELETE0(_ptr)				CQ_RAW_DELETE(_ptr)
 #define CQ_RAW_DELETE1(_ptr)				do{ if(_ptr){::delete[] _ptr;_ptr=nullptr;} }while(0) 

@@ -2,6 +2,7 @@
 
 USING_NS_CQ
 
+#if 1
 int main(int argc,char *argv[])
 {
 	CQASSERT(g_app);
@@ -11,5 +12,6 @@ int main(int argc,char *argv[])
 	CQ_RAW_DELETE(g_app);
 	return 0;
 }
+#endif
 
 
