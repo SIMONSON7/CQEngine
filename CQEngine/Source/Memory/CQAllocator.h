@@ -17,9 +17,9 @@ class AllocatorI
 public:
 	virtual ~AllocatorI() = 0;
 
-	virtual void* alloc(size_t _size) = 0;
+	virtual void* alloc(size_t _size) throw(std::bad_alloc) = 0;
 
-	virtual void* alloc(size_t _size, const char *_file, size_t _line) = 0;
+	virtual void* alloc(size_t _size, const char *_file, size_t _line) throw(std::bad_alloc) = 0;
 
 	virtual void free(void *_ptr) = 0;
 
@@ -35,9 +35,9 @@ public:
 	virtual ~DefaultAllocator();
 
 public:
-	void* alloc(size_t _size);
+	void* alloc(size_t _size) throw(std::bad_alloc);
 
-	void* alloc(size_t _size, const char *_file, size_t _line);
+	void* alloc(size_t _size, const char *_file, size_t _line) throw(std::bad_alloc);
 
 	void free(void *_ptr);
 
