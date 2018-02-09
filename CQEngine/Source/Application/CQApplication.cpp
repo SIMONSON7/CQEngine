@@ -20,7 +20,7 @@ USING_NS_CQ
 int main(int argc,char *argv[])
 {
 	CQASSERT(g_app);
-	g_app->Run();
+	g_app->run();
 
 	//CLEAN 
 	//CQ_DELETE(g_app, CQAppI);

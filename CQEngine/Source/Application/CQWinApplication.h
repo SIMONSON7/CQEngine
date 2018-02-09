@@ -26,10 +26,10 @@ public:
 	//virtual bool Initialize();
 public:
 	///
-	virtual void Run();
+	virtual void run();
 
 	///
-	static LRESULT CALLBACK  WndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
+	static LRESULT CALLBACK  wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
 
 private:
 	void __createWnd();

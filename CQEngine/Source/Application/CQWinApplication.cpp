@@ -18,7 +18,7 @@ CQWinApp::~CQWinApp()
 	puts("release CQWinApp");
 }
 
-void CQWinApp::Run()
+void CQWinApp::run()
 {
 	MSG msg = {};
 
@@ -48,7 +48,7 @@ void CQWinApp::__createWnd()
 
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;
+	wc.lpfnWndProc = wndProc;
 	wc.cbClsExtra = wc.cbWndExtra = NULL;
 	wc.hInstance = hInstance_;
 	wc.hbrBackground = (HBRUSH)GetStockObject(COLOR_WINDOW + 1);
@@ -76,7 +76,7 @@ void CQWinApp::__createWnd()
 	UpdateWindow(hWnd_);
 }
 
-LRESULT CALLBACK CQWinApp::WndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
+LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	switch (_nMsg)
 	{

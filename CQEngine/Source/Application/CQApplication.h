@@ -15,7 +15,7 @@ class CQAppI
 public:
 	virtual ~CQAppI() = 0;
 public:
-	virtual void Run() = 0;
+	virtual void run() = 0;
 
 
 };
