@@ -141,6 +141,5 @@ LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARA
 }
 
 ///
-//CQAppI *g_app = CQ_NEW(CQWinApp,"CQEngine",0,0,800,600);
-CQAppI *g_app = CQ_RAW_NEW(CQWinApp, "CQEngine", 0, 0, 800, 600);
+CQAppI *g_app = CQ_NEW(CQWinApp,"CQEngine",0,0,800,600);
 
