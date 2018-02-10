@@ -16,9 +16,6 @@ public:
 	static 
 	AllocatorI* shareAllocator();
 
-	static
-	void releaseAllocator();
-
 public:
 	/* Just for default Constructor (NO parameters). */
 	template <typename T>
