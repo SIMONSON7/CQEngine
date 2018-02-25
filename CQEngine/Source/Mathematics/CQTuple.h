@@ -39,6 +39,8 @@ protected:
 
 };
 
+#include "CQTuple.inl"
+
 NS_CQ_END
 
 #endif /* __CQTUPLE_H__ */
