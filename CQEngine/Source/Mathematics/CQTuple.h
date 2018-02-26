@@ -14,25 +14,26 @@ class Tuple
 {
 public:
 	Tuple();
-	Tuple(const Tuple& tuple);
+	Tuple(const Tuple& _tuple);
 	~Tuple();
 
+public:
 	///
 	inline operator const TYPE* () const;
 	inline operator TYPE* ();
-	inline const TYPE& operator[] (int i) const;
-	inline TYPE& operator[] (int i);
+	inline const TYPE& operator[] (int _i) const;
+	inline TYPE& operator[] (int _i);
 
 	///
-	Tuple& operator= (const Tuple& tuple);
+	Tuple& operator= (const Tuple& _tuple);
 
 	///
-	bool operator== (const Tuple& tuple) const;
-	bool operator!= (const Tuple& tuple) const;
-	bool operator<  (const Tuple& tuple) const;
-	bool operator<= (const Tuple& tuple) const;
-	bool operator>  (const Tuple& tuple) const;
-	bool operator>= (const Tuple& tuple) const;
+	bool operator== (const Tuple& _tuple) const;
+	bool operator!= (const Tuple& _tuple) const;
+	bool operator<  (const Tuple& _tuple) const;
+	bool operator<= (const Tuple& _tuple) const;
+	bool operator>  (const Tuple& _tuple) const;
+	bool operator>= (const Tuple& _tuple) const;
 
 protected:
 	TYPE mTuple[DIMENSION];
