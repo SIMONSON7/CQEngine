@@ -129,7 +129,7 @@ bool Tuple<DIMENSION, TYPE>::operator> (const Tuple& _tuple) const
 	}
 	return false;
 }
-//----------------------------------------------------------------------------
+
 template <int DIMENSION, typename TYPE>
 bool Tuple<DIMENSION, TYPE>::operator>= (const Tuple& _tuple) const
 {
