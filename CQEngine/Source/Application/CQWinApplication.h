@@ -34,6 +34,8 @@ public:
 private:
 	void __createWnd();
 
+	void __destroyWnd();
+
 public:
 	HINSTANCE hInstance_;
 	HWND hWnd_;

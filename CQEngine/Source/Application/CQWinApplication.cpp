@@ -1,4 +1,5 @@
 #include "CQWinApplication.h"
+#include "CQWglRenderer.h"
 
 USING_NS_CQ
 
@@ -16,6 +17,7 @@ CQWinApp::CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _he
 CQWinApp::~CQWinApp()
 {
 	puts("release CQWinApp");
+	__destroyWnd();
 }
 
 void CQWinApp::run()
@@ -47,7 +49,13 @@ void CQWinApp::__createWnd()
 		sizeof(wszAppName) / sizeof(wszAppName[0]));
 
 	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
+	/*
+	* CS_HREDRAW | CS_VREDRAW | CS_OWNDC
+	* CS_HREDRAW : window's width change or coordinate x change.(WM_PAINT)
+	* CS_VREDRAW : window's height change or coordinate y change.(WM_PAINT)
+	* CS_OWNDC : for Pixel Format.
+	*/
+	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wc.lpfnWndProc = wndProc;
 	wc.cbClsExtra = wc.cbWndExtra = NULL;
 	wc.hInstance = hInstance_;
@@ -71,6 +79,35 @@ void CQWinApp::__createWnd()
 		NULL,
 		hInstance_,
 		NULL);
+
+	// TMP //
+	PIXELFORMATDESCRIPTOR pfd =
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),
+		1,
+		PFD_DRAW_TO_WINDOW |
+		PFD_SUPPORT_OPENGL |
+		PFD_DOUBLEBUFFER,
+		PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+		32,                   // Colordepth of the framebuffer.
+		0, 0, 0, 0, 0, 0,
+		0,
+		0,
+		0,
+		0, 0, 0, 0,
+		24,                   // Number of bits for the depthbuffer
+		8,                    // Number of bits for the stencilbuffer
+		0,                    // Number of Aux buffers in the framebuffer.
+		PFD_MAIN_PLANE,
+		0,
+		0, 0, 0
+	};
+	HDC hdc = GetDC(hWnd_);
+	int  pf = ChoosePixelFormat(hdc, &pfd);
+	SetPixelFormat(hdc, pf, &pfd);
+	HGLRC hglrc = wglCreateContext(hdc);
+	wglMakeCurrent(hdc, hglrc);
+
 
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
@@ -138,6 +175,11 @@ LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARA
 	}
 	return DefWindowProc(_hWnd, _nMsg,
 		_wParam, _lParam);
+}
+
+void CQWinApp::__destroyWnd()
+{
+
 }
 
 ///
