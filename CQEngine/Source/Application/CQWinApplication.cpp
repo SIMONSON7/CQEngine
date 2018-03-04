@@ -1,5 +1,6 @@
 #include "CQWinApplication.h"
 #include "CQWglRenderer.h"
+#include "CQDebug.h"
 
 USING_NS_CQ
 
@@ -30,6 +31,19 @@ void CQWinApp::run()
 	{
 		while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 		{
+			/////////////////////// TMP //////////////////
+			glClearColor(1.f, 0.f, 0.f, 0.5f);
+			glLoadIdentity();
+			glTranslated(0, 0, -1);
+			glBegin(GL_TRIANGLES);
+			glVertex2f(0.0, 0.0);
+			glVertex2f(0.5, 0.5);
+			glVertex2f(0.0, 0.5);
+			glEnd();
+
+			HDC hdc = GetDC(hWnd_);
+			SwapBuffers(hdc);
+			/////////////////////// TMP //////////////////
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
@@ -80,7 +94,7 @@ void CQWinApp::__createWnd()
 		hInstance_,
 		NULL);
 
-	// TMP //
+	/////////////////////// TMP //////////////////
 	PIXELFORMATDESCRIPTOR pfd =
 	{
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -107,8 +121,11 @@ void CQWinApp::__createWnd()
 	SetPixelFormat(hdc, pf, &pfd);
 	HGLRC hglrc = wglCreateContext(hdc);
 	wglMakeCurrent(hdc, hglrc);
-
-
+	
+	const GLubyte* OpenGLVersion = glGetString(GL_VERSION);
+	dbgPrintf("opengl version:%s",OpenGLVersion);
+	
+	/////////////////////////////////////////
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
 }
@@ -130,7 +147,7 @@ LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARA
 	break;
 	case WM_PAINT:
 	{
-
+		
 	}
 		break;
 	case WM_LBUTTONDOWN:
