@@ -16,7 +16,7 @@
 
 USING_NS_CQ
 
-#if 0
+#if 1
 int main(int argc,char *argv[])
 {
 	CQASSERT(g_app);
