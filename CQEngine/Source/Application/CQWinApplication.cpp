@@ -10,15 +10,18 @@ PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
 
-// test render
-//PFNGLGENBUFFERSPROC glGenBuffers;
-//PFNGLBINDBUFFERPROC glBindBuffer;
-//PFNGLBUFFERDATAPROC glBufferData;
-//PFNGLCREATESHADERPROC glCreateShader;
-//PFNGLSHADERSOURCEPROC glShaderSource;
-//PFNGLCOMPILESHADERPROC glCompileShader;
-//PFNGLCREATEPROGRAMPROC glCreateProgram;
-
+const char *vertexShaderSource = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 0.2f, 0.2f, 1.0f);\n"
+"}\n\0";
 
 /////////////////////// TMP //////////////////
 
@@ -46,28 +49,48 @@ void CQWinApp::run()
 	__createWnd();
 
 	/////////////////////// TMP //////////////////
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
+	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+	int success;
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 
-	static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
+	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+	// check for shader compile errors
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+
+	// link shaders
+	int shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+	// check for linking errors
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f, // left  
+		0.5f, -0.5f, 0.0f, // right 
+		0.0f,  0.5f, 0.0f  // top   
 	};
 
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+	unsigned int VBO, VAO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO);
 
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 	/////////////////////// TMP //////////////////
 
 	while (!isExit_)
@@ -75,22 +98,12 @@ void CQWinApp::run()
 		while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 		{
 			/////////////////////// TMP //////////////////
-			glClearColor(1.0f, 0.f, 0.f, 1.0f);
+			glClearColor(1.0f, 1.f, 0.f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glEnableVertexAttribArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-			glVertexAttribPointer(
-				0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-				3,                  // size
-				GL_FLOAT,           // type
-				GL_FALSE,           // normalized?
-				0,                  // stride
-				(void*)0            // array buffer offset
-			);
-			// Draw the triangle !
-			glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-			glDisableVertexAttribArray(0);
+			glUseProgram(shaderProgram);
+			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			HDC hdc = GetDC(hWnd_);
 			SwapBuffers(hdc);
@@ -99,6 +112,11 @@ void CQWinApp::run()
 			DispatchMessage(&msg);
 		}
 	}
+
+	/////////////////////// TMP //////////////////
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	/////////////////////// TMP //////////////////
 
 	return ;
 }
