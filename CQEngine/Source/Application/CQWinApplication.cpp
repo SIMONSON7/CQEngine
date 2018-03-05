@@ -1,5 +1,5 @@
 #include "CQWinApplication.h"
-#include "CQWglRenderer.h"
+#include "CQGLRenderer.h"
 #include "CQDebug.h"
 
 USING_NS_CQ

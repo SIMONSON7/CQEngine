@@ -2,8 +2,8 @@
 *
 *		qiu_hao		2018/03/04		22:15.pm
 */
-#ifndef __CQWGLRENDERER_H__
-#define __CQWGLRENDERER_H__
+#ifndef __CQGLRENDERER_H__
+#define __CQGLRENDERER_H__
 
 // glad :
 // <gl/GL.h> <gl/GLU.h> already included
@@ -20,4 +20,4 @@
 
 
 
-#endif /*__CQWGLRENDERER_H__*/
+#endif /*__CQGLRENDERER_H__*/
