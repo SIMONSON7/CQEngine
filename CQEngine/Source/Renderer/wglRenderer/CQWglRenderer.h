@@ -5,9 +5,16 @@
 #ifndef __CQWGLRENDERER_H__
 #define __CQWGLRENDERER_H__
 
-#include <Windows.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
+//#include <Windows.h>
+//#include <gl/GL.h>
+//#include <gl/GLU.h>
+#include <glad/glad.h>
+#include <wgl/wglext.h>
+
+
+
+
+
 
 
 
