@@ -5,10 +5,7 @@
 USING_NS_CQ
 
 /////////////////////// TMP //////////////////
-PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB;
-PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
-PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
-PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
+CQWglContext context;
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -105,8 +102,9 @@ void CQWinApp::run()
 			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
-			HDC hdc = GetDC(hWnd_);
-			SwapBuffers(hdc);
+			/*HDC hdc = GetDC(hWnd_);
+			SwapBuffers(hdc);*/
+			context.swap();
 			/////////////////////// TMP //////////////////
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -172,70 +170,8 @@ void CQWinApp::__createWnd()
 		NULL);
 
 	/////////////////////// TMP ////////////////// 
-	// error checks have been omitted for brevity
-	PIXELFORMATDESCRIPTOR pfd =
-	{
-		sizeof(PIXELFORMATDESCRIPTOR),
-		1,
-		PFD_DRAW_TO_WINDOW |
-		PFD_SUPPORT_OPENGL |
-		PFD_DOUBLEBUFFER,
-		PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-		32,                   // Colordepth of the framebuffer.
-		0, 0, 0, 0, 0, 0,
-		8,				      // cAlphaBits
-		0,
-		0,
-		0, 0, 0, 0,
-		24,                   // Number of bits for the depthbuffer
-		8,                    // Number of bits for the stencilbuffer
-		0,                    // Number of Aux buffers in the framebuffer.
-		PFD_MAIN_PLANE,
-		0,
-		0, 0, 0
-	};
-	HDC hdc = GetDC(hWnd_);
-	int  pf = ChoosePixelFormat(hdc, &pfd);
-	SetPixelFormat(hdc, pf, &pfd);
-	HGLRC hglrc = wglCreateContext(hdc);
-	wglMakeCurrent(hdc, hglrc);
-
-	// init core context
-	wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)wglGetProcAddress("wglGetExtensionsStringARB");
-	wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
-	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
-	
-	int32_t attrs[] =
-	{
-		WGL_SAMPLE_BUFFERS_ARB, 0,
-		WGL_SAMPLES_ARB, 0,
-		WGL_SUPPORT_OPENGL_ARB, true,
-		WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-		WGL_DRAW_TO_WINDOW_ARB, true,
-		WGL_DOUBLE_BUFFER_ARB, true,
-		WGL_COLOR_BITS_ARB, 32,
-		WGL_DEPTH_BITS_ARB, 24,
-		WGL_STENCIL_BITS_ARB, 8,
-		0
-	};
-	int pixelFormat;
-	size_t  numFormats;
-	wglChoosePixelFormatARB(hdc, attrs, NULL, 1, &pixelFormat, &numFormats);
-	SetPixelFormat(hdc, pixelFormat, &pfd);
-
-	GLint contextAttrs[9] = { WGL_CONTEXT_MAJOR_VERSION_ARB,  4,
-						WGL_CONTEXT_MINOR_VERSION_ARB,  0,
-						0, 0,
-						WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-						0
-					};
-
-	HGLRC context = wglCreateContextAttribsARB(hdc, 0, contextAttrs);
-
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(hglrc);
-	wglMakeCurrent(hdc, context);
+	context.hWnd_ = hWnd_;
+	context.create();
 
 	// test render
 	if (!gladLoadGL()) {
