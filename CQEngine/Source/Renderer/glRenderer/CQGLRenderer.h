@@ -5,9 +5,15 @@
 #ifndef __CQGLRENDERER_H__
 #define __CQGLRENDERER_H__
 
+#ifdef CQ_USE_EGL
+
+#endif
+
+#ifdef CQ_USE_WGL
 #include <CQWglContext.h>
+#endif
 
-
+#include "CQMacros.h"
 
 
 
