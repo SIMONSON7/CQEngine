@@ -11,6 +11,8 @@
 #include <wgl/wglext.h>
 #include "CQMacros.h"
 
+#pragma comment(lib,"opengl32.lib")
+
 NS_CQ_BEGIN
 
 struct CQWglContext
