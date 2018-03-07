@@ -177,7 +177,7 @@ void CQWinApp::__createWnd()
 		exit(-1);
 	}
 
-	context.printGlInfo();
+	context.printGLInfo();
 	/////////////////////////////////////////
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);

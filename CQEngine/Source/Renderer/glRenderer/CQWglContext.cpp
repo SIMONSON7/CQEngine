@@ -164,16 +164,16 @@ void CQWglContext::printGLInfo()
 	dbgPrintf(" red: %u green: %u blue: %u alpha: %u depth: %u stencil: %u\n",
 		redbits, greenbits, bluebits, alphabits, depthbits, stencilbits);
 
-	// Accumulation Buffer
-	GLint accumredbits, accumgreenbits, accumbluebits, accumalphabits;
-	GLint auxbuffers;
+	// Accumulation Buffer(COMPATIBILITY) 
+	//GLint accumredbits, accumgreenbits, accumbluebits, accumalphabits;
+	//GLint auxbuffers;
 
-	glGetIntegerv(GL_ACCUM_RED_BITS, &accumredbits);
-	glGetIntegerv(GL_ACCUM_GREEN_BITS, &accumgreenbits);
-	glGetIntegerv(GL_ACCUM_BLUE_BITS, &accumbluebits);
-	glGetIntegerv(GL_ACCUM_ALPHA_BITS, &accumalphabits);
-	glGetIntegerv(GL_AUX_BUFFERS, &auxbuffers);
+	//glGetIntegerv(GL_ACCUM_RED_BITS, &accumredbits);
+	//glGetIntegerv(GL_ACCUM_GREEN_BITS, &accumgreenbits);
+	//glGetIntegerv(GL_ACCUM_BLUE_BITS, &accumbluebits);
+	//glGetIntegerv(GL_ACCUM_ALPHA_BITS, &accumalphabits);
+	//glGetIntegerv(GL_AUX_BUFFERS, &auxbuffers);
 
-	dbgPrintf(" accum red: %u accum green: %u accum blue: %u accum alpha: %u aux buffers: %u\n",
-		accumredbits, accumgreenbits, accumbluebits, accumalphabits, auxbuffers);
+	//dbgPrintf(" accum red: %u accum green: %u accum blue: %u accum alpha: %u aux buffers: %u\n",
+	//	accumredbits, accumgreenbits, accumbluebits, accumalphabits, auxbuffers);
 }
