@@ -21,6 +21,7 @@ struct CQWglContext
 	void create();
 	void destroy();
 	void swap();
+	void printGLInfo();
 	//void makeCurrent();
 
 	HWND hWnd_;

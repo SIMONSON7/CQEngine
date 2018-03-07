@@ -1,4 +1,6 @@
+#include <string>
 #include "CQWglContext.h"
+#include "CQDebug.h"
 
 USING_NS_CQ
 
@@ -107,4 +109,71 @@ void CQWglContext::swap()
 	{
 		SwapBuffers(hdc_);
 	}
+}
+
+void CQWglContext::printGLInfo()
+{
+	// opengl info
+	// version
+	const GLubyte* OpenGLVersion = glGetString(GL_VERSION);
+	dbgPrintf("opengl version:%s\n", OpenGLVersion);
+
+	// profile
+	// CQEngine only support Core profile.
+	GLint mask;
+	std::string profileName;
+	glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &mask);
+	if (mask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT)
+		profileName = "PROFILE_COMPATIBILITY";
+	if (mask & GL_CONTEXT_CORE_PROFILE_BIT)
+		profileName = "PROFILE_CORE";
+	dbgPrintf("opengl profile:%s\n", profileName.c_str());
+
+	// vendor
+	dbgPrintf("opengl vendor:%s\n", glGetString(GL_VENDOR));
+
+	// renderer
+	dbgPrintf("opengl renderer:%s\n", glGetString(GL_RENDERER));
+
+	// framebuffer
+	GLint redbits, greenbits, bluebits, alphabits, depthbits, stencilbits;
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_BACK_LEFT,
+		GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
+		&redbits);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_BACK_LEFT,
+		GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
+		&greenbits);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_BACK_LEFT,
+		GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
+		&bluebits);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_BACK_LEFT,
+		GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
+		&alphabits);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_DEPTH,
+		GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
+		&depthbits);
+	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
+		GL_STENCIL,
+		GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
+		&stencilbits);
+	dbgPrintf(" red: %u green: %u blue: %u alpha: %u depth: %u stencil: %u\n",
+		redbits, greenbits, bluebits, alphabits, depthbits, stencilbits);
+
+	// Accumulation Buffer
+	GLint accumredbits, accumgreenbits, accumbluebits, accumalphabits;
+	GLint auxbuffers;
+
+	glGetIntegerv(GL_ACCUM_RED_BITS, &accumredbits);
+	glGetIntegerv(GL_ACCUM_GREEN_BITS, &accumgreenbits);
+	glGetIntegerv(GL_ACCUM_BLUE_BITS, &accumbluebits);
+	glGetIntegerv(GL_ACCUM_ALPHA_BITS, &accumalphabits);
+	glGetIntegerv(GL_AUX_BUFFERS, &auxbuffers);
+
+	dbgPrintf(" accum red: %u accum green: %u accum blue: %u accum alpha: %u aux buffers: %u\n",
+		accumredbits, accumgreenbits, accumbluebits, accumalphabits, auxbuffers);
 }

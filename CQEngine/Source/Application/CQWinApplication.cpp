@@ -1,6 +1,5 @@
 #include "CQWinApplication.h"
 #include "CQGLRenderer.h"
-#include "CQDebug.h"
 
 USING_NS_CQ
 
@@ -173,15 +172,12 @@ void CQWinApp::__createWnd()
 	context.hWnd_ = hWnd_;
 	context.create();
 
-	// test render
 	if (!gladLoadGL()) {
 		printf("Something went wrong!\n");
 		exit(-1);
 	}
 
-	const GLubyte* OpenGLVersion = glGetString(GL_VERSION);
-	dbgPrintf("opengl version:%s",OpenGLVersion);
-	
+	context.printGlInfo();
 	/////////////////////////////////////////
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
