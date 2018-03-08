@@ -1,7 +1,7 @@
 #include "CQMemory.h"
 #include "CQResLoader.h"
 #include "CQResLoader.h"
-#include <stb_image.h>
+#include <stb/stb_image.h>
 
 USING_NS_CQ;
 
