@@ -1,1 +1,1 @@
-#pragma once
+inline CQEngine::CQObject::~CQObject() {}

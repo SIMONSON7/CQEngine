@@ -7,12 +7,18 @@
 
 #include "CQMacros.h"
 #include "CQObject.h"
+#include <map>
 
 NS_CQ_BEGIN
 
 class CQTexture : public CQObject
 {
 
+
+
+
+	//typedef std::map<TextureID, CQTexture*> TextureIDMap;
+	//static TextureIDMap s_textureIDMap;
 };
 
 NS_CQ_END

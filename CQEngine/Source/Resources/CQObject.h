@@ -13,7 +13,7 @@ NS_CQ_BEGIN
 class CQObject
 {
 public:
-	explicit CQObject();
+	explicit CQObject() {}
 	virtual ~CQObject();
 public:
 	void setName(const std::string _name);
