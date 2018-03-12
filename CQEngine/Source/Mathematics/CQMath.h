@@ -6,6 +6,7 @@
 #define __CQMATH_H__
 
 #include "CQMacros.h"
+#include "CQVector2.h"
 
 NS_CQ_BEGIN
 
