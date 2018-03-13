@@ -1,5 +1,6 @@
 #include "CQWinApplication.h"
 #include "CQGLRenderer.h"
+#include "CQGLProgram.h"
 
 USING_NS_CQ
 
@@ -45,28 +46,10 @@ void CQWinApp::run()
 	__createWnd();
 
 	/////////////////////// TMP //////////////////
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-	int success;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-	// check for shader compile errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-	// link shaders
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	// check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	CQGLProgram program;
+	program.attachNativeShader(vertexShaderSource, CQGLProgram::SHADER_VERTEX);
+	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
+	program.genProgram();
 
 	float vertices[] = {
 		-0.5f, -0.5f, 0.0f, // left  
@@ -99,7 +82,7 @@ void CQWinApp::run()
 			glClearColor(1.0f, 1.f, 0.f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glUseProgram(shaderProgram);
+			program.use();
 			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
