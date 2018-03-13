@@ -7,7 +7,6 @@
 
 #include <glad/glad.h>
 #include <vector>
-#include "CQMacros.h"
 #include "CQMath.h"
 
 NS_CQ_BEGIN
@@ -33,18 +32,15 @@ public:
 	GLuint getProgram() const;
 public:
 	/* Transfer data. */
-	//void setInt(std::string __location, int   value);
-	//void setBool(std::string __location, bool  value);
-	//void setFloat(std::string __location, float value);
-	//void setVector(std::string __location,  Vector2<float> value);
-	//void setVector(std::string _location/*, vec3  value*/);
-	//void setVector(std::string _location/*, vec4  value*/);
-	//void setVectorArray(std::string _location, int size/*, const std::vector< vec2>& values*/);
-	//void setVectorArray(std::string _location, int size/*, const std::vector< vec3>& values*/);
-	//void setVectorArray(std::string _location, int size/*, const std::vector< vec4>& values*/);
-	//void setMatrix(std::string _location/*,  mat2 value*/);
-	//void setMatrix(std::string _location/*,  mat3 value*/);
-	//void setMatrix(std::string _location/*,  mat4 value*/);
+	void setInt(std::string __location, int   _value);
+	void setBool(std::string __location, bool  _value);
+	void setFloat(std::string __location, float _value);
+	void setVector(std::string __location, Vector2 _value);
+	void setVector(std::string _location, Vector3  _value);
+	void setVector(std::string _location, Vector4  _value);
+	void setMatrix(std::string _location, Matrix2 _value);
+	void setMatrix(std::string _location, Matrix3 _value);
+	void setMatrix(std::string _location, Matrix4 _value);
 
 private:
 	GLuint program_;
