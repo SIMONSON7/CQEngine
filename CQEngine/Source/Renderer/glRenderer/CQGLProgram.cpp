@@ -10,15 +10,18 @@ CQGLProgram::CQGLProgram()
 
 CQGLProgram::~CQGLProgram()
 {
+	// the function of loop is the same as glGetAttachedShaders
 	for each (auto shaderID in glsl_)
 	{
 		if (shaderID)
 		{
+			glDetachShader(program_, shaderID);
 			glDeleteShader(shaderID);
 		}
 	}
 
 	glDeleteProgram(program_);
+	program_ = 0;
 }
 
 void CQGLProgram::attachNativeShader(const char *_nativeShader, SHADER_TYPE _type)
