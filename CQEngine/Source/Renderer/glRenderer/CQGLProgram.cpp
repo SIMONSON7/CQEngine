@@ -91,3 +91,13 @@ GLuint CQGLProgram::getProgram() const
 {
 	return program_;
 }
+
+void  CQGLProgram::setInt(std::string _location, int _value){}
+void  CQGLProgram::setBool(std::string _location, bool _value){}
+void  CQGLProgram::setFloat(std::string _location, float _value){}
+void  CQGLProgram::setVector(std::string _location, Vector2 _value){}
+void  CQGLProgram::setVector(std::string _location, Vector3 _value){}
+void  CQGLProgram::setVector(std::string _location, Vector4 _value){}
+void  CQGLProgram::setMatrix(std::string _location, Matrix2 _value){}
+void  CQGLProgram::setMatrix(std::string _location, Matrix3 _value){}
+void  CQGLProgram::setMatrix(std::string _location, Matrix4 _value){}

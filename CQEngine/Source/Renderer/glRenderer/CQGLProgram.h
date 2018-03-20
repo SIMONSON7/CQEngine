@@ -32,12 +32,12 @@ public:
 	GLuint getProgram() const;
 public:
 	/* Transfer data. */
-	void setInt(std::string __location, int   _value);
-	void setBool(std::string __location, bool  _value);
-	void setFloat(std::string __location, float _value);
-	void setVector(std::string __location, Vector2 _value);
-	void setVector(std::string _location, Vector3  _value);
-	void setVector(std::string _location, Vector4  _value);
+	void setInt(std::string _location, int _value);
+	void setBool(std::string _location, bool _value);
+	void setFloat(std::string _location, float _value);
+	void setVector(std::string _location, Vector2 _value);
+	void setVector(std::string _location, Vector3 _value);
+	void setVector(std::string _location, Vector4 _value);
 	void setMatrix(std::string _location, Matrix2 _value);
 	void setMatrix(std::string _location, Matrix3 _value);
 	void setMatrix(std::string _location, Matrix4 _value);

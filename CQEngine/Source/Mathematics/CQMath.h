@@ -6,7 +6,7 @@
 #define __CQMATH_H__
 
 #include "CQMacros.h"
-#include "CQVector2.h"
+//#include "CQVector2.h"
 
 #include <cstdio>
 #include <cassert>
@@ -5826,20 +5826,20 @@ typedef float             real;
 typedef tvec2<int>        int2;
 typedef tvec2<float>      float2;
 typedef tvec2<double>     double2;
-typedef tvec2<real>       real2;
+//typedef tvec2<real>       real2;
 typedef tvec2<real>       Vector2;
 
 typedef tvec3<int>        int3;
 typedef tvec3<unsigned>   uint3;
 typedef tvec3<float>      float3;
 typedef tvec3<double>     double3;
-typedef tvec3<real>       real3;
+//typedef tvec3<real>       real3;
 typedef tvec3<real>       Vector3;
 
 typedef tvec4<int>        int4;
 typedef tvec4<float>      float4;
 typedef tvec4<double>     double4;
-typedef tvec4<real>       real4;
+//typedef tvec4<real>       real4;
 typedef tvec4<real>       Vector4;
 
 typedef trect<real>       rect4;
@@ -5855,7 +5855,7 @@ typedef tmat2x2<float>      Matrix2;
 typedef tmat3x3<float>      matrix3;
 typedef tmat3x3<float>      Matrix3;
 typedef tmat4x4<float>      matrix4;
-typedef tmat3x3<float>      Matrix4;
+typedef tmat4x4<float>      Matrix4;
 typedef tmat4x4<real>       matrix4r;
 
 typedef tquat<float>        quaternion;
