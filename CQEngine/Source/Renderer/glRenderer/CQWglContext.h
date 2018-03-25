@@ -20,7 +20,7 @@ struct CQWglContext
 	CQWglContext();
 	void create();
 	void destroy();
-	void swap();
+	void update();
 	void printGLInfo();
 	//void makeCurrent();
 

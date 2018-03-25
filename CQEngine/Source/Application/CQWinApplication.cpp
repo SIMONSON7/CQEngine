@@ -86,9 +86,7 @@ void CQWinApp::run()
 			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
-			/*HDC hdc = GetDC(hWnd_);
-			SwapBuffers(hdc);*/
-			context.swap();
+			context.update();
 			/////////////////////// TMP //////////////////
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
