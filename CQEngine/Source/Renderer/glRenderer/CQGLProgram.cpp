@@ -111,10 +111,7 @@ int CQGLProgram::getUniformLocation(const std::string _location)
 	{
 		return it->location_;
 	}
-	else
-	{
-		return -1;
-	}
+	return -1;
 }
 
 void  CQGLProgram::setBool(const std::string _location, const bool _value){}
