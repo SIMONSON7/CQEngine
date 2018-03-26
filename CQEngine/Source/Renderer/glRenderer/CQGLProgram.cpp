@@ -105,7 +105,7 @@ void  CQGLProgram::setInt(const std::string _location, int _value)
 
 int CQGLProgram::getUniformLocation(const std::string _location)
 {
-	return (*(std::find_if(uniforms_.begin(), uniforms_.end(), [=](Uniform uniform) { return  uniform.name_ == _location; }))).location_;
+	return std::find_if(uniforms_.begin(), uniforms_.end(), [=](Uniform uniform) { return  uniform.name_ == _location; })->location_;
 }
 
 void  CQGLProgram::setBool(const std::string _location, const bool _value){}
