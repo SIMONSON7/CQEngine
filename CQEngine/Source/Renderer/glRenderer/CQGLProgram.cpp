@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "CQGLProgram.h"
 #include "CQDebug.h"
 
@@ -92,12 +93,26 @@ GLuint CQGLProgram::getProgram() const
 	return program_;
 }
 
-void  CQGLProgram::setInt(std::string _location, int _value){}
-void  CQGLProgram::setBool(std::string _location, bool _value){}
-void  CQGLProgram::setFloat(std::string _location, float _value){}
-void  CQGLProgram::setVector(std::string _location, Vector2 _value){}
-void  CQGLProgram::setVector(std::string _location, Vector3 _value){}
-void  CQGLProgram::setVector(std::string _location, Vector4 _value){}
-void  CQGLProgram::setMatrix(std::string _location, Matrix2 _value){}
-void  CQGLProgram::setMatrix(std::string _location, Matrix3 _value){}
-void  CQGLProgram::setMatrix(std::string _location, Matrix4 _value){}
+void  CQGLProgram::setInt(const std::string _location, int _value)
+{
+	int loc = getUniformLocation(_location);
+	if (loc >= 0)
+	{
+		glUniform1i(loc, _value);
+	}
+		
+}
+
+int CQGLProgram::getUniformLocation(const std::string _location)
+{
+	return (*(std::find_if(uniforms_.begin(), uniforms_.end(), [=](Uniform uniform) { return  uniform.name_ == _location; }))).location_;
+}
+
+void  CQGLProgram::setBool(const std::string _location, const bool _value){}
+void  CQGLProgram::setFloat(const std::string _location, const float _value){}
+void  CQGLProgram::setVector(const std::string _location, const Vector2 _value){}
+void  CQGLProgram::setVector(const std::string _location, const Vector3 _value){}
+void  CQGLProgram::setVector(const std::string _location, const Vector4 _value){}
+void  CQGLProgram::setMatrix(const std::string _location, const Matrix2 _value){}
+void  CQGLProgram::setMatrix(const std::string _location, const Matrix3 _value){}
+void  CQGLProgram::setMatrix(const std::string _location, const Matrix4 _value){}
