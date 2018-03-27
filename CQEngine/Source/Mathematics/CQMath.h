@@ -70,6 +70,10 @@ struct tvec2
 	value_type  x;
 	value_type  y;
 
+	size_type length() const
+	{
+		return 2;
+	}
 
 	value_type & operator[](size_type i)
 	{
