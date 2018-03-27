@@ -9,9 +9,11 @@ CQWglContext context;
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"\n"
+"uniform mat4 transform;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"   gl_Position = transform * vec4(aPos, 1.0f);\n"
 "}\0";
 const char *fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
@@ -72,22 +74,31 @@ void CQWinApp::run()
 	glBindVertexArray(0);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	float angle = 0.f;
 	/////////////////////// TMP //////////////////
 
 	while (!isExit_)
 	{
-		while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
-		{
-			/////////////////////// TMP //////////////////
-			glClearColor(1.0f, 1.f, 0.f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		/////////////////////// TMP //////////////////
+		glClearColor(1.0f, 1.f, 0.f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			program.use();
-			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+		program.use();
 
-			context.update();
-			/////////////////////// TMP //////////////////
+		//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
+		Matrix4 mat(1.0f);
+		Vector3 v(0.0f, 1.0f, 0.0f);
+		Matrix4 trans = rotate(mat, ++angle, v);
+		program.setMatrix("transform", trans);
+		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		context.update();
+		/////////////////////// TMP //////////////////
+
+		while(PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+		{		
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
