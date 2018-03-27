@@ -61,7 +61,7 @@ private:
 		SHADER_TYPE_MAT3,
 		SHADER_TYPE_MAT4,
 	};
-
+	// TMP:
 	struct Uniform
 	{
 		SHADER_VARIABLE_TYPE  type_;
@@ -69,10 +69,20 @@ private:
 		int32_t      size_;
 		unsigned	 location_;
 	};
+
+	struct Attribute
+	{
+		SHADER_VARIABLE_TYPE  type_;
+		std::string  name_;
+		int32_t      size_;
+		unsigned	 location_;
+	};
+
 private:
 	GLuint program_;
 	std::vector<uint32_t> glsl_;// glsl[type] = glShaderID;
 	std::vector<Uniform> uniforms_;
+	std::vector<Attribute> attributes_;
 };
 
 NS_CQ_END
