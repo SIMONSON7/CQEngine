@@ -84,7 +84,7 @@ void CQWinApp::run()
 		glClearColor(1.0f, 1.f, 0.f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program.use();
+		program.load();
 
 		//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
 		Matrix4 mat(1.0f);

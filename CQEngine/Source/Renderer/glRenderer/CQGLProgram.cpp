@@ -11,18 +11,7 @@ CQGLProgram::CQGLProgram()
 
 CQGLProgram::~CQGLProgram()
 {
-	// the function of loop is the same as glGetAttachedShaders
-	for each (auto shaderID in glsl_)
-	{
-		if (shaderID)
-		{
-			glDetachShader(program_, shaderID);
-			glDeleteShader(shaderID);
-		}
-	}
-
-	glDeleteProgram(program_);
-	program_ = 0;
+	unLoad();
 }
 
 void CQGLProgram::attachNativeShader(const char *_nativeShader, SHADER_TYPE _type)
@@ -109,9 +98,25 @@ void CQGLProgram::genProgram()
 	}
 }
 
-void CQGLProgram::use()
+void CQGLProgram::load()
 {
 	glUseProgram(program_);
+}
+
+void CQGLProgram::unLoad()
+{
+	// the function of loop is the same as glGetAttachedShaders
+	for each (auto shaderID in glsl_)
+	{
+		if (shaderID)
+		{
+			glDetachShader(program_, shaderID);
+			glDeleteShader(shaderID);
+		}
+	}
+
+	glDeleteProgram(program_);
+	program_ = 0;
 }
 
 GLuint CQGLProgram::getProgram() const

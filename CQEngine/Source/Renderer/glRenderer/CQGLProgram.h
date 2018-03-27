@@ -28,8 +28,10 @@ public:
 	void attachNativeShader(const char *_nativeShader,SHADER_TYPE _type);
 	void genProgram();
 	// should be Renderer interface.
-	void use(); 
+	void load(); 
+	void unLoad(); // clean work.
 	GLuint getProgram() const;
+	
 public:
 	/* Transfer data. */
 	void setInt(const std::string _location, const int _value);
