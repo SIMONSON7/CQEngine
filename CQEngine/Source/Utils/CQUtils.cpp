@@ -1,6 +1,6 @@
 #include "CQUtils.h"
 #include "CQResLoader.h"
-#include "CQTexture.h"
+#include "CQGLTexture.h"
 
 NS_CQ_BEGIN
 
