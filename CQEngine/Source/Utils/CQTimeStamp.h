@@ -17,6 +17,8 @@ class CQTimeStamp
 public:
 	CQTimeStamp();
 public:
+	void tick();
+
 	double getElapsedSecond();
 
 	double getElapsedTimeInMilliSec();

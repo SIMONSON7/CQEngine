@@ -1,6 +1,8 @@
 #include "CQWinApplication.h"
 #include "CQGLRenderer.h"
 #include "CQGLProgram.h"
+#include "CQTimeStamp.h"
+#include "CQDebug.h"
 
 USING_NS_CQ
 
@@ -78,29 +80,39 @@ void CQWinApp::run()
 	float angle = 0.f;
 	/////////////////////// TMP //////////////////
 
+	CQTimeStamp timeStamp;
 	while (!isExit_)
 	{
-		/////////////////////// TMP //////////////////
-		glClearColor(1.0f, 1.f, 0.f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		if (timeStamp.getElapsedSecond() > 1/120.0f)
+		{
+			timeStamp.tick();
 
-		program.load();
+			/////////////////////// TMP //////////////////
+			glClearColor(1.0f, 1.f, 0.f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
-		Matrix4 mat(1.0f);
-		Vector3 v(0.0f, 1.0f, 0.0f);
-		Matrix4 trans = rotate(mat, ++angle, v);
-		program.setMatrix("transform", trans);
-		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+			program.load();
 
-		context.update();
-		/////////////////////// TMP //////////////////
+			//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
+			Matrix4 mat(1.0f);
+			Vector3 v(0.0f, 1.0f, 0.0f);
+			Matrix4 trans = rotate(mat, ++angle, v);
+			program.setMatrix("transform", trans);
+			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		while(PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
-		{		
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			context.update();
+			/////////////////////// TMP //////////////////
+
+			while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
+		else
+		{
+			Sleep(1);
 		}
 	}
 

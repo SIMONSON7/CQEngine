@@ -7,6 +7,11 @@ CQTimeStamp::CQTimeStamp()
 	begin_ = high_resolution_clock::now();
 }
 
+void CQTimeStamp::tick()
+{
+	begin_ = high_resolution_clock::now();
+}
+
 double CQTimeStamp::getElapsedSecond()
 {
 	return  getElapsedTimeInMicroSec() * 0.000001;
@@ -20,7 +25,6 @@ double CQTimeStamp::getElapsedTimeInMilliSec()
 long long CQTimeStamp::getElapsedTimeInMicroSec()
 {
 	long long t = duration_cast<microseconds>(high_resolution_clock::now() - begin_).count();
-	begin_ = high_resolution_clock::now();
 	return t;
 }
 
