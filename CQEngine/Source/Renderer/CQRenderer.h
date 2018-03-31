@@ -6,11 +6,8 @@
 #define __CQRENDERER_H__
 
 #include "CQMacros.h"
-#include "CQTexture.h"
+#include "CQWglContext.h"
 
-/*
-* Independent of rendering api.
-*/
 class CQRenderer
 {
 

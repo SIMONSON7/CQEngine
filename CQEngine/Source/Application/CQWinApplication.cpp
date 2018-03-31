@@ -1,5 +1,5 @@
 #include "CQWinApplication.h"
-#include "CQGLRenderer.h"
+#include "CQRenderer.h"
 #include "CQGLProgram.h"
 #include "CQTimeStamp.h"
 #include "CQDebug.h"
