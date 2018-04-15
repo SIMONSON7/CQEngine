@@ -2,6 +2,7 @@
 #include "CQRenderer.h"
 #include "CQGLProgram.h"
 #include "CQTimeStamp.h"
+#include "CQResLoader.h"
 #include "CQDebug.h"
 
 USING_NS_CQ
@@ -50,16 +51,44 @@ void CQWinApp::run()
 	__createWnd();
 
 	/////////////////////// TMP //////////////////
+	// program
 	CQGLProgram program;
 	program.attachNativeShader(vertexShaderSource, CQGLProgram::SHADER_VERTEX);
 	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
 
+	// texture
+	CQResLoader::ImgData *img = nullptr;
+	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
+	unsigned int texture;
+
+	img = CQResLoader::shareLoader()->loadImgDataSync(path);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width_, img->height_, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data_);
+
+	// array of structures
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f, // left  
-		0.5f, -0.5f, 0.0f, // right 
-		0.0f,  0.5f, 0.0f  // top   
+		-0.5f, -0.5f, 0.0f,		0.0f,0.0f, // left  bottom
+		0.5f, -0.5f, 0.0f,		1.0f,0.0f, // right bottom
+		0.0f,  0.5f, 0.0f,		0.5f,1.0f, // top middle  
 	};
+
+#define VERTEX_POS_INDEX		0
+#define VERTEX_TEXCOORD0_INDEX	1
+
+#define VERTEX_POS_SIZE			3
+#define VERTEX_TEXCOORD0_SIZE	3
+
+#define VERTEX_POS_OFFSET		0
+#define VERTEX_TEXCOORD0_OFFSET	3
+
+#define VERTEX_ATTRIB_SIZE		VERTEX_POS_SIZE + \
+								VERTEX_TEXCOORD0_SIZE
 
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
@@ -69,12 +98,19 @@ void CQWinApp::run()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	// pos
+	glVertexAttribPointer(VERTEX_POS_INDEX, VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_POS_OFFSET);
+	glEnableVertexAttribArray(VERTEX_POS_INDEX);
+
+	// uv
+	glVertexAttribPointer(VERTEX_TEXCOORD0_INDEX, VERTEX_TEXCOORD0_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_TEXCOORD0_OFFSET);
+	glEnableVertexAttribArray(VERTEX_TEXCOORD0_INDEX);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+
+	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	float angle = 0.f;
@@ -117,6 +153,8 @@ void CQWinApp::run()
 	}
 
 	/////////////////////// TMP //////////////////
+	program.load();
+	CQResLoader::shareLoader()->unloadImgData(img);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	/////////////////////// TMP //////////////////
