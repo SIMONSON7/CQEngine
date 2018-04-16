@@ -56,25 +56,10 @@ void CQWinApp::run()
 	__createWnd();
 
 	/////////////////////// TMP //////////////////
-	// program
 	CQGLProgram program;
 	program.attachNativeShader(vertexShaderSource, CQGLProgram::SHADER_VERTEX);
 	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
-
-	// texture
-	CQResLoader::ImgData *img = nullptr;
-	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
-	unsigned int texture;
-
-	img = CQResLoader::shareLoader()->loadImgDataSync(path);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width_, img->height_, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data_);
 
 	// array of structures
 	float vertices[] = {
@@ -83,35 +68,24 @@ void CQWinApp::run()
 		0.0f,  0.5f, 0.0f,		0.5f,1.0f, // top middle  
 	};
 
-#define VERTEX_POS_INDEX		0
-#define VERTEX_TEXCOORD0_INDEX	1
-
-#define VERTEX_POS_SIZE			3
-#define VERTEX_TEXCOORD0_SIZE	3
-
-#define VERTEX_POS_OFFSET		0
-#define VERTEX_TEXCOORD0_OFFSET	3
-
-#define VERTEX_ATTRIB_SIZE		VERTEX_POS_SIZE + \
-								VERTEX_TEXCOORD0_SIZE
-
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(VAO);
 	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		{
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
 
-		// pos
-		glVertexAttribPointer(VERTEX_POS_INDEX, VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_POS_OFFSET);
-		glEnableVertexAttribArray(VERTEX_POS_INDEX);
+			// pos
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
 
-		// uv
-		glVertexAttribPointer(VERTEX_TEXCOORD0_INDEX, VERTEX_TEXCOORD0_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_TEXCOORD0_OFFSET);
-		glEnableVertexAttribArray(VERTEX_TEXCOORD0_INDEX);
-
+			// uv
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
+		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	glBindVertexArray(0);
@@ -134,7 +108,7 @@ void CQWinApp::run()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width_, img->height_, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data_);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	
+
 	//
 	program.setInt("uTexture0", 0);
 
@@ -146,7 +120,7 @@ void CQWinApp::run()
 	CQTimeStamp timeStamp;
 	while (!isExit_)
 	{
-		if (timeStamp.getElapsedSecond() > 1/120.0f)
+		if (timeStamp.getElapsedSecond() > 1 / 120.0f)
 		{
 			timeStamp.tick();
 
@@ -194,7 +168,7 @@ void CQWinApp::run()
 	glDeleteBuffers(1, &VBO);
 	/////////////////////// TMP //////////////////
 
-	return ;
+	return;
 }
 
 void CQWinApp::__createWnd()
@@ -279,12 +253,12 @@ LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARA
 	break;
 	case WM_PAINT:
 	{
-		
+
 	}
-		break;
+	break;
 	case WM_LBUTTONDOWN:
 	{
-		
+
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -320,7 +294,7 @@ LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARA
 		isExit_ = true;
 		PostQuitMessage(0);
 	}
-		break;
+	break;
 	}
 	return DefWindowProc(_hWnd, _nMsg,
 		_wParam, _lParam);
@@ -332,5 +306,5 @@ void CQWinApp::__destroyWnd()
 }
 
 ///
-CQAppI *g_app = CQ_NEW(CQWinApp,"CQEngine",0,0,800,600);
+CQAppI *g_app = CQ_NEW(CQWinApp, "CQEngine", 0, 0, 800, 600);
 
