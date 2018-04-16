@@ -2,6 +2,7 @@
 #include "CQRenderer.h"
 #include "CQGLProgram.h"
 #include "CQTimeStamp.h"
+#include "CQResLoader.h"
 #include "CQDebug.h"
 
 USING_NS_CQ
@@ -11,17 +12,22 @@ CQWglContext context;
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec2 aTex;\n"
 "\n"
 "uniform mat4 transform;\n"
+"out vec2 TexCoord;"
 "void main()\n"
 "{\n"
 "   gl_Position = transform * vec4(aPos, 1.0f);\n"
+"	TexCoord = aTex;\n"
 "}\0";
 const char *fragmentShaderSource = "#version 330 core\n"
+"in vec2 TexCoord;\n"
 "out vec4 FragColor;\n"
+"uniform sampler2D uTexture0;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(1.0f, 0.2f, 0.2f, 1.0f);\n"
+"   FragColor = texture(uTexture0,TexCoord);\n"
 "}\n\0";
 
 /////////////////////// TMP //////////////////
@@ -55,25 +61,56 @@ void CQWinApp::run()
 	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
 
+	// array of structures
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f, // left  
-		0.5f, -0.5f, 0.0f, // right 
-		0.0f,  0.5f, 0.0f  // top   
+		-0.5f, -0.5f, 0.0f,		0.0f,0.0f, // left  bottom
+		0.5f, -0.5f, 0.0f,		1.0f,0.0f, // right bottom
+		0.0f,  0.5f, 0.0f,		0.5f,1.0f, // top middle  
 	};
 
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+
 	glBindVertexArray(VAO);
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		{
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			// pos
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// uv
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 	glBindVertexArray(0);
+
+	// texture
+	CQResLoader::ImgData *img = nullptr;
+	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
+	unsigned int texture;
+
+	img = CQResLoader::shareLoader()->loadImgDataSync(path);
+	glGenTextures(1, &texture);
+
+	glActiveTexture(GL_TEXTURE0); // option : for multi texture
+	glBindTexture(GL_TEXTURE_2D, texture);
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width_, img->height_, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data_);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	//
+	program.setInt("uTexture0", 0);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -98,8 +135,16 @@ void CQWinApp::run()
 			Vector3 v(0.0f, 1.0f, 0.0f);
 			Matrix4 trans = rotate(mat, ++angle, v);
 			program.setMatrix("transform", trans);
-			glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+			// active and bind texture 0
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture);
+
+			// rebind VAO
+			glBindVertexArray(VAO);
+			{
+				glDrawArrays(GL_TRIANGLES, 0, 3);
+			}
 
 			context.update();
 			/////////////////////// TMP //////////////////
@@ -117,6 +162,8 @@ void CQWinApp::run()
 	}
 
 	/////////////////////// TMP //////////////////
+	program.unLoad();
+	CQResLoader::shareLoader()->unloadImgData(img);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	/////////////////////// TMP //////////////////
