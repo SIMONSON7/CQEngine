@@ -56,11 +56,25 @@ void CQWinApp::run()
 	__createWnd();
 
 	/////////////////////// TMP //////////////////
+	// shader
 	CQGLProgram program;
 	program.attachNativeShader(vertexShaderSource, CQGLProgram::SHADER_VERTEX);
 	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
 
+	// macros
+#define VERTEX_POS_SIZE			3
+#define VERTEX_TEXCOORD0_SIZE	2
+#define VERTEX_TEXCOORD1_SIZE	2
+
+#define VERTEX_POS_INDEX		0
+#define VERTEX_TEXCOORD0_INDEX	1
+
+#define VERTEX_POS_OFFSET		0
+#define VERTEX_TEXCOORD0_OFFSET	3
+
+#define VERTEX_ATTRIB_SIZE		(VERTEX_POS_SIZE + \
+								 VERTEX_TEXCOORD0_SIZE)
 	// array of structures
 	float vertices[] = {
 		-0.5f, -0.5f, 0.0f,		0.0f,0.0f, // left  bottom
@@ -83,11 +97,11 @@ void CQWinApp::run()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs), indexs, GL_STREAM_DRAW);
 		{		
 			// pos
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glVertexAttribPointer(VERTEX_POS_INDEX, VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_POS_OFFSET);
 			glEnableVertexAttribArray(0);
 
 			// uv
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glVertexAttribPointer(VERTEX_TEXCOORD0_INDEX, VERTEX_TEXCOORD0_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)(VERTEX_TEXCOORD0_OFFSET * sizeof(float)));
 			glEnableVertexAttribArray(1);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
