@@ -68,16 +68,20 @@ void CQWinApp::run()
 		0.0f,  0.5f, 0.0f,		0.5f,1.0f, // top middle  
 	};
 
-	unsigned int VBO, VAO;
+	unsigned int indexs[] = {2,1,0};
+
+	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
-
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs), indexs, GL_STREAM_DRAW);
+		{		
 			// pos
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
@@ -87,6 +91,7 @@ void CQWinApp::run()
 			glEnableVertexAttribArray(1);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	glBindVertexArray(0);
 
@@ -143,9 +148,11 @@ void CQWinApp::run()
 			// rebind VAO
 			glBindVertexArray(VAO);
 			{
-				glDrawArrays(GL_TRIANGLES, 0, 3);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+				glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
 			}
 
+			// swap buffer
 			context.update();
 			/////////////////////// TMP //////////////////
 
