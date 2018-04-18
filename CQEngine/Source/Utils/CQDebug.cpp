@@ -42,5 +42,15 @@ int getSocketError(int *_errno )
 #endif
 }
 
+GLenum getGLError(const char *_file, int _line)
+{
+	GLenum err;
+	if ((err = glGetError()) != GL_NO_ERROR)
+	{
+		dbgPrintf("[GLERROR]\n\tCODE : %d \n\tFILE : %s \n\tLINE : %d \n[GLERROR]\n", (GLint)err, _file, _line);
+	}
+	return err;
+}
+
 NS_CQ_END
 

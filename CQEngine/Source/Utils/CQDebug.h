@@ -14,7 +14,8 @@ NS_CQ_BEGIN
 #	define CQ_DBGPUTS()
 #	define CQ_DBGPRINTF()
 #	define CQ_GETSOCKETERROR()
-#	define CQ_GLCHECK(_call) 
+#	define GETGLERROR getGLError(__FILE__, __LINE__)
+#	define CQ_GLCHECK(_call) do { _call; GETGLERROR; } while(0)
 #else
 #	define CQ_DBGPUTS()
 #	define CQ_DBGPRINTF()
@@ -28,13 +29,7 @@ void dbgPrintf(const char *_format,...);
 
 int getSocketError(int *_errno = 0);
 
-GLenum glCheckError(const char *_file, int _line)
-{
-	GLenum err;
-
-	return err;
-}
-#define GLCHECKERROR glCheckError(__FILE__, __LINE__)
+GLenum getGLError(const char *_file, int _line);
 
 NS_CQ_END
 
