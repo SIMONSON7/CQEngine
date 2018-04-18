@@ -33,15 +33,15 @@ void CQGLProgram::attachNativeShader(const char *_nativeShader, SHADER_TYPE _typ
 	}
 	
 	GLuint shaderID = glCreateShader(shaderType);
-	glShaderSource(shaderID, 1, &_nativeShader, NULL);
-	glCompileShader(shaderID);
+	CQ_GLCHECK(glShaderSource(shaderID, 1, &_nativeShader, NULL));
+	CQ_GLCHECK(glCompileShader(shaderID));
 
 	int success = 0;
-	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
+	CQ_GLCHECK(glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success));
 	if (!success)
 	{
 		char msg[1024] = {};
-		glGetShaderInfoLog(shaderID, 1024, NULL, msg);
+		CQ_GLCHECK(glGetShaderInfoLog(shaderID, 1024, NULL, msg));
 		dbgPrintf("[error] attachNativeShader() : %s\n", msg);
 		return;
 	}
@@ -56,25 +56,25 @@ void CQGLProgram::genProgram()
 	{
 		if (shaderID)
 		{
-			glAttachShader(program_, shaderID);
+			CQ_GLCHECK(glAttachShader(program_, shaderID));
 		}
 	}
 
-	glLinkProgram(program_);
+	CQ_GLCHECK(glLinkProgram(program_));
 	int success;
-	glGetShaderiv(program_, GL_LINK_STATUS, &success);
+	CQ_GLCHECK(glGetShaderiv(program_, GL_LINK_STATUS, &success));
 	if (!success)
 	{
 		char msg[1024];
-		glGetShaderInfoLog(program_, 1024, NULL, msg);
+		CQ_GLCHECK(glGetShaderInfoLog(program_, 1024, NULL, msg));
 		dbgPrintf("[error] : %s\n", msg);
 		return;
 	}
 
 	//
 	int attributes, uniforms;
-	glGetProgramiv(program_, GL_ACTIVE_ATTRIBUTES, &attributes);
-	glGetProgramiv(program_, GL_ACTIVE_UNIFORMS, &uniforms);
+	CQ_GLCHECK(glGetProgramiv(program_, GL_ACTIVE_ATTRIBUTES, &attributes));
+	CQ_GLCHECK(glGetProgramiv(program_, GL_ACTIVE_UNIFORMS, &uniforms));
 	attributes_.resize(attributes);
 	uniforms_.resize(uniforms);
 
@@ -82,7 +82,7 @@ void CQGLProgram::genProgram()
 	for (unsigned int i = 0; i < attributes; ++i)
 	{
 		GLenum glType;
-		glGetActiveAttrib(program_, i, sizeof(buffer), 0, &attributes_[i].size_, &glType, buffer);
+		CQ_GLCHECK(glGetActiveAttrib(program_, i, sizeof(buffer), 0, &attributes_[i].size_, &glType, buffer));
 		attributes_[i].name_ = std::string(buffer);
 		attributes_[i].type_ = SHADER_TYPE_BOOL;
 		attributes_[i].location_ = glGetAttribLocation(program_, buffer);
@@ -91,7 +91,7 @@ void CQGLProgram::genProgram()
 	for (unsigned int i = 0; i < uniforms; ++i)
 	{
 		GLenum glType;
-		glGetActiveUniform(program_, i, sizeof(buffer), 0, &uniforms_[i].size_, &glType, buffer);
+		CQ_GLCHECK(glGetActiveUniform(program_, i, sizeof(buffer), 0, &uniforms_[i].size_, &glType, buffer));
 		uniforms_[i].name_ = std::string(buffer);
 		uniforms_[i].type_ = SHADER_TYPE_BOOL;
 		uniforms_[i].location_ = glGetUniformLocation(program_, buffer);
@@ -100,7 +100,7 @@ void CQGLProgram::genProgram()
 
 void CQGLProgram::load()
 {
-	glUseProgram(program_);
+	CQ_GLCHECK(glUseProgram(program_));
 }
 
 void CQGLProgram::unLoad()
@@ -110,12 +110,12 @@ void CQGLProgram::unLoad()
 	{
 		if (shaderID)
 		{
-			glDetachShader(program_, shaderID);
-			glDeleteShader(shaderID);
+			CQ_GLCHECK(glDetachShader(program_, shaderID));
+			CQ_GLCHECK(glDeleteShader(shaderID));
 		}
 	}
 
-	glDeleteProgram(program_);
+	CQ_GLCHECK(glDeleteProgram(program_));
 	program_ = 0;
 }
 
@@ -129,7 +129,7 @@ void  CQGLProgram::setInt(const std::string _location, int _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform1i(loc, _value);
+		CQ_GLCHECK(glUniform1i(loc, _value));
 	}	
 }
 
@@ -138,7 +138,7 @@ void  CQGLProgram::setBool(const std::string _location, const bool _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform1i(loc, static_cast<int>(_value));
+		CQ_GLCHECK(glUniform1i(loc, static_cast<int>(_value)));
 	}
 }
 
@@ -147,7 +147,7 @@ void  CQGLProgram::setFloat(const std::string _location, const float _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform1f(loc, _value);
+		CQ_GLCHECK(glUniform1f(loc, _value));
 	}
 }
 
@@ -156,7 +156,7 @@ void  CQGLProgram::setVector(const std::string _location, const Vector2 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform2fv(loc, 1, &_value[0]);
+		CQ_GLCHECK(glUniform2fv(loc, 1, &_value[0]));
 	}
 }
 
@@ -165,7 +165,7 @@ void  CQGLProgram::setVector(const std::string _location, const Vector3 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform3fv(loc, 1, &_value[0]);
+		CQ_GLCHECK(glUniform3fv(loc, 1, &_value[0]));
 	}
 }
 
@@ -174,7 +174,7 @@ void  CQGLProgram::setVector(const std::string _location, const Vector4 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniform4fv(loc, 1, &_value[0]);
+		CQ_GLCHECK(glUniform4fv(loc, 1, &_value[0]));
 	}
 }
 
@@ -183,7 +183,7 @@ void  CQGLProgram::setMatrix(const std::string _location, const Matrix2 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniformMatrix2fv(loc, 1, GL_FALSE, &_value[0][0]);
+		CQ_GLCHECK(glUniformMatrix2fv(loc, 1, GL_FALSE, &_value[0][0]));
 	}	
 }
 
@@ -192,7 +192,7 @@ void  CQGLProgram::setMatrix(const std::string _location, const Matrix3 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniformMatrix3fv(loc, 1, GL_FALSE, &_value[0][0]);
+		CQ_GLCHECK(glUniformMatrix3fv(loc, 1, GL_FALSE, &_value[0][0]));
 	}
 }
 
@@ -201,7 +201,7 @@ void  CQGLProgram::setMatrix(const std::string _location, const Matrix4 _value)
 	int loc = getUniformLocation(_location);
 	if (loc >= 0)
 	{
-		glUniformMatrix4fv(loc, 1, GL_FALSE, &_value[0][0]);
+		CQ_GLCHECK(glUniformMatrix4fv(loc, 1, GL_FALSE, &_value[0][0]));
 	}
 }
 
