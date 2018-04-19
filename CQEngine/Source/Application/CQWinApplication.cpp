@@ -115,8 +115,8 @@ void CQWinApp::run()
 	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
 	img = CQResLoader::shareLoader()->loadImgDataSync(path);
 
-	CQGLTexture texture(img->width_,img->height_,img->data_);
 	program.setInt("uTexture0", 0);
+	CQGLTexture texture(img->width_,img->height_,img->data_);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
