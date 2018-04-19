@@ -22,7 +22,7 @@ public:
 public:
 	const unsigned int GetTextureID() const;
 public:
-	void Bind();
+	void Bind(int _stage = 0);
 	void Unbind();
 private:
 	unsigned int textureID_;

@@ -25,9 +25,9 @@ CQGLTexture::CQGLTexture(int _width, int _height, void *_data)
 
 CQGLTexture::~CQGLTexture() {}
 
-void CQGLTexture::Bind()
+void CQGLTexture::Bind(int _stage)
 {
-	CQ_GLCHECK(glActiveTexture(GL_TEXTURE0));
+	CQ_GLCHECK(glActiveTexture(GL_TEXTURE0 +_stage));
 	CQ_GLCHECK(glBindTexture(GL_TEXTURE_2D, textureID_));
 }
 
