@@ -10,6 +10,7 @@ CQGLTexture::CQGLTexture(int _width, int _height, void *_data)
 	data_(_data)
 {
 	CQ_GLCHECK(glGenTextures(1, &textureID_));
+	CQ_GLCHECK(glActiveTexture(GL_TEXTURE0)); // option : for multi texture
 	CQ_GLCHECK(glBindTexture(GL_TEXTURE_2D, textureID_));
 	{
 		CQ_GLCHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
