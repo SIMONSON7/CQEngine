@@ -11,15 +11,9 @@
 NS_CQ_BEGIN
 
 #if defined(CQDEBUG)
-#	define CQ_DBGPUTS()
-#	define CQ_DBGPRINTF()
-#	define CQ_GETSOCKETERROR()
 #	define GETGLERROR getGLError(__FILE__, __LINE__)
 #	define CQ_GLCHECK(_call) do { _call; GETGLERROR; } while(0)
 #else
-#	define CQ_DBGPUTS()
-#	define CQ_DBGPRINTF()
-#	define CQ_GETSOCKETERROR()
 #	define CQ_GLCHECK(_call) _call;
 #endif
 
