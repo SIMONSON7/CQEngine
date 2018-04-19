@@ -1,6 +1,7 @@
 #include "CQWinApplication.h"
 #include "CQRenderer.h"
 #include "CQGLProgram.h"
+#include "CQGLTexture.h"
 #include "CQTimeStamp.h"
 #include "CQResLoader.h"
 #include "CQDebug.h"
@@ -112,23 +113,9 @@ void CQWinApp::run()
 	// texture
 	CQResLoader::ImgData *img = nullptr;
 	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
-	unsigned int texture;
-
 	img = CQResLoader::shareLoader()->loadImgDataSync(path);
-	glGenTextures(1, &texture);
 
-	glActiveTexture(GL_TEXTURE0); // option : for multi texture
-	glBindTexture(GL_TEXTURE_2D, texture);
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width_, img->height_, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data_);
-	}
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//
+	CQGLTexture texture(img->width_,img->height_,img->data_);
 	program.setInt("uTexture0", 0);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -155,9 +142,8 @@ void CQWinApp::run()
 			Matrix4 trans = rotate(mat, ++angle, v);
 			program.setMatrix("transform", trans);
 
-			// active and bind texture 0
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture);
+			//
+			texture.Bind();
 
 			// rebind VAO
 			glBindVertexArray(VAO);
