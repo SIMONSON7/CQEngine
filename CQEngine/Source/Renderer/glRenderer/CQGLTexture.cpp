@@ -18,7 +18,10 @@ CQGLTexture::CQGLTexture(int _width, int _height, void *_data)
 		CQ_GLCHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		CQ_GLCHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		CQ_GLCHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_, 0, GL_RGB, GL_UNSIGNED_BYTE, data_));
-		CQ_GLCHECK(glGenerateMipmap(GL_TEXTURE_2D));
+		if (isMipMap_)
+		{
+			CQ_GLCHECK(glGenerateMipmap(GL_TEXTURE_2D));
+		}
 	}
 	Unbind();
 }
