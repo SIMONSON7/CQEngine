@@ -2,8 +2,8 @@
 *
 *		qiu_hao		2017/12/20		11:36.am
 */
-#ifndef __COIO_H__
-#define __COIO_H__
+#ifndef __CQIO_H__
+#define __CQIO_H__
 
 #include <stdio.h>
 #include <direct.h>
@@ -98,4 +98,4 @@ private:
 
 NS_CQ_END
 
-#endif /*__COIO_H__*/
+#endif /*__CQIO_H__*/
