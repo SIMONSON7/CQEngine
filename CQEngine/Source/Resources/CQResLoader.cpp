@@ -2,6 +2,7 @@
 #include "CQResLoader.h"
 #include "CQResLoader.h"
 #include <stb/stb_image.h>
+#include <type_traits>
 
 USING_NS_CQ;
 
@@ -31,4 +32,14 @@ void CQResLoader::unloadImgData(ImgData * _data)
 	CQASSERT(_data);
 	stbi_image_free(_data->data_);
 	CQ_FREE(_data);
+}
+
+template<typename T>
+void foo()
+{
+	typedef typename std::decay<T>::type U;
+	U *u_ptr = new U();
+	// ...
+
+	std::ref()
 }
