@@ -33,7 +33,7 @@ public:
 	bool empty() const;
 
 private:
-	std::mutex mut_;
+	mutable std::mutex mut_;
 	std::stack<TYPE> stack_;
 	std::condition_variable data_cond_;
 };
