@@ -1,8 +1,7 @@
-#include "CQMemory.h"
-#include "CQResLoader.h"
-#include "CQResLoader.h"
-#include <stb/stb_image.h>
 #include <type_traits>
+#include <stb/stb_image.h>
+#include "CQIO.h"
+#include "CQResLoader.h"
 
 USING_NS_CQ;
 
