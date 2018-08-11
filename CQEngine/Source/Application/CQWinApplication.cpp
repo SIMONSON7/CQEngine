@@ -5,32 +5,12 @@
 #include "CQTimeStamp.h"
 #include "CQResLoader.h"
 #include "CQDebug.h"
+#include "CQIO.h"
 
 USING_NS_CQ
 
 /////////////////////// TMP //////////////////
 CQWglContext context;
-
-const char *vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec2 aTex;\n"
-"\n"
-"uniform mat4 transform;\n"
-"out vec2 TexCoord;"
-"void main()\n"
-"{\n"
-"   gl_Position = transform * vec4(aPos, 1.0f);\n"
-"	TexCoord = aTex;\n"
-"}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-"in vec2 TexCoord;\n"
-"out vec4 FragColor;\n"
-"uniform sampler2D uTexture0;\n"
-"void main()\n"
-"{\n"
-"   FragColor = texture(uTexture0,TexCoord);\n"
-"}\n\0";
-
 /////////////////////// TMP //////////////////
 
 bool CQWinApp::isExit_ = false;
@@ -52,15 +32,18 @@ CQWinApp::~CQWinApp()
 
 void CQWinApp::run()
 {
-	MSG msg = {};
-
 	__createWnd();
+	MSG msg = {};
 
 	/////////////////////// TMP //////////////////
 	// shader
+	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
+	const char *vsSrc = static_cast<char*>(CQIO::cvLoadFile("def.vs")->buff_);
+	const char *fsSrc = static_cast<char*>(CQIO::cvLoadFile("def.fs")->buff_);
+
 	CQGLProgram program;
-	program.attachNativeShader(vertexShaderSource, CQGLProgram::SHADER_VERTEX);
-	program.attachNativeShader(fragmentShaderSource, CQGLProgram::SHADER_PIXEL);
+	program.attachNativeShader(vsSrc, CQGLProgram::SHADER_VERTEX);
+	program.attachNativeShader(fsSrc, CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
 
 	// macros
