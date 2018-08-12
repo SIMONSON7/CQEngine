@@ -36,8 +36,9 @@ void CQWinApp::run()
 	MSG msg = {};
 
 	/////////////////////// TMP //////////////////
-	// shader
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
+	// shader
 	const char *vsSrc = static_cast<char*>(CQIO::cvLoadFile("def.vs")->buff_);
 	const char *fsSrc = static_cast<char*>(CQIO::cvLoadFile("def.fs")->buff_);
 
@@ -94,9 +95,7 @@ void CQWinApp::run()
 	glBindVertexArray(0);
 
 	// texture
-	CQResLoader::ImgData *img = nullptr;
-	char *path = "D:/work/CQEngine/CQEngine_git/CQEngine/CQEngine/res/img.jpg";
-	img = CQResLoader::shareLoader()->loadImgDataSync(path);
+	CQResLoader::ImgData *img = CQResLoader::shareLoader()->loadImgDataSync("img.jpg");
 
 	program.setInt("uTexture0", 0);
 	CQGLTexture texture(img->width_,img->height_,img->data_);

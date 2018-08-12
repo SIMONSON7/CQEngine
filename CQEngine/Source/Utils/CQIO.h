@@ -23,7 +23,7 @@ struct Data
 		LOAD_SUCCESS = 0,
 		LOAD_FILE_OPEN_FAILURE,
 		LOAD_FILE_LENGTH_EXCEPTION,
-		LOAD_UNKNOW
+		LOAD_UNKNOW,
 	};
 
 	Data()
@@ -82,13 +82,8 @@ public:
 	static
 	bool isFileExist(const std::string _path);
 
-private:
-	/*
-	
-	
-	*/
 	static
-	std::string __searchFileFullPath(const std::string _fileName);
+	std::string searchFullPath(const std::string & _fileName);
 private:
 	static
 	std::vector<std::string>				searchPath_;

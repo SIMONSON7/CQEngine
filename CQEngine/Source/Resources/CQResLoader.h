@@ -5,6 +5,7 @@
 #ifndef __CORESLOADER_H__
 #define __CORESLOADER_H__
 
+#include <string>
 #include <CQMacros.h>
 
 NS_CQ_BEGIN
@@ -28,8 +29,11 @@ public:
 	CQResLoader *shareLoader();
 
 public:
-	ImgData *loadImgDataSync(const char *_imgPath);
+	ImgData *loadImgDataSync(const std::string& _filePath);
 
+	ImgData *loadImgDataAsync(const std::string& _filePath);
+
+public:
 	void unloadImgData(ImgData * _data);
 
 };

@@ -12,7 +12,7 @@ Data* CQIO::loadFile(const std::string _fileName, const char *_mode)
 	std::string fileFullPath = "";
 	
 	data = Data::CREATE();
-	fileFullPath = __searchFileFullPath(_fileName);
+	fileFullPath = searchFullPath(_fileName);
 	fp = fopen(fileFullPath.c_str(), _mode);
 	if (!fp)
 	{
@@ -91,7 +91,7 @@ bool CQIO::isFileExist(const std::string _path)
 	return false;
 }
 
-std::string CQIO::__searchFileFullPath(const std::string _fileName)
+std::string CQIO::searchFullPath(const std::string& _fileName)
 {
 	std::string fileFullPath = _fileName;
 
