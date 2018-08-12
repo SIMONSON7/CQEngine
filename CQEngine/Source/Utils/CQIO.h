@@ -6,8 +6,7 @@
 #define __CQIO_H__
 
 #include <stdio.h>
-#include <direct.h>
-#include <stdlib.h>
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
@@ -26,7 +25,7 @@ struct Data
 		LOAD_UNKNOW,
 	};
 
-	Data()
+	explicit Data()
 		:
 		buff_(nullptr),
 		size_(0),
@@ -38,6 +37,10 @@ struct Data
 	~Data()
 	{
 		puts("Data dtor.");
+		if (size_ >  0)
+		{
+			CQ_RAW_DELETE1(buff_);
+		}
 	}
 
 	static 
@@ -58,16 +61,21 @@ struct Data
 	char*			buff_;
 	size_t			size_;
 	LOAD_STATUS		staus_;
+
+private:
+	// // non-copyable
+	Data(const Data &) = delete;
+	Data& operator=(const Data &) = delete;
 };
 
 class CQIO
 {
 public :
 	static
-	Data* cvLoadFile(const std::string _fileName);
+	std::shared_ptr<Data> cvLoadFile(const std::string _fileName);
 
 	static
-	Data* loadFile(const std::string _fileName,const char *_mode);
+	std::shared_ptr<Data> loadFile(const std::string _fileName, const char *_mode);
 
 public:
 	static
@@ -84,6 +92,7 @@ public:
 
 	static
 	std::string searchFullPath(const std::string & _fileName);
+
 private:
 	static
 	std::vector<std::string>				searchPath_;

@@ -38,20 +38,19 @@ void CQWinApp::run()
 	/////////////////////// TMP //////////////////
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
+
 	// shader
-	Data* d1 = CQIO::cvLoadFile("def.vs");
-	Data* d2 = CQIO::cvLoadFile("def.fs");
+	std::shared_ptr<Data> d1 = CQIO::cvLoadFile("def.vs");
+	std::shared_ptr<Data> d2 = CQIO::cvLoadFile("def.fs");
 	if (d1->staus_ != Data::LOAD_SUCCESS || 
 		d2->staus_ != Data::LOAD_SUCCESS)
 	{
 		return;
 	}
-	const char *vsSrc = static_cast<char*>(d1->buff_);
-	const char *fsSrc = static_cast<char*>(d2->buff_);
 
 	CQGLProgram program;
-	program.attachNativeShader(vsSrc, CQGLProgram::SHADER_VERTEX);
-	program.attachNativeShader(fsSrc, CQGLProgram::SHADER_PIXEL);
+	program.attachNativeShader(static_cast<char*>(d1->buff_), CQGLProgram::SHADER_VERTEX);
+	program.attachNativeShader(static_cast<char*>(d2->buff_), CQGLProgram::SHADER_PIXEL);
 	program.genProgram();
 
 	// macros
@@ -159,8 +158,6 @@ void CQWinApp::run()
 
 	/////////////////////// TMP //////////////////
 	program.unLoad();
-	Data::RELEASE(d1);
-	Data::RELEASE(d2);
 	CQResLoader::shareLoader()->unloadImgData(img);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
