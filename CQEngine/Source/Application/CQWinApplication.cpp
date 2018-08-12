@@ -39,8 +39,15 @@ void CQWinApp::run()
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
 	// shader
-	const char *vsSrc = static_cast<char*>(CQIO::cvLoadFile("def.vs")->buff_);
-	const char *fsSrc = static_cast<char*>(CQIO::cvLoadFile("def.fs")->buff_);
+	Data* d1 = CQIO::cvLoadFile("def.vs");
+	Data* d2 = CQIO::cvLoadFile("def.fs");
+	if (d1->staus_ != Data::LOAD_SUCCESS || 
+		d2->staus_ != Data::LOAD_SUCCESS)
+	{
+		return;
+	}
+	const char *vsSrc = static_cast<char*>(d1->buff_);
+	const char *fsSrc = static_cast<char*>(d2->buff_);
 
 	CQGLProgram program;
 	program.attachNativeShader(vsSrc, CQGLProgram::SHADER_VERTEX);
@@ -152,6 +159,8 @@ void CQWinApp::run()
 
 	/////////////////////// TMP //////////////////
 	program.unLoad();
+	Data::RELEASE(d1);
+	Data::RELEASE(d2);
 	CQResLoader::shareLoader()->unloadImgData(img);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
