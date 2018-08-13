@@ -1,4 +1,4 @@
-#include <type_traits>
+#include <thread>
 #include <stb/stb_image.h>
 #include "CQIO.h"
 #include "CQResLoader.h"
@@ -38,12 +38,3 @@ void CQResLoader::unloadImgData(ImgData * _data)
 	CQ_FREE(_data);
 }
 
-template<typename T>
-void foo()
-{
-	typedef typename std::decay<T>::type U;
-	U *u_ptr = new U();
-	// ...
-
-	std::ref()
-}
