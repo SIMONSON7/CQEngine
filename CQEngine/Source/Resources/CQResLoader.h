@@ -33,7 +33,6 @@ public:
 
 	ImgData *loadImgDataAsync(const std::string& _filePath);
 
-public:
 	void unloadImgData(ImgData * _data);
 
 };

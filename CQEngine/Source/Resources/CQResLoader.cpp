@@ -5,15 +5,15 @@
 
 USING_NS_CQ;
 
-CQResLoader * CQResLoader::shareLoader()
+CQResLoader *CQResLoader::shareLoader()
 {
 	static CQResLoader s_resLoader;
 	return &s_resLoader;
 }
 
-CQResLoader::ImgData * CQResLoader::loadImgDataSync(const std::string& _filePath)
+CQResLoader::ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
 {
-	ImgData *imgData = CQ_NEW(ImgData);
+	ImgData *imgData = (ImgData*)CQ_MALLOC(sizeof(ImgData));
 	int w, h, nrComponents;
 
 	// flip textures y coordinate
@@ -26,7 +26,7 @@ CQResLoader::ImgData * CQResLoader::loadImgDataSync(const std::string& _filePath
 	return imgData;
 }
 
-CQResLoader::ImgData * CQResLoader::loadImgDataAsync(const std::string& _filePath)
+CQResLoader::ImgData *CQResLoader::loadImgDataAsync(const std::string& _filePath)
 {
 	return nullptr;
 }
