@@ -1,4 +1,5 @@
 #include <direct.h>
+#include <algorithm>
 #include "CQIO.h"
 
 USING_NS_CQ
@@ -55,8 +56,24 @@ bool CQIO::addSearchPath(const std::string _path)
 	if (isAbsolutePath(_path))
 	{
 		CQIO::searchPath_.push_back(_path);
+		return true;
 	}
 	return false;
+}
+
+bool CQIO::eraseSearchPah(const std::string _path)
+{
+	bool ret = false;
+	if (isAbsolutePath(_path))
+	{
+		auto iter = std::find(CQIO::searchPath_.begin(), CQIO::searchPath_.end(), _path);
+		if (iter != CQIO::searchPath_.end())
+		{
+			CQIO::searchPath_.erase(iter);
+			ret = true;
+		}
+	}
+	return ret;
 }
 
 std::string CQIO::getCurDir()

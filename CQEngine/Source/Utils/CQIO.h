@@ -82,6 +82,9 @@ public:
 	bool addSearchPath(const std::string _path);
 
 	static
+	bool eraseSearchPah(const std::string _path);
+
+	static
 	std::string getCurDir();
 
 	static
