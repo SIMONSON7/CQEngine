@@ -6,6 +6,7 @@
 #define __CORESLOADER_H__
 
 #include <string>
+#include <functional>
 #include <CQMacros.h>
 
 NS_CQ_BEGIN
@@ -31,7 +32,7 @@ public:
 public:
 	ImgData *loadImgDataSync(const std::string& _filePath);
 
-	ImgData *loadImgDataAsync(const std::string& _filePath);
+	void loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb);
 
 	void unloadImgData(ImgData * _data);
 

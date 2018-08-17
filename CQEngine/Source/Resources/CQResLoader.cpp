@@ -26,9 +26,9 @@ CQResLoader::ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
 	return imgData;
 }
 
-CQResLoader::ImgData *CQResLoader::loadImgDataAsync(const std::string& _filePath)
+void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
 {
-	return nullptr;
+	
 }
 
 void CQResLoader::unloadImgData(ImgData * _data)
