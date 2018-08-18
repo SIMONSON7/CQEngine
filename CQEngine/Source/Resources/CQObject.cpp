@@ -7,30 +7,12 @@ using std::chrono::system_clock;
 
 CQObject::CQObject()
 	:
-	id_(getID())
+	id_(genID())
 {
 	
 }
 
-void CQObject::setName(const std::string _name)
-{
-	name_ = _name;
-}
-const std::string& CQObject::getName() const
-{
-	return name_;
-}
-
-const uint32_t CQObject::getTag() const
-{
-	return tag_;
-}
-void CQObject::setTag(uint32_t _tag)
-{
-	tag_ = _tag;
-}
-
-const uint64_t CQObject::getID() const
+const uint64_t CQObject::genID() const
 {
 	auto now = system_clock::now();
 	auto now_c = system_clock::to_time_t(now);

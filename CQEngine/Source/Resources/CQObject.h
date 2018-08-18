@@ -42,6 +42,9 @@ public:
 	///
 	const uint64_t getID() const;
 
+private:
+	const uint64_t genID() const;
+
 protected:
 	std::string		name_;
 	uint32_t		tag_;
