@@ -5,9 +5,11 @@
 #ifndef __CQWINAPPLICATION_H__
 #define __CQWINAPPLICATION_H__
 
-// avoid Visual Studio settings :
-// project-> Properties-> Configuration Properties-> General-> Character Set;
-// default Unicode.
+/*
+* avoid Visual Studio settings :
+* project-> Properties-> Configuration Properties-> General-> Character Set;
+* default Unicode.
+*/
 #define UNICODE 
 #include <windows.h>
 // NO console window
@@ -23,12 +25,19 @@ public:
 
 	virtual ~CQWinApp();
 
-	//virtual bool Initialize();
-public:
 	///
 	virtual void run();
 
 	///
+	virtual void init();
+
+	///
+	virtual void tick();
+
+	///
+	virtual void destroy();
+
+public:
 	static LRESULT CALLBACK  wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
 
 private:
@@ -36,7 +45,7 @@ private:
 
 	void __destroyWnd();
 
-public:
+private:
 	HINSTANCE hInstance_;
 	HWND hWnd_;
 	int winWidth_;

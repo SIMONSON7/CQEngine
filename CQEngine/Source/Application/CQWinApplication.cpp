@@ -27,12 +27,28 @@ CQWinApp::CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _he
 CQWinApp::~CQWinApp()
 {
 	puts("release CQWinApp");
+	destroy();
+}
+
+void CQWinApp::init()
+{
+	__createWnd();
+}
+
+void CQWinApp::tick()
+{
+
+}
+
+void CQWinApp::destroy()
+{
 	__destroyWnd();
 }
 
 void CQWinApp::run()
 {
-	__createWnd();
+	init();
+	
 	MSG msg = {};
 
 	/////////////////////// TMP //////////////////

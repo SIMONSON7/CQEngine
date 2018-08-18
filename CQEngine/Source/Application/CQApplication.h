@@ -14,9 +14,12 @@ class CQAppI
 {
 public:
 	virtual ~CQAppI() = 0;
-public:
-	virtual void run() = 0;
 
+public:
+	virtual void run()		= 0;
+	virtual void init()		= 0;
+	virtual void tick()		= 0;
+	virtual void destroy()	= 0;
 
 };
 
