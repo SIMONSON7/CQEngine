@@ -27,6 +27,9 @@ public:
 	///
 	virtual void onDestory();
 
+public:
+
+
 private:
 	std::vector<std::shared_ptr<CQObject>> nodes_;
 };

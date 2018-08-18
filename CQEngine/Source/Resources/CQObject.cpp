@@ -1,6 +1,16 @@
+#include <chrono>
 #include "CQObject.h"
 
 USING_NS_CQ
+
+using std::chrono::system_clock;
+
+CQObject::CQObject()
+	:
+	id_(getID())
+{
+	
+}
 
 void CQObject::setName(const std::string _name)
 {
@@ -18,4 +28,11 @@ const uint32_t CQObject::getTag() const
 void CQObject::setTag(uint32_t _tag)
 {
 	tag_ = _tag;
+}
+
+const uint64_t CQObject::getID() const
+{
+	auto now = system_clock::now();
+	auto now_c = system_clock::to_time_t(now);
+	return now_c;
 }

@@ -13,7 +13,7 @@ NS_CQ_BEGIN
 class CQObject
 {
 public:
-	explicit CQObject() {}
+	explicit CQObject();
 
 	virtual ~CQObject();
 public:
@@ -40,11 +40,12 @@ public:
 	void setTag(uint32_t _tag);
 
 	///
-
+	const uint64_t getID() const;
 
 protected:
-	std::string name_;
-	uint32_t tag_;
+	std::string		name_;
+	uint32_t		tag_;
+	uint64_t		id_;
 };
 
 #include "CQObject.inl"
