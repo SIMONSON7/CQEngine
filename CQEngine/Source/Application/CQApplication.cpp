@@ -12,8 +12,6 @@
 //#define new DEBUG_CLIENTBLOCK
 #endif
 
-#define _CRTDBG_MAP_ALLOC 
-
 USING_NS_CQ
 
 #if 1

@@ -63,7 +63,7 @@ struct Data
 	LOAD_STATUS		staus_;
 
 private:
-	// // non-copyable
+	// non-copyable
 	Data(const Data &) = delete;
 	Data& operator=(const Data &) = delete;
 };

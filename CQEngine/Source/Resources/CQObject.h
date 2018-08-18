@@ -14,19 +14,36 @@ class CQObject
 {
 public:
 	explicit CQObject() {}
+
 	virtual ~CQObject();
 public:
-	void setName(const std::string _name);
-	const std::string& getName() const;
+	///
+	virtual void onInit() = 0;
 
-	const uint32_t getTag() const;
-	void setTag(uint32_t _tag);
+	///
+	virtual void update() = 0;
+
+	///
+	virtual void onDestory() = 0;
 
 public:
+	///
+	void setName(const std::string _name);
+
+	///
+	const std::string& getName() const;
+
+	///
+	const uint32_t getTag() const;
 	
+	////
+	void setTag(uint32_t _tag);
+
+	///
+
+
 protected:
 	std::string name_;
-	//CQObject *parent_;
 	uint32_t tag_;
 };
 

@@ -18,7 +18,7 @@
 
 NS_CQ_BEGIN
 
-class CQWinApp :public CQAppI
+class CQWinApp : public CQAppI
 {
 public:
 	CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _height);
