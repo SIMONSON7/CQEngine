@@ -2,6 +2,13 @@
 
 USING_NS_CQ
 
+CQScene::CQScene()
+	:
+	p_(0)
+{
+	
+}
+
 CQScene::~CQScene()
 {
 	onDestory();
@@ -21,4 +28,6 @@ void CQScene::onDestory()
 {
 
 }
+
+
 

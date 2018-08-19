@@ -1,4 +1,5 @@
 #include "CQWinApplication.h"
+#include "CQSceneManager.h"
 #include "CQRenderer.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
@@ -48,9 +49,19 @@ void CQWinApp::destroy()
 void CQWinApp::run()
 {
 	init();
-	
-	MSG msg = {};
 
+	// Initialization the start scene.
+	auto sm = CQSceneManager::shareSceneManager();
+	auto cur = sm->registerStartScene();
+	if (!cur)
+	{
+		dbgPuts("[ERROR] You app must config at least one scene!");
+		return;
+	}
+
+	cur->onInit();
+
+	MSG msg = {};
 	/////////////////////// TMP //////////////////
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
@@ -133,6 +144,8 @@ void CQWinApp::run()
 		if (timeStamp.getElapsedSecond() > 1 / 120.0f)
 		{
 			timeStamp.tick();
+
+			cur->update();
 
 			/////////////////////// TMP //////////////////
 			glClearColor(1.0f, 1.f, 0.f, 1.0f);

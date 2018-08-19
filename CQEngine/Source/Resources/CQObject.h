@@ -17,13 +17,9 @@ public:
 
 	virtual ~CQObject();
 public:
-	///
+	/// Interface
 	virtual void onInit() = 0;
-
-	///
 	virtual void update() = 0;
-
-	///
 	virtual void onDestory() = 0;
 
 public:

@@ -14,7 +14,7 @@ NS_CQ_BEGIN
 class CQScene : public CQObject
 {
 public:
-	explicit CQScene() {}
+	explicit CQScene();
 
 	virtual ~CQScene();
 public:
@@ -28,11 +28,17 @@ public:
 	virtual void onDestory();
 
 public:
+	// 0 represents the highest priority.
+	void setPriority(const unsigned int  _p);
 
+	const unsigned int getPriority() const;
 
 private:
+	unsigned int p_;
 	std::vector<std::shared_ptr<CQObject>> nodes_;
 };
+
+#include "CQScene.inl"
 
 NS_CQ_END
 
