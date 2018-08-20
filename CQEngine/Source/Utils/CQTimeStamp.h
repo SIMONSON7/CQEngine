@@ -2,8 +2,8 @@
 *
 *		qiu_hao		2018/02/22		22:30.pm
 */
-#ifndef __COTIMESTAMP_H__
-#define __COTIMESTAMP_H__
+#ifndef __CQTIMESTAMP_H__
+#define __CQTIMESTAMP_H__
 
 #include "CQMacros.h"
 #include <chrono>
@@ -32,4 +32,4 @@ private:
 
 NS_CQ_END
 
-#endif /* __COTIMESTAMP_H__ */
+#endif /* __CQTIMESTAMP_H__ */
