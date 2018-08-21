@@ -27,6 +27,18 @@ public:
 	///
 	virtual void onDestory();
 
+private:
+	/////////////////////// TMP //////////////////
+	CQGLProgram program_;
+	CQGLTexture *texture_;
+	CQResLoader::ImgData* img_;
+
+	float angle_ = 0;
+	unsigned int VBO, VAO, EBO;
+	unsigned int indexs_[3];
+
+	std::shared_ptr<Data> d1_;
+	std::shared_ptr<Data> d2_;
 };
 
 #endif /* __HELLOWORLD_SCENE_H__ */

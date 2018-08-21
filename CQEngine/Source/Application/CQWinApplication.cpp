@@ -58,117 +58,19 @@ void CQWinApp::run()
 		dbgPuts("[ERROR] You app must config at least one scene!");
 		return;
 	}
-
 	cur->onInit();
 
 	MSG msg = {};
-	/////////////////////// TMP //////////////////
-	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
-
-	// shader
-	std::shared_ptr<Data> d1 = CQIO::cvLoadFile("def.vs");
-	std::shared_ptr<Data> d2 = CQIO::cvLoadFile("def.fs");
-	if (d1->staus_ != Data::LOAD_SUCCESS || 
-		d2->staus_ != Data::LOAD_SUCCESS)
-	{
-		return;
-	}
-
-	CQGLProgram program;
-	program.attachNativeShader(static_cast<char*>(d1->buff_), CQGLProgram::SHADER_VERTEX);
-	program.attachNativeShader(static_cast<char*>(d2->buff_), CQGLProgram::SHADER_PIXEL);
-	program.genProgram();
-
-	// macros
-#define VERTEX_POS_SIZE			3
-#define VERTEX_TEXCOORD0_SIZE	2
-#define VERTEX_TEXCOORD1_SIZE	2
-
-#define VERTEX_POS_INDEX		0
-#define VERTEX_TEXCOORD0_INDEX	1
-
-#define VERTEX_POS_OFFSET		0
-#define VERTEX_TEXCOORD0_OFFSET	3
-
-#define VERTEX_ATTRIB_SIZE		(VERTEX_POS_SIZE + \
-								 VERTEX_TEXCOORD0_SIZE)
-	// array of structures
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,		0.0f,0.0f, // left  bottom
-		0.5f, -0.5f, 0.0f,		1.0f,0.0f, // right bottom
-		0.0f,  0.5f, 0.0f,		0.5f,1.0f, // top middle  
-	};
-
-	unsigned int indexs[] = {2,1,0};
-
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	glBindVertexArray(VAO);
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs), indexs, GL_STREAM_DRAW);
-		{		
-			// pos
-			glVertexAttribPointer(VERTEX_POS_INDEX, VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_POS_OFFSET);
-			glEnableVertexAttribArray(0);
-
-			// uv
-			glVertexAttribPointer(VERTEX_TEXCOORD0_INDEX, VERTEX_TEXCOORD0_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)(VERTEX_TEXCOORD0_OFFSET * sizeof(float)));
-			glEnableVertexAttribArray(1);
-		}
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-	glBindVertexArray(0);
-
-	// texture
-	CQResLoader::ImgData *img = CQResLoader::shareLoader()->loadImgDataSync("img.jpg");
-
-	program.setInt("uTexture0", 0);
-	CQGLTexture texture(img->width_,img->height_,img->data_);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	float angle = 0.f;
-	/////////////////////// TMP //////////////////
-
+	
 	CQTimeStamp timeStamp;
 	while (!isExit_)
 	{
 		if (timeStamp.getElapsedSecond() > 1 / 120.0f)
 		{
 			timeStamp.tick();
-
 			cur->update();
 
 			/////////////////////// TMP //////////////////
-			glClearColor(1.0f, 1.f, 0.f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			program.load();
-
-			//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
-			Matrix4 mat(1.0f);
-			Vector3 v(0.0f, 1.0f, 0.0f);
-			Matrix4 trans = rotate(mat, ++angle, v);
-			program.setMatrix("transform", trans);
-
-			//
-			texture.Bind();
-
-			// rebind VAO
-			glBindVertexArray(VAO);
-			{
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-				glDrawElements(GL_TRIANGLES, sizeof(indexs) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
-			}
-
 			// swap buffer
 			context.update();
 			/////////////////////// TMP //////////////////
@@ -185,13 +87,7 @@ void CQWinApp::run()
 		}
 	}
 
-	/////////////////////// TMP //////////////////
-	program.unLoad();
-	CQResLoader::shareLoader()->unloadImgData(img);
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	/////////////////////// TMP //////////////////
-
+	sm->cleanAllScene();
 	return;
 }
 

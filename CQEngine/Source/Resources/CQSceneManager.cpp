@@ -48,3 +48,11 @@ void CQSceneManager::cleanAndPushScene(std::shared_ptr<CQScene> _scene)
 	scenes_.clear();
 	scenes_.push_back(_scene);
 }
+
+void CQSceneManager::cleanAllScene()
+{
+	for each (auto scene in scenes_)
+	{
+		scene->onDestory();
+	}
+}

@@ -31,6 +31,9 @@ public:
 	
 	void cleanAndPushScene(std::shared_ptr<CQScene> _scene);
 
+	void cleanAllScene();
+
+
 private:
 	// non-copyable
 	CQSceneManager(const CQSceneManager &) = delete;
