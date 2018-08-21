@@ -1,12 +1,5 @@
 #include "CQWinApplication.h"
-#include "CQSceneManager.h"
-#include "CQRenderer.h"
-#include "CQGLProgram.h"
-#include "CQGLTexture.h"
-#include "CQTimeStamp.h"
-#include "CQResLoader.h"
-#include "CQDebug.h"
-#include "CQIO.h"
+#include "CQCore.h"
 
 USING_NS_CQ
 
