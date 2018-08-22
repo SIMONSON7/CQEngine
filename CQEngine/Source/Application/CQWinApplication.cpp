@@ -55,12 +55,15 @@ void CQWinApp::run()
 
 	MSG msg = {};
 	
-	CQTimeStamp timeStamp;
+	CQTime time;
 	while (!isExit_)
 	{
-		if (timeStamp.getElapsedSecond() > 1 / 120.0f)
+		//time.setTimeScale(1.0f);
+		time.update(time.getRealDeltaSecond());
+		if (!time.isPause() && time.getDeltaGameSceond() > 1 / 60.0f)
 		{
-			timeStamp.tick();
+			time.tick();
+
 			cur->update();
 
 			/////////////////////// TMP //////////////////

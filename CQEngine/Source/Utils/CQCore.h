@@ -12,7 +12,8 @@
 #include "CQDebug.h"
 #include "CQMemory.h"
 #include "CQMath.h"
-#include "CQTimeStamp.h"
+#include "CQTime.h"
+#include "CQScheduler.h"
 
 #include "CQIO.h"
 #include "CQResLoader.h"
