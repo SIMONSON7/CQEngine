@@ -31,17 +31,17 @@ void CQTime::tick()
 	begin_ = high_resolution_clock::now();
 }
 
-double CQTime::getRealDeltaSecond()
+double CQTime::calDeltaRealSecond()
 {
-	return  getRealDeltaMicroSec() * 0.000001;
+	return  calDeltaRealMicroSec() * 0.000001;
 }
 
-double CQTime::getRealDeltaMilliSec()
+double CQTime::calDeltaRealMilliSec()
 {
-	return getRealDeltaMicroSec() * 0.001;
+	return calDeltaRealMicroSec() * 0.001;
 }
 
-long long CQTime::getRealDeltaMicroSec()
+long long CQTime::calDeltaRealMicroSec()
 {
 	long long t = duration_cast<microseconds>(high_resolution_clock::now() - begin_).count();
 	return t;

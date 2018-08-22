@@ -34,20 +34,21 @@ public:
 
 	long long getGameTimeSinceStartUp() const;
 
+
 public:
-	// You should NOT call these interfaces individually!
-	double getRealDeltaSecond();
+	// You should NOT call the following interfaces individually!
+	void tick();
 
-	double getRealDeltaMilliSec();
+	double calDeltaRealSecond();
 
-	long long getRealDeltaMicroSec();
+	double calDeltaRealMilliSec();
+
+	long long calDeltaRealMicroSec();
 
 private:
 #ifdef _MSC_VER
 	friend class CQWinApp;
 #endif
-	void tick();
-
 	void update(double _dtRealSecond);
 
 private:
