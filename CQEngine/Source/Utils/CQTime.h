@@ -34,7 +34,6 @@ public:
 
 	long long getGameTimeSinceStartUp() const;
 
-
 public:
 	// You should NOT call the following interfaces individually!
 	void tick();
@@ -49,7 +48,7 @@ private:
 #ifdef _MSC_VER
 	friend class CQWinApp;
 #endif
-	void update(double _dtRealSecond);
+	void __update(double _dtRealSecond);
 
 private:
 	bool isPause_;

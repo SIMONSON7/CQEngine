@@ -59,7 +59,7 @@ void CQWinApp::run()
 	while (!isExit_)
 	{
 		//time.setTimeScale(1.0f);
-		time.update(time.calDeltaRealSecond());
+		time.__update(time.calDeltaRealSecond());
 		if (!time.isPause() && time.getDeltaGameSceond() > 1 / 60.0f)
 		{
 			time.tick();

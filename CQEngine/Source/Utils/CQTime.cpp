@@ -17,15 +17,6 @@ CQTime::~CQTime()
 
 }
 
-void CQTime::update(double _dtRealSecond)
-{
-	if (!isPause_)
-	{
-		dtGameSecond_ = _dtRealSecond * scale_;
-		gameTimeSinceStartUp_ += dtGameSecond_;
-	}
-}
-
 void CQTime::tick()
 {
 	begin_ = high_resolution_clock::now();
@@ -45,5 +36,14 @@ long long CQTime::calDeltaRealMicroSec()
 {
 	long long t = duration_cast<microseconds>(high_resolution_clock::now() - begin_).count();
 	return t;
+}
+
+void CQTime::__update(double _dtRealSecond)
+{
+	if (!isPause_)
+	{
+		dtGameSecond_ = _dtRealSecond * scale_;
+		gameTimeSinceStartUp_ += dtGameSecond_;
+	}
 }
 
