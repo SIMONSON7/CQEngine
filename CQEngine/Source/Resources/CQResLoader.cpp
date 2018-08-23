@@ -28,6 +28,14 @@ CQResLoader::ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
 
 void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
 {
+	if (loadThd_ == nullptr)
+	{
+		loadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
+	}
+
+
+
+
 	
 }
 
@@ -37,4 +45,15 @@ void CQResLoader::unloadImgData(ImgData * _data)
 	stbi_image_free(_data->data_);
 	CQ_FREE(_data);
 }
+
+void CQResLoader::loadImg()
+{
+
+
+
+
+}
+
+
+
 

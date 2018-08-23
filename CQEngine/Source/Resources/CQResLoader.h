@@ -7,7 +7,10 @@
 
 #include <string>
 #include <functional>
-#include <CQMacros.h>
+#include <thread>
+#include <condition_variable>
+#include "CQMacros.h"
+#include "CQSafeStack.h"
 
 NS_CQ_BEGIN
 /*
@@ -36,6 +39,12 @@ public:
 
 	void unloadImgData(ImgData * _data);
 
+private:
+	void loadImg();
+
+private:
+	std::shared_ptr<std::thread> loadThd_;
+	
 };
 
 NS_CQ_END
