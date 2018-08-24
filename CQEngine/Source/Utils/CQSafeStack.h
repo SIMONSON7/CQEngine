@@ -24,7 +24,7 @@ private:
 	CQSafeStack& operator=(const CQSafeStack&) = delete;
 
 public:
-	void push(TYPE _val);
+	bool push(TYPE _val);
 	// if pop fail, then return false;
 	bool try_pop(TYPE& _val);
 	// if pop fail, then return null;
