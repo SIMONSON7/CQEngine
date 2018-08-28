@@ -5,6 +5,13 @@
 #ifndef __CQACTION_H__
 #define __CQACTION_H__
 
+#include <tuple>
+#include <functional>
+#include <type_traits>
+#include "CQMacros.h"
+
+NS_CQ_BEGIN
+
 template<size_t...idxs>
 struct Index
 {
@@ -23,20 +30,30 @@ struct SeqGen<0, idxs...> : Index<idxs...>
 
 };
 
+class Action
+{
+	virtual void invoke() = 0;
+};
 
+template<typename Fn, typename...Args>
+class CQAction : public Action
+{
+public:
+	CQAction(const Fn&& _f, Args&&... _args);
 
+	virtual void invoke();
 
+private:
+	template<typename...args>
+	void __run(std::tuple<args...>& _tp);
 
+private:
+	Fn f_;
+	std::tuple<Args...> parms_;
+};
 
+#include "CQAction.inl"
 
-
-
-
-
-
-
-
-
-
+NS_CQ_END
 
 #endif /* __CQACTION_H__ */
