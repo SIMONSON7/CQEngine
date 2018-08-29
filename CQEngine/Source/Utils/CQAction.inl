@@ -11,3 +11,11 @@ void CQAction<Fn, Args...>::invoke()
 	__run(parms_);
 }
 
+template<typename Fn, typename...Args>
+void CQAction<Fn, Args...>::__run(std::tuple<Args...>& _tp)
+{
+	//cout << sizeof...(Args) << endl;
+	//auto a = SeqGen<sizeof...(Args)>();
+	__run(_tp, SeqGen<sizeof...(Args)>());
+}
+

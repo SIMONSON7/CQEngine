@@ -44,11 +44,15 @@ public:
 	virtual void invoke();
 
 private:
-	template<typename...args>
-	void __run(std::tuple<args...>& _tp);
+	template<size_t...Idxs>
+	void __run(std::tuple<Args...>& _tp, Index<Idxs...>)
+	{
+		f_(std::get<Idxs>(_tp)...);
+	}
+	void __run(std::tuple<Args...>& _tp);
 
 private:
-	Fn f_;
+	std::function<Fn> f_;
 	std::tuple<Args...> parms_;
 };
 
