@@ -39,7 +39,7 @@ template<typename Fn, typename...Args>
 class CQAction : public Action
 {
 public:
-	CQAction(const Fn&& _f, Args&&... _args);
+	explicit CQAction(const Fn&& _f, Args&&... _args);
 
 	virtual void invoke();
 
