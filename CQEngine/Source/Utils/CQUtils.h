@@ -29,7 +29,7 @@ void * loadMesh(const char *_filePath);
 
 */
 template<typename Fn, typename...Args>
-auto makeAction(const Fn&& _f, Args&&... _args)
+auto makeAction(Fn&& _f, Args&&... _args)
 {
 	return CQAction<Fn, Args...>(std::forward<Fn>(_f), std::forward<Args>(_args)...);
 }
