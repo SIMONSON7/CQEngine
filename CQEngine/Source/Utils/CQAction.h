@@ -12,6 +12,7 @@
 
 NS_CQ_BEGIN
 
+// sequence generator for std::tuple
 template<size_t...idxs>
 struct Index
 {
@@ -30,15 +31,14 @@ struct SeqGen<0, idxs...> : Index<idxs...>
 
 };
 
-
+// for uppacking parameter
 template <typename T>
 inline auto g_select(T&& val)->T&&
 {
 	return std::forward<T>(val);
 }
 
-// result type traits //
-
+// result type traits 
 template <typename Fn>
 struct result_traits : result_traits<decltype(&Fn::operator())> {};
 
@@ -59,7 +59,7 @@ RESULT_TRAITS__(const volatile)
 
 #undef RESULT_TRAITS__
 
-
+// pointer traits
 template <typename T>
 struct is_memfunc_noref
 	: std::is_member_function_pointer<typename std::remove_reference<T>::type>
@@ -74,6 +74,7 @@ struct is_pointer_noref
 
 };
 
+//-------------------------------------------------------------------------//
 class Action
 {
 public:
@@ -91,7 +92,10 @@ public:
 	explicit CQAction(Fn&& _f, Args&&... _args)
 		:
 		f_(std::forward<Fn>(_f)),
-		parms_(std::forward<Args>(_args)...) {}
+		parms_(std::forward<Args>(_args)...) 
+	{
+	
+	}
 
 	virtual void invoke()
 	{
