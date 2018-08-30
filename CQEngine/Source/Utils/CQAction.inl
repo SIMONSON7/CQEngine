@@ -1,21 +1,28 @@
-template<typename Fn, typename...Args>
-CQAction<Fn, Args...>::CQAction(const Fn&& _f, Args&&... _args)
+template <typename R, typename Fn, typename... Args>
+inline typename std::enable_if<is_pointer_noref<Fn>::value, R>::type
+__do_call(Fn&& _f, Args&&... _args)
 {
-	f_ = std::forward<Fn>(_f);
-	parms_ = std::tuple<std::decay_t<Args>...>(std::forward<Args>(_args)...);
+	return (*std::forward<Fn>(_f))(std::forward<Args>(_args)...);
 }
 
-template<typename Fn, typename...Args>
-void CQAction<Fn, Args...>::invoke()
+template <typename R, typename Fn, typename THIS, typename... Args>
+inline typename std::enable_if<is_memfunc_noref<Fn>::value && is_pointer_noref<THIS>::value, R>::type
+__do_call(Fn&& _f, THIS&& _this, Args&&... _args)
 {
-	__run(parms_);
+	return (std::forward<THIS>(_this)->*std::forward<Fn>(_f))(std::forward<Args>(_args)...);
 }
 
-template<typename Fn, typename...Args>
-void CQAction<Fn, Args...>::__run(std::tuple<Args...>& _tp)
+template <typename R, typename Fn, typename THIS, typename... Args>
+inline typename std::enable_if<is_memfunc_noref<Fn>::value && !is_pointer_noref<THIS>::value, R>::type
+__do_call(Fn&& _f, THIS&& this_obj, Args&&... _args)
 {
-	//cout << sizeof...(Args) << endl;
-	//auto a = SeqGen<sizeof...(Args)>();
-	__run(_tp, SeqGen<sizeof...(Args)>());
+	return (std::forward<THIS>(this_obj).*std::forward<Fn>(_f))(std::forward<Args>(_args)...);
+}
+
+template <typename R, typename Fn, typename... Args>
+inline typename std::enable_if<!is_pointer_noref<Fn>::value && !is_memfunc_noref<Fn>::value, R>::type
+__do_call(Fn&& _f, Args&&... _args)
+{
+	return std::forward<Fn>(_f)(std::forward<Args>(_args)...);
 }
 

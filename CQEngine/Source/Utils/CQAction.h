@@ -30,29 +30,88 @@ struct SeqGen<0, idxs...> : Index<idxs...>
 
 };
 
+
+template <typename T>
+inline auto g_select(T&& val)->T&&
+{
+	return std::forward<T>(val);
+}
+
+// result type traits //
+
+template <typename Fn>
+struct result_traits : result_traits<decltype(&Fn::operator())> {};
+
+template <typename T>
+struct result_traits<T*> : result_traits<T> {};
+
+template <typename R, typename... Args>
+struct result_traits<R(*)(Args...)> { typedef R type; };
+
+#define RESULT_TRAITS__(...) \
+    template <typename R, typename C, typename... Args> \
+    struct result_traits<R(C::*)(Args...) __VA_ARGS__> { typedef R type; };
+
+RESULT_TRAITS__()
+RESULT_TRAITS__(const)
+RESULT_TRAITS__(volatile)
+RESULT_TRAITS__(const volatile)
+
+#undef RESULT_TRAITS__
+
+
+template <typename T>
+struct is_memfunc_noref
+	: std::is_member_function_pointer<typename std::remove_reference<T>::type>
+{
+
+};
+
+template <typename T>
+struct is_pointer_noref
+	: std::is_pointer<typename std::remove_reference<T>::type>
+{
+
+};
+
 class Action
 {
+public:
 	virtual void invoke() = 0;
 };
 
 template<typename Fn, typename...Args>
 class CQAction : public Action
 {
+private:
+	typedef typename std::decay<Fn>::type				call_type;
+	typedef typename result_traits<call_type>::type     result_type;
+
 public:
-	explicit CQAction(const Fn&& _f, Args&&... _args);
+	explicit CQAction(Fn&& _f, Args&&... _args)
+		:
+		f_(std::forward<Fn>(_f)),
+		parms_(std::forward<Args>(_args)...) {}
 
-	virtual void invoke();
-
-private:
-	template<size_t...Idxs>
-	void __run(std::tuple<Args...>& _tp, Index<Idxs...>)
+	virtual void invoke()
 	{
-		f_(std::get<Idxs>(_tp)...);
+		return __call(parms_);
 	}
-	void __run(std::tuple<Args...>& _tp);
 
 private:
-	std::function<Fn> f_;
+	void __call(std::tuple<Args...>& _tp)
+	{
+		__call(_tp, SeqGen<sizeof...(Args)>());
+	}
+
+	template<size_t...Idxs>
+	auto __call(std::tuple<Args...>& _tp, Index<Idxs...>)
+	{
+		return __do_call<result_type>(f_, g_select(std::get<Idxs>(_tp))...);
+	}
+
+private:
+	call_type f_;
 	std::tuple<Args...> parms_;
 };
 
