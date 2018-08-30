@@ -78,7 +78,7 @@ struct is_pointer_noref
 class Action
 {
 public:
-	virtual void invoke() = 0;
+	virtual void invoke() {};
 };
 
 template<typename Fn, typename...Args>

@@ -14,6 +14,7 @@
 #include "CQMath.h"
 #include "CQTime.h"
 #include "CQScheduler.h"
+#include "CQUtils.h"
 
 #include "CQIO.h"
 #include "CQResLoader.h"

@@ -14,8 +14,6 @@ NS_CQ_BEGIN
 class CQSceneManager 
 {
 public:
-	explicit CQSceneManager();
-
 	virtual ~CQSceneManager();
 
 public:
@@ -35,6 +33,8 @@ public:
 
 
 private:
+	explicit CQSceneManager();
+
 	// non-copyable
 	CQSceneManager(const CQSceneManager &) = delete;
 
