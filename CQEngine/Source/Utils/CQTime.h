@@ -54,7 +54,7 @@ private:
 	bool isPause_;
 	float scale_;
 	double dtGameSecond_;
-	long long gameTimeSinceStartUp_;
+	/*long long*/double gameTimeSinceStartUp_;
 	
 	time_point<high_resolution_clock> begin_;
 };
