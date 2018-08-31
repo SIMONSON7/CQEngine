@@ -28,11 +28,11 @@ public:
 
 	float getTimeScale() const;
 
-	double getDeltaGameSceond() const;
+	float getDeltaGameSceond() const;
 
-	double getDeltaRealSecond() const;
+	float getDeltaRealSecond() const;
 
-	long long getGameTimeSinceStartUp() const;
+	double getGameTimeSinceStartUp() const;
 
 public:
 	// You should NOT call the following interfaces individually!

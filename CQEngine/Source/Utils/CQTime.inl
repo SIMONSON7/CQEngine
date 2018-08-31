@@ -18,17 +18,17 @@ inline float CQTime::getTimeScale() const
 	return scale_;
 }
 
-inline double CQTime::getDeltaGameSceond() const
+inline float CQTime::getDeltaGameSceond() const
 {
 	return dtGameSecond_;
 }
 
-inline double CQTime::getDeltaRealSecond() const
+inline float CQTime::getDeltaRealSecond() const
 {
 	return dtGameSecond_ / scale_;
 }
 
-inline long long CQTime::getGameTimeSinceStartUp() const
+inline double CQTime::getGameTimeSinceStartUp() const
 {
 	return gameTimeSinceStartUp_;
 }
