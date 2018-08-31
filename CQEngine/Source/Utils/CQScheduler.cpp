@@ -9,11 +9,11 @@ CQScheduler::~CQScheduler()
 
 CQScheduler *CQScheduler::shareScheduler()
 {
-	 static CQScheduler s_scheduler;
-	 return &s_scheduler;
+	static CQScheduler s_scheduler;
+	return &s_scheduler;
 }
 
- CQScheduler::CQScheduler()
+CQScheduler::CQScheduler()
 {
 
 }

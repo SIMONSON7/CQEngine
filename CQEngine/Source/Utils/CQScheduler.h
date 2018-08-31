@@ -11,15 +11,27 @@
 
 NS_CQ_BEGIN
 
+struct TimeAction
+{
+	bool isRepeat_;
+	float delaySecond_;
+	long long expiredSecond_;
+	Action action_;
+
+	void init(double _gameTime, float _delaySecond, Action _action)
+	{
+		expiredSecond_ += (_gameTime + _delaySecond);
+		action_ = _action;
+	}
+
+	bool isExipred(double _gameTime)
+	{
+		return expiredSecond_ >= _gameTime;
+	}
+};
+
 class CQScheduler
 {
-public:
-	struct TimeActionCfg
-	{
-		float second_;
-		bool isRepeat_;
-	};
-
 public:
 	virtual ~CQScheduler();
 
@@ -36,7 +48,7 @@ private:
 	CQScheduler& operator=(const CQScheduler &) = delete;
 
 private:
-	std::map<TimeActionCfg, Action> actionMap_;
+	std::map<int64_t, Action> actionMap_;
 };
 
 NS_CQ_END
