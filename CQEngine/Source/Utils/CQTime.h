@@ -45,9 +45,8 @@ public:
 	long long calDeltaRealMicroSec();
 
 private:
-#ifdef _MSC_VER
-	friend class CQWinApp;
-#endif
+	friend class CQCore;
+
 	void __update(double _dtRealSecond);
 
 private:

@@ -18,13 +18,13 @@ struct TimeAction
 	long long expiredSecond_;
 	Action action_;
 
-	void init(double _gameTime, float _delaySecond, Action _action)
+	void init(float _gameTime, float _delaySecond, Action _action)
 	{
 		expiredSecond_ += (_gameTime + _delaySecond);
 		action_ = _action;
 	}
 
-	bool isExipred(double _gameTime)
+	bool isExipred(float _gameTime)
 	{
 		return expiredSecond_ >= _gameTime;
 	}
@@ -35,11 +35,9 @@ class CQScheduler
 public:
 	virtual ~CQScheduler();
 
-public:
-	static
-	CQScheduler *shareScheduler();
-
 private:
+	friend class CQCore;
+
 	explicit CQScheduler();
 
 	// non-copyable
@@ -47,8 +45,10 @@ private:
 
 	CQScheduler& operator=(const CQScheduler &) = delete;
 
+	void __update(float _dltGameTime);
+
 private:
-	std::map<int64_t, Action> actionMap_;
+	std::map<int64_t, TimeAction> actionMap_;
 };
 
 NS_CQ_END
