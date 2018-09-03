@@ -55,14 +55,14 @@ void CQWinApp::run()
 
 	MSG msg = {};
 	
-	CQTime time;
+	CQTime *time = CQCore::shareCore()->shareCQTime();
 	while (!isExit_)
 	{
 		//time.setTimeScale(1.0f);
-		time.__update(time.calDeltaRealSecond());
-		if (!time.isPause() && time.getDeltaGameSceond() > 1 / 60.0f)
+		CQCore::shareCore()->__update();
+		if (!time->isPause() && time->getDeltaGameSceond() > 1 / 60.0f)
 		{
-			time.tick();
+			time->tick();
 
 			cur->update();
 

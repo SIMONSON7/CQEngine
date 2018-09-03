@@ -37,17 +37,23 @@ public:
 	virtual ~CQCore();
 
 public:
-	CQTime *ShareCQTime();
+	CQTime *shareCQTime();
 
-	CQScheduler *ShareCQScheduler();
+	CQScheduler *shareCQScheduler();
 
 private:
+#ifdef _MSC_VER
+	friend class CQWinApp;
+#endif
+
 	explicit CQCore();
 
 	// non-copyable
 	CQCore(const CQCore &) = delete;
 
 	CQCore& operator=(const CQCore &) = delete;
+
+	void __update();
 
 private:
 	CQTime *time_;

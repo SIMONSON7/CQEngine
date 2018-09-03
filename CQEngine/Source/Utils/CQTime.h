@@ -15,8 +15,6 @@ using namespace std::chrono;
 class CQTime
 {
 public:
-	explicit CQTime();
-
 	virtual ~CQTime();
 
 public:
@@ -46,6 +44,13 @@ public:
 
 private:
 	friend class CQCore;
+
+	explicit CQTime();
+
+	// non-copyable
+	CQTime(const CQTime &) = delete;
+
+	CQTime& operator=(const CQTime &) = delete;
 
 	void __update(double _dtRealSecond);
 
