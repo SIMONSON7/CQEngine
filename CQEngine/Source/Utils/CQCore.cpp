@@ -28,9 +28,13 @@ CQScheduler* CQCore::shareCQScheduler()
 	return scheduler_;
 }
 
-void CQCore::__update()
+void CQCore::updateTime()
 {
 	time_->__update(time_->calDeltaRealSecond());
-	scheduler_->__update(time_->getDeltaGameSceond());
+}
+
+void CQCore::updateScheduler()
+{
+	scheduler_->__update(time_->getGameTimeSinceStartUp());
 }
 

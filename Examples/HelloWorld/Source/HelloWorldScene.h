@@ -4,6 +4,7 @@
 */
 
 #include "CQCore.h"
+#include "CQUtils.h"
 
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
@@ -17,6 +18,10 @@ public:
 	explicit HelloWorldScene() {} 
 
 	virtual ~HelloWorldScene() {}
+
+private:
+	void debugOutput();
+
 public:
 	///
 	virtual void onInit();

@@ -78,6 +78,7 @@ struct is_pointer_noref
 class Action
 {
 public:
+	virtual ~Action() {};
 	virtual void invoke() {};
 };
 
@@ -93,6 +94,11 @@ public:
 		:
 		f_(std::forward<Fn>(_f)),
 		parms_(std::forward<Args>(_args)...) 
+	{
+	
+	}
+
+	virtual ~CQAction() 
 	{
 	
 	}

@@ -5,8 +5,7 @@
 #ifndef __COUTILS_H__
 #define __COUTILS_H__
 
-#include "CQMacros.h"
-#include "CQAction.h"
+#include "CQCore.h"
 
 NS_CQ_BEGIN
 
@@ -26,15 +25,23 @@ CQTexture* loadTexture(const char *_filePath);
 void * loadMesh(const char *_filePath);
 
 /*
-
+*
 */
 template<typename Fn, typename...Args>
 inline auto makeAction(Fn&& _f, Args&&... _args)
 {
-	return CQAction<Fn, Args...>(std::forward<Fn>(_f), std::forward<Args>(_args)...);
+	return new CQAction<Fn, Args...>(std::forward<Fn>(_f), std::forward<Args>(_args)...);
 }
 
+/*
+* 
+*/
+int64_t delayCall(Action *_ac, const float _sec, const bool _isRepeat = false);
 
+/*
+*
+*/
+void cancelDelayCall(int64_t _id);
 
 NS_CQ_END
 

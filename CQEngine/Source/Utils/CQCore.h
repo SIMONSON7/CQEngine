@@ -12,9 +12,10 @@
 #include "CQDebug.h"
 #include "CQMemory.h"
 #include "CQMath.h"
+
 #include "CQTime.h"
+#include "CQAction.h"
 #include "CQScheduler.h"
-#include "CQUtils.h"
 
 #include "CQIO.h"
 #include "CQResLoader.h"
@@ -41,19 +42,17 @@ public:
 
 	CQScheduler *shareCQScheduler();
 
-private:
-#ifdef _MSC_VER
-	friend class CQWinApp;
-#endif
+	void updateTime();
 
+	void updateScheduler();
+
+private:
 	explicit CQCore();
 
 	// non-copyable
 	CQCore(const CQCore &) = delete;
 
 	CQCore& operator=(const CQCore &) = delete;
-
-	void __update();
 
 private:
 	CQTime *time_;

@@ -7,8 +7,8 @@
 
 #include <map>
 #include <memory>
+#include "CQAction.h"
 #include "CQMacros.h"
-#include "CQUtils.h"
 
 NS_CQ_BEGIN
 
@@ -17,26 +17,35 @@ class TimeAction
 public:
 	TimeAction()
 		:
-		action_(),
+		action_(nullptr),
 		isRepeat_(false),
 		delaySecond_(0.0f),
 		expiredSecond_(0.0f)
 	{}
 
-	TimeAction(float _gameTime, Action _action, float _delaySecond, bool _isRepeat)
+	TimeAction(const float _gameTime, Action *_action, const float _delaySecond, const bool _isRepeat)
 	{
-		expiredSecond_ += (_gameTime + _delaySecond);
+		CQASSERT(_action);
 		action_ = _action;
+
+		isRepeat_ = _isRepeat;
+		delaySecond_ = _delaySecond;
+
+		expiredSecond_ = 0.0f;
+		expiredSecond_ += (_gameTime + delaySecond_);
 	}
 
-	~TimeAction() {}
+	~TimeAction() 
+	{
+		delete action_;
+	}
 
 public:
 	bool invoke()
 	{
 		bool isEnd = true;
 
-		action_.invoke();
+		action_->invoke();
 		if (isRepeat_)
 		{
 			expiredSecond_ += delaySecond_;
@@ -48,11 +57,11 @@ public:
 
 	bool isExipred(float _gameTime)
 	{
-		return expiredSecond_ >= _gameTime;
+		return _gameTime >= expiredSecond_;
 	}
 
 private:
-	Action action_;
+	Action *action_;
 
 	bool isRepeat_;
 	float delaySecond_;
@@ -66,7 +75,7 @@ public:
 
 public:
 	int64_t registerTimeAction(const float _gameTime, 
-		const Action _ac, const float _sec, const bool _isRepeat = false);
+		 Action *_ac, const float _sec, const bool _isRepeat = false);
 
 	void unregisterTimeAction(const int64_t _id);
 
@@ -80,7 +89,7 @@ private:
 
 	CQScheduler& operator=(const CQScheduler &) = delete;
 
-	void __update(float _dltGameTime);
+	void __update(float _gameTime);
 
 	static int64_t __genID();
 

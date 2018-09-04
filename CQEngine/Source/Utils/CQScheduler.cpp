@@ -13,7 +13,7 @@ CQScheduler::CQScheduler()
 }
 
 int64_t CQScheduler::registerTimeAction(const float _gameTime, 
-	const Action _ac, const float _sec, const bool _isRepeat)
+	 Action *_ac, const float _sec, const bool _isRepeat)
 {
 	std::shared_ptr<TimeAction> uta(new TimeAction(_gameTime, _ac, _sec, _isRepeat));
 	auto id = __genID();
@@ -30,7 +30,7 @@ void CQScheduler::unregisterTimeAction(const int64_t _id)
 	}
 }
 
-void CQScheduler::__update(float _dltGameTime)
+void CQScheduler::__update(float _gameTime)
 {
 	if (actionMap_.empty())
 	{
@@ -40,12 +40,13 @@ void CQScheduler::__update(float _dltGameTime)
 	for (auto i = actionMap_.begin(); i != actionMap_.end(); )
 	{
 		auto ta = (*i).second;
-		if (ta->isExipred(_dltGameTime))
+		if (ta->isExipred(_gameTime) && ta->invoke())
 		{
-			if (ta->invoke())
-			{
-				actionMap_.erase(i++);
-			}
+			actionMap_.erase(i++);
+		}
+		else
+		{
+			++i;
 		}
 	}
 }

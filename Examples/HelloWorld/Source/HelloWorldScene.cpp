@@ -82,6 +82,7 @@ void HelloWorldScene::onInit()
 
 	
 	/////////////////////// TMP //////////////////
+	delayCall(makeAction(&HelloWorldScene::debugOutput, this), 2.0f, false);
 }
 
 void HelloWorldScene::update()
@@ -117,5 +118,10 @@ void HelloWorldScene::onDestory()
 	CQResLoader::shareLoader()->unloadImgData(img_);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+}
+
+void HelloWorldScene::debugOutput()
+{
+	dbgPuts("[HelloWorldScene] debugOutput!");
 }
 
