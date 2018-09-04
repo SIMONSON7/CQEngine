@@ -9,6 +9,7 @@
 #include <memory>
 #include "CQAction.h"
 #include "CQMacros.h"
+#include "CQMemory.h"
 
 NS_CQ_BEGIN
 
@@ -37,7 +38,7 @@ public:
 
 	~TimeAction() 
 	{
-		delete action_;
+		CQ_RAW_DELETE(action_);
 	}
 
 public:
