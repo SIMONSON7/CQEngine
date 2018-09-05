@@ -33,9 +33,14 @@ inline auto makeAction(Fn&& _f, Args&&... _args)
 	return new CQAction<Fn, Args...>(std::forward<Fn>(_f), std::forward<Args>(_args)...);
 }
 
-/*
-* 
-*/
+//*****************************************************************************
+//
+//! \brief Coarse-grained Timer.
+//! \param [in] _ac	 None.
+//! \param [in] _sec Delay time.Engine call every frame when time equal to zero.
+//! \retval Handler for delayed calls.
+//
+//*****************************************************************************
 int64_t delayCall(Action *_ac, const float _sec, const bool _isRepeat = false);
 
 /*
