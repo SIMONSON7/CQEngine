@@ -1,7 +1,7 @@
 #include <thread>
 #include <stb/stb_image.h>
-#include "CQIO.h"
 #include "CQResLoader.h"
+#include "CQUtils.h"
 
 USING_NS_CQ;
 
@@ -26,19 +26,6 @@ CQResLoader::ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
 	return imgData;
 }
 
-void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
-{
-	if (loadThd_ == nullptr)
-	{
-		loadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
-	}
-
-
-
-
-	
-}
-
 void CQResLoader::unloadImgData(ImgData * _data)
 {
 	CQASSERT(_data);
@@ -46,10 +33,38 @@ void CQResLoader::unloadImgData(ImgData * _data)
 	CQ_FREE(_data);
 }
 
+void CQResLoader::loadImgDataAsync(const std::string& _filePath, Action& _cb)
+{
+	// check cache.
+
+	// lazy init.
+	if (texLoadThd_ == nullptr)
+	{
+		texLoadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
+	}
+
+	// 
+	if (checkHd_ == 0)
+	{
+		delayCall(makeAction(&CQResLoader::checkLoadedImg, this), 0, true);
+	}
+
+
+	
+}
+
+// creator.
 void CQResLoader::loadImg()
 {
 
 
+
+
+}
+
+// consumer.
+void CQResLoader::checkLoadedImg()
+{
 
 
 }

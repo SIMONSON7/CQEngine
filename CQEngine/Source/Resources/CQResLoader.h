@@ -5,14 +5,17 @@
 #ifndef __CORESLOADER_H__
 #define __CORESLOADER_H__
 
+#include <map>
 #include <string>
-#include <functional>
 #include <thread>
 #include <condition_variable>
+
 #include "CQMacros.h"
 #include "CQSafeStack.h"
+#include "CQAction.h"
 
 NS_CQ_BEGIN
+
 /*
 * CQResLoader need to hold status like loading status, mutex(for async loading).
 * So this type cannot be static class,and maybe singleton is a good choice.
@@ -35,16 +38,24 @@ public:
 public:
 	ImgData *loadImgDataSync(const std::string& _filePath);
 
-	void loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb);
+	void loadImgDataAsync(const std::string& _filePath, Action& _cb);
 
 	void unloadImgData(ImgData * _data);
 
 private:
 	void loadImg();
 
+	void checkLoadedImg();
+
 private:
-	std::shared_ptr<std::thread> loadThd_;
-	
+	int64_t checkHd_;
+
+	CQSafeStack<ImgData> reqStack_;
+	CQSafeStack<ImgData> rspStack_;
+
+	std::shared_ptr<std::thread> texLoadThd_;
+
+	std::map<std::string, std::shared_ptr<ImgData>> imgCache_;
 };
 
 NS_CQ_END
