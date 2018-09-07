@@ -38,7 +38,7 @@ public:
 public:
 	ImgData *loadImgDataSync(const std::string& _filePath);
 
-	void loadImgDataAsync(const std::string& _filePath, Action& _cb);
+	void loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb);
 
 	void unloadImgData(ImgData * _data);
 
@@ -53,7 +53,7 @@ private:
 	CQSafeStack<ImgData> reqStack_;
 	CQSafeStack<ImgData> rspStack_;
 
-	std::shared_ptr<std::thread> texLoadThd_;
+	std::shared_ptr<std::thread> imgLoadThd_;
 
 	std::map<std::string, std::shared_ptr<ImgData>> imgCache_;
 };

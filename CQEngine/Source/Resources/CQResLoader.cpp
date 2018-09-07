@@ -33,14 +33,27 @@ void CQResLoader::unloadImgData(ImgData * _data)
 	CQ_FREE(_data);
 }
 
-void CQResLoader::loadImgDataAsync(const std::string& _filePath, Action& _cb)
+void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
 {
+	ImgData* data = nullptr;
+	auto res = imgCache_.find(_filePath);
+
 	// check cache.
+	if ( res != imgCache_.end())
+	{
+		data = res->second.get();
+	}
+
+	if (data != nullptr)
+	{
+		_cb(data);
+		return;
+	}
 
 	// lazy init.
-	if (texLoadThd_ == nullptr)
+	if (imgLoadThd_ == nullptr)
 	{
-		texLoadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
+		imgLoadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
 	}
 
 	// 
