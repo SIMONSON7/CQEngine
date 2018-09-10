@@ -52,7 +52,7 @@ void CQSafeStack<TYPE>::wait_and_pop(TYPE& _val)
 {
 	std::unique_lock<std::mutex> ul(mut_);
 	data_cond_.wait(ul, [this] {return !stack_.empty(); });
-	val_ = stack_.top();
+	_val = stack_.top();
 	stack_.pop();
 }
 

@@ -1,7 +1,12 @@
-/*
-*
-*		qiu_hao		2018/05/21		11:33.pm
-*/
+//*****************************************************************************
+//
+//! \file CQSafeStack.h
+//! \brief The stack of thread safe.
+//! \author qiu_hao
+//! \date 2018/05/21 11:33.pm
+//
+//*****************************************************************************
+
 #ifndef __CQSAFESTACK_H__
 #define __CQSAFESTACK_H__
 
@@ -17,7 +22,9 @@ class CQSafeStack
 {
 public:
 	CQSafeStack();
+
 	CQSafeStack(const CQSafeStack&);
+
 	virtual ~CQSafeStack();
 
 private:
@@ -25,11 +32,28 @@ private:
 
 public:
 	bool push(TYPE _val);
-	// if pop fail, then return false;
+
+	//*****************************************************************************
+	//
+	//! \brief Trying to pop element form the stack.
+	//! \param [out] _val If the container is not empty, 
+	//	the top of the stack will pop up.
+	//! \retval Is it successfully popped up.
+	//
+	//*****************************************************************************
 	bool try_pop(TYPE& _val);
-	// if pop fail, then return null;
+
+	//*****************************************************************************
+	//
+	//! \brief Trying to pop element form the stack.
+	//! \retval Return the top element of the stack.
+	//  If there is no element,will return null.
+	//
+	//*****************************************************************************
 	std::shared_ptr<TYPE> try_pop();
+
 	void wait_and_pop(TYPE& _val);
+
 	bool empty() const;
 
 private:
