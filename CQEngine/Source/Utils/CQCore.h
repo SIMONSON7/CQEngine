@@ -6,28 +6,13 @@
 #ifndef __CQCORE_H__
 #define __CQCORE_H__
 
-#include <memory>
-
 #include "CQMacros.h"
-#include "CQDebug.h"
-#include "CQMemory.h"
-#include "CQMath.h"
-
-#include "CQTime.h"
-#include "CQAction.h"
-#include "CQScheduler.h"
-
-#include "CQIO.h"
-#include "CQResLoader.h"
-
-#include "CQScene.h"
-#include "CQSceneManager.h"
-
-#include "CQRenderer.h"
-#include "CQGLProgram.h"
-#include "CQGLTexture.h"
 
 NS_CQ_BEGIN
+
+class CQTime;
+
+class CQScheduler;
 
 class CQCore
 {

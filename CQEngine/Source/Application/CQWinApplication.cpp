@@ -1,5 +1,5 @@
 #include "CQWinApplication.h"
-#include "CQCore.h"
+#include "CQEngine.h"
 
 USING_NS_CQ
 

@@ -3,8 +3,7 @@
 *		qiu_hao		2018/08/18		11:10.pm
 */
 
-#include "CQCore.h"
-#include "CQUtils.h"
+#include "CQEngine.h"
 
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__

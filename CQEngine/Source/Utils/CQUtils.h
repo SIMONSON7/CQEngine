@@ -5,7 +5,7 @@
 #ifndef __COUTILS_H__
 #define __COUTILS_H__
 
-#include "CQCore.h"
+#include "CQScheduler.h"
 
 NS_CQ_BEGIN
 

@@ -1,4 +1,8 @@
 #include "CQUtils.h"
+#include "CQResLoader.h"
+#include "CQCore.h"
+#include "CQTime.h"
+#include "CQScheduler.h"
 
 NS_CQ_BEGIN
 

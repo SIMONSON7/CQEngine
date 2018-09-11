@@ -1,6 +1,7 @@
 #include <thread>
 #include <stb/stb_image.h>
 #include "CQResLoader.h"
+#include "CQIO.h"
 #include "CQUtils.h"
 
 USING_NS_CQ;

@@ -1,4 +1,6 @@
 #include "CQCore.h"
+#include "CQTime.h"
+#include "CQScheduler.h"
 
 CQCore::CQCore()
 {
