@@ -27,11 +27,8 @@ public:
 
 	virtual ~CQSafeStack();
 
-private:
-	CQSafeStack& operator=(const CQSafeStack&) = delete;
-
 public:
-	bool push(TYPE _val);
+	void push(TYPE _val);
 
 	//*****************************************************************************
 	//
@@ -55,6 +52,9 @@ public:
 	void wait_and_pop(TYPE& _val);
 
 	bool empty() const;
+
+private:
+	CQSafeStack& operator=(const CQSafeStack&) = delete;
 
 private:
 	mutable std::mutex mut_;

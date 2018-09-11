@@ -14,7 +14,7 @@ CQSafeStack<TYPE>::~CQSafeStack()
 {}
 
 template <typename TYPE>
-bool CQSafeStack<TYPE>::push(TYPE _val)
+void CQSafeStack<TYPE>::push(TYPE _val)
 {
 	std::lock_guard<std::mutex> lg(mut_);
 	stack_.push(_val);

@@ -11,7 +11,22 @@ CQResLoader *CQResLoader::shareLoader()
 	return &s_resLoader;
 }
 
-CQResLoader::ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
+CQResLoader::~CQResLoader()
+{
+	if (imgCbHd_)
+	{
+		cancelDelayCall(imgCbHd_);
+	}
+}
+
+CQResLoader::CQResLoader()
+	:
+	imgCbHd_(0)
+{
+
+}
+
+ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
 {
 	ImgData *imgData = (ImgData*)CQ_MALLOC(sizeof(ImgData));
 	int w, h, nrComponents;
@@ -36,50 +51,72 @@ void CQResLoader::unloadImgData(ImgData * _data)
 void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
 {
 	ImgData* data = nullptr;
-	auto res = imgCache_.find(_filePath);
+	std::string fullPath = CQIO::searchFullPath(_filePath);
 
-	// check cache.
+	// Check cache.
+	// Call callback directly if the res exist in cache already or file is not exist at all.
+	auto res = imgCache_.find(fullPath);
 	if ( res != imgCache_.end())
 	{
 		data = res->second.get();
 	}
-
-	if (data != nullptr)
+	
+	if (data != nullptr || !CQIO::isFileExist(fullPath))
 	{
 		_cb(data);
 		return;
 	}
 
-	// lazy init.
+	// Lazy init.
 	if (imgLoadThd_ == nullptr)
 	{
-		imgLoadThd_ = std::make_shared<std::thread>(&CQResLoader::loadImg, this);
+		imgLoadThd_ = std::make_shared<std::thread>(&CQResLoader::__loadImg, this);
 	}
 
-	// 
-	if (checkHd_ == 0)
+	if (imgCbHd_ == 0)
 	{
-		delayCall(makeAction(&CQResLoader::checkLoadedImg, this), 0, true);
+		imgCbHd_ = delayCall(makeAction(&CQResLoader::__doCallBack, this), 0, true);
 	}
 
+	// Create.
+	auto asyncData = CQ_NEW(AsyncImgData);
+	asyncData->cb_ = _cb;
+	asyncData->imgData_ = nullptr;
+	asyncData->fullPath_ = fullPath;
 
+	imgStack_.push(asyncData);
+}
+
+// Threads dedicated to loading pictures continuously.
+void CQResLoader::__loadImg()
+{
+	AsyncImgData *data = nullptr;
+
+	while (true)
+	{
+		imgStack_.wait_and_pop(data);
+
+		data->imgData_ = loadImgDataSync(data->fullPath_);
+
+		cbStack_.push(data);
+	}
+}
+
+// Run int main thread.Avoid block the main thread.
+void CQResLoader::__doCallBack()
+{
+	AsyncImgData *data = nullptr;
 	
-}
+	if (cbStack_.try_pop(data))
+	{
+		if (data->cb_)
+		{
+			data->cb_(data->imgData_);
+		}
 
-// creator.
-void CQResLoader::loadImg()
-{
-
-
-
-
-}
-
-// consumer.
-void CQResLoader::checkLoadedImg()
-{
-
-
+		//unloadImgData(data->imgData_);
+		CQ_DELETE(data, AsyncImgData);
+	}
 }
 
 

@@ -1,7 +1,11 @@
-/*
-*
-*		qiu_hao		2018/03/08		03.46.pm
-*/
+//*****************************************************************************
+//
+//! \file CQResLoader.h
+//! \brief Resource Loader.
+//! \author qiu_hao
+//! \date 2018/03/08 03.46.pm
+//
+//*****************************************************************************
 #ifndef __CORESLOADER_H__
 #define __CORESLOADER_H__
 
@@ -16,42 +20,55 @@
 
 NS_CQ_BEGIN
 
-/*
-* CQResLoader need to hold status like loading status, mutex(for async loading).
-* So this type cannot be static class,and maybe singleton is a good choice.
-*/
+struct ImgData
+{
+	unsigned char * data_;
+	unsigned int	type_;
+	int width_;
+	int height_;
+};
+
 class CQResLoader
 {
 public:
-	struct ImgData
+	struct AsyncImgData
 	{
-		unsigned char * data_;
-		unsigned int	type_;
-		int width_;
-		int height_;
+		ImgData *imgData_;
+		std::string fullPath_;
+		std::function<void(ImgData*)> cb_;
 	};
 
 public:
 	static
 	CQResLoader *shareLoader();
 
+	virtual ~CQResLoader();
+
 public:
 	ImgData *loadImgDataSync(const std::string& _filePath);
 
 	void loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb);
 
-	void unloadImgData(ImgData * _data);
+	void unloadImgData(ImgData *_data);
 
 private:
-	void loadImg();
+	explicit CQResLoader();
 
-	void checkLoadedImg();
+	// non-copyable
+	CQResLoader(const CQResLoader &) = delete;
+
+	CQResLoader& operator=(const CQResLoader &) = delete;
+
+	void __loadImg();
+
+	void __doCallBack();
 
 private:
-	int64_t checkHd_;
+	int64_t imgCbHd_;
 
-	CQSafeStack<ImgData> reqStack_;
-	CQSafeStack<ImgData> rspStack_;
+	CQSafeStack<AsyncImgData*> imgStack_;
+
+	CQSafeStack<AsyncImgData*> cbStack_;
 
 	std::shared_ptr<std::thread> imgLoadThd_;
 

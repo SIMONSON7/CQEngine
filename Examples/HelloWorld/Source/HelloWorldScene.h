@@ -36,7 +36,7 @@ private:
 	/////////////////////// TMP //////////////////
 	CQGLProgram program_;
 	CQGLTexture *texture_;
-	CQResLoader::ImgData* img_;
+	ImgData* img_;
 
 	float angle_ = 0;
 	unsigned int VBO, VAO, EBO;
