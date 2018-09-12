@@ -8,10 +8,14 @@
 #include "CQMacros.h"
 #include "CQWglContext.h"
 
+NS_CQ_BEGIN
+
 class CQRenderer
 {
 
 };
+
+NS_CQ_END
 
 #endif /*__CQRENDERER_H__*/
 
