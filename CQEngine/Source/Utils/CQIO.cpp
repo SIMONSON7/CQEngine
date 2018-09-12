@@ -78,8 +78,8 @@ bool CQIO::eraseSearchPah(const std::string _path)
 
 std::string CQIO::getCurDir()
 {
-	char buff[MAX_PATH];
-	char *path = getcwd(buff, MAX_PATH);
+	char buff[MAX_PATH_SIZE];
+	char *path = getcwd(buff, MAX_PATH_SIZE);
 	CQASSERT(path)
 	return path;
 }

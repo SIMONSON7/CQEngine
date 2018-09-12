@@ -55,7 +55,7 @@
 #	define CQ_USE_CPP11 0
 #endif
 
-#define MAX_PATH 512
+#define MAX_PATH_SIZE 512
 #define MAX_STRBUFF_SIZE 2048
 
 #if defined(_MSC_VER)

@@ -79,7 +79,7 @@ void CQGLProgram::genProgram()
 	uniforms_.resize(uniforms);
 
 	char buffer[128];
-	for (unsigned int i = 0; i < attributes; ++i)
+	for (int i = 0; i < attributes; ++i)
 	{
 		GLenum glType;
 		CQ_GLCHECK(glGetActiveAttrib(program_, i, sizeof(buffer), 0, &attributes_[i].size_, &glType, buffer));
@@ -88,7 +88,7 @@ void CQGLProgram::genProgram()
 		attributes_[i].location_ = glGetAttribLocation(program_, buffer);
 	}
 
-	for (unsigned int i = 0; i < uniforms; ++i)
+	for (int i = 0; i < uniforms; ++i)
 	{
 		GLenum glType;
 		CQ_GLCHECK(glGetActiveUniform(program_, i, sizeof(buffer), 0, &uniforms_[i].size_, &glType, buffer));
