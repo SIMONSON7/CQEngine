@@ -14,9 +14,11 @@ CQWglContext::CQWglContext()
 	hWnd_(NULL),
 	hdc_(NULL),
 	hglrc_(NULL)
-{}
+{
 
-void CQWglContext::create()
+}
+
+void CQWglContext::init()
 {
 	// error checks have been omitted for brevity
 	// tmp render context //
@@ -87,6 +89,11 @@ void CQWglContext::create()
 	wglDeleteContext(hglrc);
 	wglMakeCurrent(hdc_, hglrc_);
 
+	// load glad.
+	if (!gladLoadGL()) {
+		exit(-1);
+	}
+
 }
 
 void  CQWglContext::destroy()
@@ -111,14 +118,13 @@ void CQWglContext::update()
 	}
 }
 
-void CQWglContext::printGLInfo()
+void CQWglContext::printRenderInfo()
 {
-	// opengl info
-	// version
+	// OpenGL info
 	const GLubyte* OpenGLVersion = glGetString(GL_VERSION);
-	dbgPrintf("opengl version:%s\n", OpenGLVersion);
+	dbgPrintf("[CQWglContext] OpenGL version : %s\n", OpenGLVersion);
 
-	// profile
+	// profile. 
 	// CQEngine only support Core profile.
 	GLint mask;
 	std::string profileName;
@@ -127,15 +133,15 @@ void CQWglContext::printGLInfo()
 		profileName = "PROFILE_COMPATIBILITY";
 	if (mask & GL_CONTEXT_CORE_PROFILE_BIT)
 		profileName = "PROFILE_CORE";
-	dbgPrintf("opengl profile:%s\n", profileName.c_str());
+	dbgPrintf("[CQWglContext] OpenGL profile : %s\n", profileName.c_str());
 
 	// vendor
-	dbgPrintf("opengl vendor:%s\n", glGetString(GL_VENDOR));
+	dbgPrintf("[CQWglContext] OpenGL vendor : %s\n", glGetString(GL_VENDOR));
 
 	// renderer
-	dbgPrintf("opengl renderer:%s\n", glGetString(GL_RENDERER));
+	dbgPrintf("[CQWglContext] OpenGL renderer : %s\n", glGetString(GL_RENDERER));
 
-	// framebuffer
+	// frame buffer
 	GLint redbits, greenbits, bluebits, alphabits, depthbits, stencilbits;
 	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
 		GL_BACK_LEFT,
@@ -161,7 +167,8 @@ void CQWglContext::printGLInfo()
 		GL_STENCIL,
 		GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
 		&stencilbits);
-	dbgPrintf(" red: %u green: %u blue: %u alpha: %u depth: %u stencil: %u\n",
+
+	dbgPrintf("[CQWglContext] red : %u green : %u blue : %u alpha : %u depth : %u stencil : %u\n",
 		redbits, greenbits, bluebits, alphabits, depthbits, stencilbits);
 
 	// Accumulation Buffer(COMPATIBILITY) 

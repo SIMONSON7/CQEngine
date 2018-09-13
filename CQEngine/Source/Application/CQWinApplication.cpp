@@ -3,10 +3,6 @@
 
 USING_NS_CQ
 
-/////////////////////// TMP //////////////////
-CQWglContext context;
-/////////////////////// TMP //////////////////
-
 bool CQWinApp::isExit_ = false;
 
 CQWinApp::CQWinApp(const char *_title, int _xPos, int _yPos, int _width, int _height)
@@ -27,6 +23,7 @@ CQWinApp::~CQWinApp()
 void CQWinApp::init()
 {
 	__createWnd();
+	CQCore::shareCore()->shareCQRender()->init(hWnd_);
 }
 
 void CQWinApp::tick()
@@ -63,15 +60,11 @@ void CQWinApp::run()
 		if (!time->isPause() && time->getDeltaGameSceond() > 1 / 60.0f)
 		{
 			time->tick();
-
 			CQCore::shareCore()->updateScheduler();
 
 			cur->update();
 
-			/////////////////////// TMP //////////////////
-			// swap buffer
-			context.update();
-			/////////////////////// TMP //////////////////
+			CQCore::shareCore()->shareCQRender()->update();
 
 			while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 			{
@@ -86,19 +79,12 @@ void CQWinApp::run()
 	}
 
 	sm->cleanAllScene();
+	CQCore::shareCore()->shareCQRender()->destory();
 	return;
 }
 
 void CQWinApp::__createWnd()
 {
-	/////////////////////// TMP //////////////////
-	if (gladLoadGL()) {
-		// you need an OpenGL context before loading glad
-		printf("I did load GL with no context!\n");
-		exit(-1);
-	}
-	/////////////////////// TMP //////////////////
-
 	hInstance_ = GetModuleHandle(NULL);
 	WNDCLASSEX wc = {};
 
@@ -139,17 +125,6 @@ void CQWinApp::__createWnd()
 		hInstance_,
 		NULL);
 
-	/////////////////////// TMP ////////////////// 
-	context.hWnd_ = hWnd_;
-	context.create();
-
-	if (!gladLoadGL()) {
-		printf("Something went wrong!\n");
-		exit(-1);
-	}
-
-	context.printGLInfo();
-	/////////////////////////////////////////
 	ShowWindow(hWnd_, SW_SHOW);
 	UpdateWindow(hWnd_);
 }

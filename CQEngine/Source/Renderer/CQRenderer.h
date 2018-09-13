@@ -18,7 +18,11 @@ public:
 	virtual ~CQRenderer();
 
 public:
+#if defined(_MSC_VER)
+	void init(HWND _hWnd);
+#else
 	void init();
+#endif
 
 	void update();
 
@@ -33,6 +37,9 @@ private:
 	CQRenderer(const CQRenderer &) = delete;
 
 	CQRenderer& operator=(const CQRenderer &) = delete;
+
+private:
+	
 
 private:
 #if defined(_MSC_VER)

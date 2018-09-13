@@ -18,10 +18,15 @@ NS_CQ_BEGIN
 struct CQWglContext
 {
 	CQWglContext();
-	void create();
-	void destroy();
+
+	void init();
+
 	void update();
-	void printGLInfo();
+
+	void destroy();
+
+	void printRenderInfo();
+
 	//void makeCurrent();
 
 	HWND hWnd_;
