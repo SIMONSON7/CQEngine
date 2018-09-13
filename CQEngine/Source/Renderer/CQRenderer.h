@@ -6,13 +6,38 @@
 #define __CQRENDERER_H__
 
 #include "CQMacros.h"
-#include "CQWglContext.h"
+#if defined(_MSC_VER)
+	#include "CQWglContext.h"
+#endif
 
 NS_CQ_BEGIN
 
 class CQRenderer
 {
+public:
+	virtual ~CQRenderer();
 
+public:
+	void init();
+
+	void update();
+
+	void destory();
+
+private:
+	friend class CQCore;
+
+	explicit CQRenderer();
+
+	// non-copyable
+	CQRenderer(const CQRenderer &) = delete;
+
+	CQRenderer& operator=(const CQRenderer &) = delete;
+
+private:
+#if defined(_MSC_VER)
+	CQWglContext ctx_;
+#endif
 };
 
 NS_CQ_END
