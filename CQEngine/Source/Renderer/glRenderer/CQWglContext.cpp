@@ -110,7 +110,7 @@ void  CQWglContext::destroy()
 	}
 }
 
-void CQWglContext::update()
+void CQWglContext::swapBuff()
 {
 	if (hdc_)
 	{

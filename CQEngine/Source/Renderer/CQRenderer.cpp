@@ -19,7 +19,7 @@ void CQRenderer::init(HWND _hWnd)
 
 void CQRenderer::update()
 {
-	ctx_.update();
+	ctx_.swapBuff();
 }
 
 void CQRenderer::destory()
