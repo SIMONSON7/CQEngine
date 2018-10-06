@@ -1,7 +1,11 @@
-/*
-*
-*		qiu_hao		2018/03/31		05:57.pm
-*/
+//*****************************************************************************
+//
+//! \file CQRenderer.h
+//! \brief interface file of render.
+//! \author qiu_hao
+//! \date 2018/03/31 05:57.pm
+//
+//*****************************************************************************
 #ifndef __CQRENDERER_H__
 #define __CQRENDERER_H__
 
@@ -38,8 +42,35 @@ private:
 
 	CQRenderer& operator=(const CQRenderer &) = delete;
 
+// rendering pipeline
 private:
-	
+	void __initDisplayCtx(HWND _hWnd);
+
+	// Geometry processing 
+
+	void __vertexShading();
+
+	void __opTessellation();
+
+	void __opGeometryShading();
+
+	void __projection();
+
+	void __clipping();
+
+	void __screenMapping();
+
+	// Rasterization
+
+	void __primitiveAssembly();
+
+	void __triangleTraversal();
+
+	// Pixel processing
+
+	void __fragmentShading();
+
+	void __merging();
 
 private:
 #if defined(_MSC_VER)
