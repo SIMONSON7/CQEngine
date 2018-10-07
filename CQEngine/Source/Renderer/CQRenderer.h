@@ -42,35 +42,8 @@ private:
 
 	CQRenderer& operator=(const CQRenderer &) = delete;
 
-// rendering pipeline
 private:
 	void __initDisplayCtx(HWND _hWnd);
-
-	// Geometry processing 
-
-	void __vertexShading();
-
-	void __opTessellation();
-
-	void __opGeometryShading();
-
-	void __projection();
-
-	void __clipping();
-
-	void __screenMapping();
-
-	// Rasterization
-
-	void __primitiveAssembly();
-
-	void __triangleTraversal();
-
-	// Pixel processing
-
-	void __fragmentShading();
-
-	void __merging();
 
 private:
 #if defined(_MSC_VER)
