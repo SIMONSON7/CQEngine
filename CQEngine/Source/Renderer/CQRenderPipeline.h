@@ -12,7 +12,7 @@
 #include "CQMacros.h"
 #include "CQNonInheritance.h"
 
-class CQRenderPipeline : public CQNonInheritance<CQRenderPipeline>
+class CQRenderPipeline : public virtual CQNonInheritance<CQRenderPipeline>
 {
 public:
 	~CQRenderPipeline();
