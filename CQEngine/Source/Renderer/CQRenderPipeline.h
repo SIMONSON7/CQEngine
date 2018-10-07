@@ -10,9 +10,8 @@
 #define __CQRENDERPIPELINE_H__
 
 #include "CQMacros.h"
-#include "CQNonInheritance.h"
 
-class CQRenderPipeline : public virtual CQNonInheritance<CQRenderPipeline>
+class CQRenderPipeline 
 {
 public:
 	~CQRenderPipeline();
@@ -54,6 +53,6 @@ private:
 
 	void __merging();
 
-};
+} final;
 
 #endif /* __CQRENDERPIPELINE_H__ */
