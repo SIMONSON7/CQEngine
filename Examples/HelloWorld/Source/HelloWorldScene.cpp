@@ -96,7 +96,7 @@ void HelloWorldScene::update()
 	Matrix4 mat(1.0f);
 	Vector3 v(0.0f, 1.0f, 0.0f);
 	Matrix4 trans = rotate(mat, ++angle_, v);
-	program_.setMatrix("transform", trans);
+	program_.setMatrix("mvp", trans);
 
 	//
 	texture_->Bind();

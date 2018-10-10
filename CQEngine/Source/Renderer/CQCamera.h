@@ -17,6 +17,13 @@ NS_CQ_BEGIN
 class CQCamera
 {
 
+
+
+
+
+
+
+
 };
 
 NS_CQ_END
