@@ -1,7 +1,7 @@
 //*****************************************************************************
 //
 //! \file CQCamera.h
-//! \brief 
+//! \brief UVN Camera.
 //! \author qiu_hao
 //! \date 2018/09/16 11:03.pm
 //
@@ -11,17 +11,25 @@
 #define __CQCAMERA_H__
 
 #include "CQMacros.h"
+#include "CQTransform.h"
 
 NS_CQ_BEGIN
 
 class CQCamera
 {
+public:
+	enum PROJECTION_TYPE
+	{
+		NONE,
+		PERSPECTIVE,
+		ORTHOGRAPHIC,
+	};
 
+public:
+	//CQTransform m_Transform;
+	
 
-
-
-
-
+private:
 
 
 };
