@@ -10,12 +10,11 @@
 #ifndef __CQCAMERA_H__
 #define __CQCAMERA_H__
 
-#include "CQMacros.h"
-#include "CQTransform.h"
+#include "CQObject.h"
 
 NS_CQ_BEGIN
 
-class CQCamera
+class CQCamera : CQObject
 {
 public:
 	enum PROJECTION_TYPE
@@ -24,13 +23,15 @@ public:
 		PERSPECTIVE,
 		ORTHOGRAPHIC,
 	};
-
 public:
-	//CQTransform m_Transform;
-	
+	virtual void onInit();
+
+	virtual void update();
+
+	virtual void onDestory();
+
 
 private:
-
 
 };
 

@@ -5,8 +5,10 @@
 #ifndef __CQOBJECT_H__
 #define __CQOBJECT_H__
 
-#include "CQMacros.h"
 #include <string>
+#include <memory>
+#include "CQMacros.h"
+#include "CQComponent.h"
 
 NS_CQ_BEGIN
 
@@ -17,26 +19,27 @@ public:
 
 	virtual ~CQObject();
 public:
-	/// Interface
 	virtual void onInit() = 0;
+
 	virtual void update() = 0;
+
 	virtual void onDestory() = 0;
 
 public:
-	///
 	void setName(const std::string _name);
-
-	///
-	const std::string& getName() const;
-
-	///
-	const uint32_t getTag() const;
 	
-	////
 	void setTag(uint32_t _tag);
 
-	///
+	const std::string& getName() const;
+
+	const uint32_t getTag() const;
+
 	const uint64_t getID() const;
+
+public:
+	void setComponent(std::shared_ptr<CQComponent> _component);
+
+	std::shared_ptr<CQComponent> getComponentByName(const std::string _name);
 
 private:
 	const uint64_t genID() const;

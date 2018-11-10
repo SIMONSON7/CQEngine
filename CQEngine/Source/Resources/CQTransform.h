@@ -18,7 +18,21 @@ NS_CQ_BEGIN
 class CQTransform : CQComponent
 {
 public:
+	void setPos(const float3& _pos);
 
+	void setRotEuler(const float3& _rot);
+
+	void setRotQuart(const quaternion& _quart);
+
+	void setScale(const float3& _scale);
+
+	float3& getPos();
+
+	float3& getRotEuler();
+
+	quaternion& getRotQuart();
+
+	float3& getScale();
 
 private:
 	float3 localPos_;
