@@ -10,6 +10,7 @@
 #ifndef __CQCAMERA_H__
 #define __CQCAMERA_H__
 
+#include <memory>
 #include "CQObject.h"
 
 NS_CQ_BEGIN
@@ -24,12 +25,19 @@ public:
 		ORTHOGRAPHIC,
 	};
 public:
+	explicit CQCamera();
+
+	virtual ~CQCamera();
+
+public:
 	virtual void onInit();
 
 	virtual void update();
 
 	virtual void onDestory();
 
+public:
+	std::shared_ptr<CQTransform> getTransform();
 
 private:
 

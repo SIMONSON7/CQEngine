@@ -28,6 +28,7 @@
 
 // Render
 #include "CQRenderer.h"
+#include "CQCamera.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
 

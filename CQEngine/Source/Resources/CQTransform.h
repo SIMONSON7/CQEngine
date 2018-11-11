@@ -30,7 +30,7 @@ public:
 	virtual const std::string& getName() const;
 
 public:
-	void setPos(const float3& _pos);
+	void setLocalPos(const float3& _pos);
 
 	void setRotEuler(const float3& _rot);
 

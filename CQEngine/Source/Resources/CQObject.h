@@ -20,6 +20,7 @@ public:
 	explicit CQObject();
 
 	virtual ~CQObject();
+
 public:
 	virtual void onInit() = 0;
 
