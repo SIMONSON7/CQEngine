@@ -7,10 +7,12 @@
 
 #include <string>
 #include <memory>
+#include <map>
 #include "CQMacros.h"
-#include "CQComponent.h"
 
 NS_CQ_BEGIN
+
+class CQComponent;
 
 class CQObject
 {
@@ -39,15 +41,18 @@ public:
 public:
 	void setComponent(std::shared_ptr<CQComponent> _component);
 
-	std::shared_ptr<CQComponent> getComponentByName(const std::string _name);
+	std::shared_ptr<CQComponent> getComponentByName(const std::string& _name);
+
+	void removeComponent(const std::string& _name);
 
 private:
 	const uint64_t genID() const;
 
 protected:
-	std::string		name_;
 	uint32_t		tag_;
 	uint64_t		id_;
+	std::string		name_;
+	std::map<std::string, std::shared_ptr<CQComponent>> compMap_;
 };
 
 #include "CQObject.inl"

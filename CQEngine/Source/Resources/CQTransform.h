@@ -18,6 +18,18 @@ NS_CQ_BEGIN
 class CQTransform : CQComponent
 {
 public:
+	explicit CQTransform();
+
+	virtual ~CQTransform();
+
+	CQTransform(const CQTransform &);
+
+	CQTransform& operator=(const CQTransform &);
+
+public:
+	virtual const std::string& getName() const;
+
+public:
 	void setPos(const float3& _pos);
 
 	void setRotEuler(const float3& _rot);

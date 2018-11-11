@@ -10,12 +10,15 @@
 #ifndef __CQCOMPONENT_H__
 #define __CQCOMPONENT_H__
 
+#include <string>
 #include "CQMacros.h"
 
 NS_CQ_BEGIN
 
 class CQComponent
 {
+public:
+	virtual const std::string& getName() const = 0;
 
 };
 

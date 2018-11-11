@@ -24,6 +24,7 @@
 // Res
 #include "CQIO.h"
 #include "CQResLoader.h"
+#include "CQTransform.h"
 
 // Render
 #include "CQRenderer.h"
