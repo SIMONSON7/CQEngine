@@ -3470,13 +3470,19 @@ public:
 
 	explicit tquat(tvec3<T> const & eulerAngle)
 	{
-		//tvec3<T> c = cos(eulerAngle * value_type(0.5));
-		//tvec3<T> s = sin(eulerAngle * value_type(0.5));
+		T cX(cos(eulerAngle.x / 2.0f));
+		T sX(sin(eulerAngle.x / 2.0f));
 
-		//this->w = c.x * c.y * c.z + s.x * s.y * s.z;
-		//this->x = s.x * c.y * c.z - c.x * s.y * s.z;
-		//this->y = c.x * s.y * c.z + s.x * c.y * s.z;
-		//this->z = c.x * c.y * s.z - s.x * s.y * c.z;
+		T cY(cos(eulerAngle.y / 2.0f));
+		T sY(sin(eulerAngle.y / 2.0f));
+
+		T cZ(cos(eulerAngle.z / 2.0f));
+		T sZ(sin(eulerAngle.z / 2.0f));
+
+		this->w = cX * cY * cZ + sX * sY * sZ;
+		this->x = sX * cY * cZ - cX * sY * sZ;
+		this->y = cX * sY * cZ + sX * cY * sZ;
+		this->z = cX * cY * sZ - sX * sY * cZ;
 	}
 
 	explicit tquat(tmat3x3<T> const & m)
@@ -4153,9 +4159,9 @@ tmat4x4<T>    lookAt
 	u = cross(s, f);
 
 	tmat4x4<T>    res(1);
-	res[0][0] = s.x;
-	res[1][0] = s.y;
-	res[2][0] = s.z;
+	res[0][0] = sX;
+	res[1][0] = sY;
+	res[2][0] = sZ;
 	res[0][1] = u.x;
 	res[1][1] = u.y;
 	res[2][1] = u.z;
