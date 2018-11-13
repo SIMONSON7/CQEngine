@@ -4159,9 +4159,9 @@ tmat4x4<T>    lookAt
 	u = cross(s, f);
 
 	tmat4x4<T>    res(1);
-	res[0][0] = sX;
-	res[1][0] = sY;
-	res[2][0] = sZ;
+	res[0][0] = s.x;
+	res[1][0] = s.y;
+	res[2][0] = s.z;
 	res[0][1] = u.x;
 	res[1][1] = u.y;
 	res[2][1] = u.z;
