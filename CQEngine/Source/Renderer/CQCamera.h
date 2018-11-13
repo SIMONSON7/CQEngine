@@ -24,20 +24,20 @@ public:
 		PERSPECTIVE,
 		ORTHOGRAPHIC,
 	};
-public:
-	explicit CQCamera();
-
-	virtual ~CQCamera();
-
-public:
-	virtual void onInit();
-
-	virtual void update();
-
-	virtual void onDestory();
-
-public:
-	std::shared_ptr<CQTransform> getTransform();
+//public:
+//	explicit CQCamera();
+//
+//	virtual ~CQCamera();
+//
+//public:
+//	virtual void onInit();
+//
+//	virtual void update();
+//
+//	virtual void onDestory();
+//
+//public:
+//	std::shared_ptr<CQTransform> getTransform();
 
 private:
 

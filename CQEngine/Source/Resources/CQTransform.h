@@ -46,18 +46,23 @@ public:
 
 	float3& getScale();
 
-	Matrix4& lookAt(float3 _worldTarget, float3 _worldPos, float3 _worldUp);
+	void lookAt(float3 _worldTarget, float3 _worldPos, float3 _worldUp);
+
+	Matrix4& calWorldToLcalMatRH();
+
+	Matrix4& calWorldToLcalMatLH();
 
 private:
-	float3 localPos_;
-	float3 eulerRot_;
 	float3 scale_;
+	float3 localPos_;
+	float3 worldPos_;
+	float3 eulerRot_;
 	quaternion quatrRot_;
 
 	// Local coordinate system.
-	float3 front_;
-	float3 right_;
 	float3 up_;
+	float3 right_;
+	float3 target_;
 };
 
 NS_CQ_END
