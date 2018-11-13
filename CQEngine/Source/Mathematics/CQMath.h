@@ -3470,14 +3470,14 @@ public:
 
 	explicit tquat(tvec3<T> const & eulerAngle)
 	{
-		T cX(cos(eulerAngle.x / 2.0f));
-		T sX(sin(eulerAngle.x / 2.0f));
+		T cX(cos(eulerAngle.x * value_type(0.5)));
+		T sX(sin(eulerAngle.x * value_type(0.5)));
 
-		T cY(cos(eulerAngle.y / 2.0f));
-		T sY(sin(eulerAngle.y / 2.0f));
+		T cY(cos(eulerAngle.y * value_type(0.5)));
+		T sY(sin(eulerAngle.y * value_type(0.5)));
 
-		T cZ(cos(eulerAngle.z / 2.0f));
-		T sZ(sin(eulerAngle.z / 2.0f));
+		T cZ(cos(eulerAngle.z * value_type(0.5)));
+		T sZ(sin(eulerAngle.z * value_type(0.5)));
 
 		this->w = cX * cY * cZ + sX * sY * sZ;
 		this->x = sX * cY * cZ - cX * sY * sZ;
