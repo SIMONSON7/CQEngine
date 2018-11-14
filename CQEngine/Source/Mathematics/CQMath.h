@@ -589,18 +589,6 @@ struct tvec3
 
 };
 
-template<typename T>
-bool operator >(const tvec3<T>& left, const tvec3<T>& right)
-{
-	return  left.x > right.x && left.y > right.y && left.z > right.z;
-}
-
-template<typename T>
-bool operator <(const tvec3<T>& left, const tvec3<T>& right)
-{
-	return  left.x < right.x && left.y < right.y && left.z < right.z;
-}
-
 template <typename T>
 tvec3<T> rotateX(const tvec3<T>& v, T angle)
 {
@@ -640,230 +628,6 @@ tvec3<T> rotateZ(tvec3<T> const & v, T angle)
 	res.y = v.x * s + v.y * c;
 	return res;
 }
-
-//! \brief Cal the angle between two vector.
-/*! \param a	one vec3
-	\param b	another vec3
-	\retval		return the value.
-
-	A·B = |A|*|B|*cos(@)
-	cos(@) = A·B / | A | *| B |
-	@ = acos(@)
-*/
-template <typename T>
-T angleBetweenVector(tvec3<T> const & a, tvec3<T> const & b)
-{
-#define Mag(V) (sqrtf(V.x*V.x + V.y*V.y + V.z*V.z))
-	T dotProduct = dot(a, b);
-	T vectorsMagnitude = Mag(a) * Mag(b);
-	T angle = acos(dotProduct / vectorsMagnitude);
-	if (_isnan(angle))
-	{
-		return	T(0);
-	}
-	else
-	{
-		return	angle;
-	}
-}
-
-template <typename T>
-static T clamp(T val, T minval, T maxval)
-{
-	assert(minval < maxval && "Invalid clamp range");
-	return MAX(MIN(val, maxval), minval);
-}
-
-template <typename T>
-inline   T  acosEx(T val)
-{
-	if (T(-1.0f) < val)
-	{
-		if (val < 1.0f)
-			return T(acos(val));
-		else
-			return T(0);
-	}
-	else
-	{
-		return T(PI);
-	}
-}
-
-template<typename T>
-inline  T angleBetween(const tvec3<T>& a, const tvec3<T>& b)
-{
-	T lenProduct = a.lengthf() * b.lengthf();
-
-	// Divide by zero check
-	if (lenProduct < 1e-6f)
-		lenProduct = 1e-6f;
-
-	float f = dot(a, b) / lenProduct;
-
-	f = clamp(f, T(-1.0), T(1.0));
-	return acosEx(f);
-
-}
-
-/**
-*   点在多边形里
-*   如果点在多边形中，则，点与边的夹角之和 == 360
-*/
-template<typename T>
-bool    insidePolyon(const tvec3<T>& point, const tvec3<T> polygon[], size_t count)
-{
-	T           MATCH_FACTOR = T(0.99);
-	T           angle = T(0.0);
-	tvec3<T>    vA, vB;
-	for (size_t i = 0; i < count; ++i)
-	{
-		vA = polygon[i] - point;
-		vB = polygon[(i + 1) % count] - point;
-		angle += angleBetweenVector(vA, vB);
-	}
-	if (angle >= (MATCH_FACTOR * TWO_PI))
-	{
-		return true;
-	}
-	return false;
-}
-
-template<typename T>
-bool    insidePolyon(const tvec2<T>& point, const tvec2<T> polygon[], size_t count)
-{
-	T           MATCH_FACTOR = T(0.99);
-	T           angle = T(0.0);
-	tvec2<T>    vA, vB;
-	for (size_t i = 0; i < count; ++i)
-	{
-		vA = polygon[i] - point;
-		vB = polygon[(i + 1) % count] - point;
-		tvec3<T>    a(vA.x, vA.y, 0);
-		tvec3<T>    b(vB.x, vB.y, 0);
-		angle += angleBetweenVector<T>(a, b);
-	}
-	if (angle >= (MATCH_FACTOR * TWO_PI))
-	{
-		return true;
-	}
-	return false;
-}
-
-template<typename T>
-bool pointinTriangle(tvec3<T> A, tvec3<T> B, tvec3<T> C, tvec3<T> P)
-{
-	tvec3<T> v0 = C - A;
-	tvec3<T> v1 = B - A;
-	tvec3<T> v2 = P - A;
-
-	float dot00 = dot(v0, v0);
-	float dot01 = dot(v0, v1);
-	float dot02 = dot(v0, v2);
-	float dot11 = dot(v1, v1);
-	float dot12 = dot(v1, v2);
-
-	float inverDeno = 1 / (dot00 * dot11 - dot01 * dot01);
-
-	float u = (dot11 * dot02 - dot01 * dot12) * inverDeno;
-	if (u < 0 || u > 1) // if u out of range, return directly
-	{
-		return false;
-	}
-
-	float v = (dot00 * dot12 - dot01 * dot02) * inverDeno;
-	if (v < 0 || v > 1) // if v out of range, return directly
-	{
-		return false;
-	}
-
-	return u + v <= 1;
-}
-
-
-
-template<typename T>
-bool pointinTriangle(tvec2<T> A, tvec2<T> B, tvec2<T> C, tvec2<T> P)
-{
-	return   pointinTriangle(
-		tvec3<T>(A.x, A.y, 0),
-		tvec3<T>(B.x, B.y, 0),
-		tvec3<T>(C.x, C.y, 0),
-		tvec3<T>(P.x, P.y, 0));
-}
-
-
-/**
-*   射线与三角形相交
-*/
-template<typename T>
-bool intersectTriangle(
-	const tvec3<T>& orig,
-	const tvec3<T>& dir,
-	tvec3<T>& v0,
-	tvec3<T>& v1,
-	tvec3<T>& v2,
-	T* t,
-	T* u,
-	T* v
-)
-{
-	// Find vectors for two edges sharing vert0
-	tvec3<T>    edge1 = v1 - v0;
-	tvec3<T>    edge2 = v2 - v0;
-
-	// Begin calculating determinant - also used to calculate U parameter
-	tvec3<T>    pvec;
-	pvec = cross(dir, edge2);
-
-	// If determinant is near zero, ray lies in plane of triangle
-	T   det = dot(edge1, pvec);
-
-	tvec3<T>    tvec;
-	if (det > 0)
-	{
-		tvec = orig - v0;
-	}
-	else
-	{
-		tvec = v0 - orig;
-		det = -det;
-	}
-	if (det < 0.0001f)
-		return false;
-	// Calculate U parameter and test bounds
-	*u = dot(tvec, pvec);
-	if (*u < 0.0f || *u > det)
-		return false;
-
-	// Prepare to test V parameter
-	tvec3<T>    qvec;
-	qvec = cross(tvec, edge1);
-
-	// Calculate V parameter and test bounds
-	*v = dot(dir, qvec);
-	if (*v < T(0.0f) || *u + *v > det)
-		return false;
-
-	*t = dot(edge2, qvec);
-	T   fInvDet = T(1.0) / det;
-	*t *= fInvDet;
-	*u *= fInvDet;
-	*v *= fInvDet;
-
-	return true;
-}
-/**
-*   计算三角形面积
-*/
-template<typename T> T calcTriangleArea(const tvec3<T>& pt1, const tvec3<T>& pt2, const tvec3<T>& pt3)
-{
-	tvec3<T> e1 = pt2 - pt1;
-	tvec3<T> e2 = pt3 - pt1;
-	tvec3<T> e3 = cross(e1, e2);
-	return  length(e3) * T(0.5);
-}
-
 
 template <typename T>
 bool operator==(tvec3<T> const & v1, tvec3<T> const & v2)
@@ -1011,6 +775,18 @@ tvec3<T> operator-- (tvec3<T> const & v, int)
 		v.x - T(1),
 		v.y - T(1),
 		v.z - T(1));
+}
+
+template<typename T>
+bool operator >(const tvec3<T>& left, const tvec3<T>& right)
+{
+	return  left.x > right.x && left.y > right.y && left.z > right.z;
+}
+
+template<typename T>
+bool operator <(const tvec3<T>& left, const tvec3<T>& right)
+{
+	return  left.x < right.x && left.y < right.y && left.z < right.z;
 }
 
 //*****************************************************************************
@@ -3334,15 +3110,235 @@ bool operator!=(tmat4x4<T> const & m1, tmat4x4<T> const & m2)
 	return (m1[0] != m2[0]) || (m1[1] != m2[1]) || (m1[2] != m2[2]) || (m1[3] != m2[3]);
 }
 
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//! 射线类
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
+//*****************************************************************************
+//! \brief TMP
+//*****************************************************************************
+//! \brief Cal the angle between two vector.
+/*! \param a	one vec3
+	\param b	another vec3
+	\retval		return the value.
+
+	A·B = |A|*|B|*cos(@)
+	cos(@) = A·B / | A | *| B |
+	@ = acos(@)
+*/
+template <typename T>
+T angleBetweenVector(tvec3<T> const & a, tvec3<T> const & b)
+{
+#define Mag(V) (sqrtf(V.x*V.x + V.y*V.y + V.z*V.z))
+	T dotProduct = dot(a, b);
+	T vectorsMagnitude = Mag(a) * Mag(b);
+	T angle = acos(dotProduct / vectorsMagnitude);
+	if (_isnan(angle))
+	{
+		return	T(0);
+	}
+	else
+	{
+		return	angle;
+	}
+}
+
+template <typename T>
+static T clamp(T val, T minval, T maxval)
+{
+	assert(minval < maxval && "Invalid clamp range");
+	return MAX(MIN(val, maxval), minval);
+}
+
+template <typename T>
+inline   T  acosEx(T val)
+{
+	if (T(-1.0f) < val)
+	{
+		if (val < 1.0f)
+			return T(acos(val));
+		else
+			return T(0);
+	}
+	else
+	{
+		return T(PI);
+	}
+}
+
+template<typename T>
+inline  T angleBetween(const tvec3<T>& a, const tvec3<T>& b)
+{
+	T lenProduct = a.lengthf() * b.lengthf();
+
+	// Divide by zero check
+	if (lenProduct < 1e-6f)
+		lenProduct = 1e-6f;
+
+	float f = dot(a, b) / lenProduct;
+
+	f = clamp(f, T(-1.0), T(1.0));
+	return acosEx(f);
+
+}
+
+/**
+*   点在多边形里
+*   如果点在多边形中，则，点与边的夹角之和 == 360
+*/
+template<typename T>
+bool    insidePolyon(const tvec3<T>& point, const tvec3<T> polygon[], size_t count)
+{
+	T           MATCH_FACTOR = T(0.99);
+	T           angle = T(0.0);
+	tvec3<T>    vA, vB;
+	for (size_t i = 0; i < count; ++i)
+	{
+		vA = polygon[i] - point;
+		vB = polygon[(i + 1) % count] - point;
+		angle += angleBetweenVector(vA, vB);
+	}
+	if (angle >= (MATCH_FACTOR * TWO_PI))
+	{
+		return true;
+	}
+	return false;
+}
+
+template<typename T>
+bool    insidePolyon(const tvec2<T>& point, const tvec2<T> polygon[], size_t count)
+{
+	T           MATCH_FACTOR = T(0.99);
+	T           angle = T(0.0);
+	tvec2<T>    vA, vB;
+	for (size_t i = 0; i < count; ++i)
+	{
+		vA = polygon[i] - point;
+		vB = polygon[(i + 1) % count] - point;
+		tvec3<T>    a(vA.x, vA.y, 0);
+		tvec3<T>    b(vB.x, vB.y, 0);
+		angle += angleBetweenVector<T>(a, b);
+	}
+	if (angle >= (MATCH_FACTOR * TWO_PI))
+	{
+		return true;
+	}
+	return false;
+}
+
+template<typename T>
+bool pointinTriangle(tvec3<T> A, tvec3<T> B, tvec3<T> C, tvec3<T> P)
+{
+	tvec3<T> v0 = C - A;
+	tvec3<T> v1 = B - A;
+	tvec3<T> v2 = P - A;
+
+	float dot00 = dot(v0, v0);
+	float dot01 = dot(v0, v1);
+	float dot02 = dot(v0, v2);
+	float dot11 = dot(v1, v1);
+	float dot12 = dot(v1, v2);
+
+	float inverDeno = 1 / (dot00 * dot11 - dot01 * dot01);
+
+	float u = (dot11 * dot02 - dot01 * dot12) * inverDeno;
+	if (u < 0 || u > 1) // if u out of range, return directly
+	{
+		return false;
+	}
+
+	float v = (dot00 * dot12 - dot01 * dot02) * inverDeno;
+	if (v < 0 || v > 1) // if v out of range, return directly
+	{
+		return false;
+	}
+
+	return u + v <= 1;
+}
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T>
+bool pointinTriangle(tvec2<T> A, tvec2<T> B, tvec2<T> C, tvec2<T> P)
+{
+	return   pointinTriangle(
+		tvec3<T>(A.x, A.y, 0),
+		tvec3<T>(B.x, B.y, 0),
+		tvec3<T>(C.x, C.y, 0),
+		tvec3<T>(P.x, P.y, 0));
+}
+
+
+/**
+*   射线与三角形相交
+*/
+template<typename T>
+bool intersectTriangle(
+	const tvec3<T>& orig,
+	const tvec3<T>& dir,
+	tvec3<T>& v0,
+	tvec3<T>& v1,
+	tvec3<T>& v2,
+	T* t,
+	T* u,
+	T* v
+)
+{
+	// Find vectors for two edges sharing vert0
+	tvec3<T>    edge1 = v1 - v0;
+	tvec3<T>    edge2 = v2 - v0;
+
+	// Begin calculating determinant - also used to calculate U parameter
+	tvec3<T>    pvec;
+	pvec = cross(dir, edge2);
+
+	// If determinant is near zero, ray lies in plane of triangle
+	T   det = dot(edge1, pvec);
+
+	tvec3<T>    tvec;
+	if (det > 0)
+	{
+		tvec = orig - v0;
+	}
+	else
+	{
+		tvec = v0 - orig;
+		det = -det;
+	}
+	if (det < 0.0001f)
+		return false;
+	// Calculate U parameter and test bounds
+	*u = dot(tvec, pvec);
+	if (*u < 0.0f || *u > det)
+		return false;
+
+	// Prepare to test V parameter
+	tvec3<T>    qvec;
+	qvec = cross(tvec, edge1);
+
+	// Calculate V parameter and test bounds
+	*v = dot(dir, qvec);
+	if (*v < T(0.0f) || *u + *v > det)
+		return false;
+
+	*t = dot(edge2, qvec);
+	T   fInvDet = T(1.0) / det;
+	*t *= fInvDet;
+	*u *= fInvDet;
+	*v *= fInvDet;
+
+	return true;
+}
+/**
+*   计算三角形面积
+*/
+template<typename T> T calcTriangleArea(const tvec3<T>& pt1, const tvec3<T>& pt2, const tvec3<T>& pt3)
+{
+	tvec3<T> e1 = pt2 - pt1;
+	tvec3<T> e2 = pt3 - pt1;
+	tvec3<T> e3 = cross(e1, e2);
+	return  length(e3) * T(0.5);
+}
+
+//*****************************************************************************
+// ! \brief Ray
+//*****************************************************************************
 template <typename T>
 typename tvec2<T>::value_type length(tvec2<T> const & v)
 {
@@ -3921,11 +3917,9 @@ tquat<valType> angleAxis(valType angle, tvec3<valType> const & axis)
 	return result;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//*****************************************************************************
+// ! \brief Transform
+//*****************************************************************************
 template <typename T>
 tmat4x4<T> translate(tmat4x4<T> const & m, tvec3<T> const & v)
 {
