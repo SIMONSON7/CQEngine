@@ -30,39 +30,39 @@ public:
 	virtual const std::string& getName() const;
 
 public:
-	void setLocalPos(const float3& _pos);
+	void setLocalPos(const Vector3& _pos);
 
-	void setRotEuler(const float3& _rot);
+	void setRotEuler(const Vector3& _rot);
 
-	void setRotQuart(const quaternion& _quart);
+	void setRotQuart(const Quaternion& _quart);
 
-	void setScale(const float3& _scale);
+	void setScale(const Vector3& _scale);
 
-	float3& getPos();
+	Vector3& getPos();
 
-	float3& getRotEuler();
+	Vector3& getRotEuler();
 
-	quaternion& getRotQuart();
+	Quaternion& getRotQuart();
 
-	float3& getScale();
+	Vector3& getScale();
 
-	void lookAt(float3 _worldTarget, float3 _worldPos, float3 _worldUp);
+	void lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp);
 
 	Matrix4& calWorldToLcalMatRH();
 
 	Matrix4& calWorldToLcalMatLH();
 
 private:
-	float3 scale_;
-	float3 localPos_;
-	float3 worldPos_;
-	float3 eulerRot_;
-	quaternion quatrRot_;
+	Vector3 scale_;
+	Vector3 localPos_;
+	Vector3 worldPos_;
+	Vector3 eulerRot_;
+	Quaternion quatrRot_;
 
 	// Local coordinate system.
-	float3 up_;
-	float3 right_;
-	float3 target_;
+	Vector3 up_;
+	Vector3 right_;
+	Vector3 target_;/* FRONT = POS - TARGET */
 };
 
 NS_CQ_END

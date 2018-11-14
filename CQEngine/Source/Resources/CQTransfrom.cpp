@@ -31,12 +31,12 @@ const std::string& CQTransform::getName() const
 	return "Transform";
 }
 
-void CQTransform::setLocalPos(const float3& _pos)
+void CQTransform::setLocalPos(const Vector3& _pos)
 {
 	localPos_ = _pos;
 }
 
-void CQTransform::setRotEuler(const float3 & _rot)
+void CQTransform::setRotEuler(const Vector3& _rot)
 {
 	eulerRot_ = _rot;
 	quaternion* q = CQ_NEW(quaternion, _rot);
@@ -44,23 +44,23 @@ void CQTransform::setRotEuler(const float3 & _rot)
 	CQ_DELETE(q, quaternion);
 }
 
-void CQTransform::setRotQuart(const quaternion& _quart)
+void CQTransform::setRotQuart(const Quaternion& _quart)
 {
 	quatrRot_ = _quart;
 	eulerRot_ = eulerAngles(_quart);
 }
 
-void CQTransform::setScale(const float3& _scale)
+void CQTransform::setScale(const Vector3& _scale)
 {
 	scale_ = _scale;
 }
 
-float3& CQTransform::getPos()
+Vector3& CQTransform::getPos()
 {
 	return localPos_;
 }
 
-float3& CQTransform::getRotEuler()
+Vector3& CQTransform::getRotEuler()
 {
 	return eulerRot_;
 }
@@ -70,24 +70,24 @@ quaternion& CQTransform::getRotQuart()
 	return quatrRot_;
 }
 
-float3& CQTransform::getScale()
+Vector3& CQTransform::getScale()
 {
 	return scale_;
 }
 
-void CQTransform::lookAt(float3 _worldTarget, float3 _worldPos, float3 _worldUp)
+void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp)
 {
 	target_			= _worldTarget;
 	worldPos_		= _worldPos;
-	float3 front	= normalize(worldPos_ - target_);
-	float3 u		= normalize(_worldUp);
+	Vector3 front	= normalize(worldPos_ - target_);
+	Vector3 u		= normalize(_worldUp);
 	right_			= normalize(cross(front, u));
 	up_				= cross(right_, front);
 }
 
 Matrix4& CQTransform::calWorldToLcalMatRH()
 {
-	float3 front = normalize(worldPos_ - target_);
+	Vector3 front = normalize(worldPos_ - target_);
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
@@ -106,7 +106,7 @@ Matrix4& CQTransform::calWorldToLcalMatRH()
 
 Matrix4& CQTransform::calWorldToLcalMatLH()
 {
-	float3 front = normalize(worldPos_ - target_);
+	Vector3 front = normalize(worldPos_ - target_);
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
