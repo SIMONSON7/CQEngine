@@ -22,7 +22,7 @@ public:
 
 	virtual ~CQTransform();
 
-	CQTransform(const CQTransform &);
+	CQTransform(const CQTransform & other);
 
 	CQTransform& operator=(const CQTransform &);
 
@@ -30,7 +30,12 @@ public:
 	virtual const std::string& getName() const;
 
 public:
+	// Build local right hand coordinate system.
+	void lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp);
+
 	void setLocalPos(const Vector3& _pos);
+
+	void setWorldPos(const Vector3& _pos);
 
 	void setRotEuler(const Vector3& _rot);
 
@@ -38,7 +43,9 @@ public:
 
 	void setScale(const Vector3& _scale);
 
-	Vector3& getPos();
+	Vector3& getLocalPos();
+
+	Vector3& getWorldPos();
 
 	Vector3& getRotEuler();
 
@@ -46,7 +53,9 @@ public:
 
 	Vector3& getScale();
 
-	void lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp);
+	Vector3& getFront();
+
+	Vector3& getUp();
 
 	Matrix4& calWorldToLcalMatRH();
 

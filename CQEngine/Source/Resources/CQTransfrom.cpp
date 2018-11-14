@@ -16,9 +16,21 @@ CQTransform::~CQTransform()
 
 }
 
-CQTransform::CQTransform(const CQTransform &)
+CQTransform::CQTransform(const CQTransform & other)
 {
+	//this->scale_ = other.getScale();
+	//this->localPos_ = other.getLocalPos();
 
+	//Vector3 scale_;
+	//Vector3 localPos_;
+	//Vector3 worldPos_;
+	//Vector3 eulerRot_;
+	//Quaternion quatrRot_;
+
+	//// Local coordinate system.
+	//Vector3 up_;
+	//Vector3 right_;
+	//Vector3 target_;/* FRONT = POS - TARGET */
 }
 
 CQTransform& CQTransform::operator=(const CQTransform &)
@@ -36,12 +48,25 @@ void CQTransform::setLocalPos(const Vector3& _pos)
 	localPos_ = _pos;
 }
 
+void CQTransform::setWorldPos(const Vector3& _pos)
+{
+	worldPos_ = _pos;
+	lookAt(target_, worldPos_, up_);
+}
+
 void CQTransform::setRotEuler(const Vector3& _rot)
 {
 	eulerRot_ = _rot;
 	quaternion* q = CQ_NEW(quaternion, _rot);
 	quatrRot_ = *q;
 	CQ_DELETE(q, quaternion);
+
+	//auto angleRight = eulerRot_.x;
+	//auto angleUp    = eulerRot_.y;
+	//auto angleFront = eulerRot_.z;
+
+	//up_ = rotate(angleRight, up_);
+
 }
 
 void CQTransform::setRotQuart(const Quaternion& _quart)
@@ -55,9 +80,14 @@ void CQTransform::setScale(const Vector3& _scale)
 	scale_ = _scale;
 }
 
-Vector3& CQTransform::getPos()
+Vector3& CQTransform::getLocalPos()
 {
 	return localPos_;
+}
+
+Vector3& CQTransform::getWorldPos()
+{
+	return worldPos_;
 }
 
 Vector3& CQTransform::getRotEuler()
@@ -75,6 +105,16 @@ Vector3& CQTransform::getScale()
 	return scale_;
 }
 
+Vector3& CQTransform::getFront()
+{
+	return normalize(worldPos_ - target_);
+}
+
+Vector3& CQTransform::getUp()
+{
+	return up_;
+}
+
 void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp)
 {
 	target_			= _worldTarget;
@@ -87,7 +127,7 @@ void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _world
 
 Matrix4& CQTransform::calWorldToLcalMatRH()
 {
-	Vector3 front = normalize(worldPos_ - target_);
+	Vector3 front = getFront();
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
@@ -106,7 +146,7 @@ Matrix4& CQTransform::calWorldToLcalMatRH()
 
 Matrix4& CQTransform::calWorldToLcalMatLH()
 {
-	Vector3 front = normalize(worldPos_ - target_);
+	Vector3 front = getFront();
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
