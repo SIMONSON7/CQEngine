@@ -1,12 +1,13 @@
-/*
-*
-*		qiu_hao		2018/01/03		09:04.am
-*/
+//*****************************************************************************
+//
+//! \file CQMath.h
+//! \brief A tiny math library.
+//! \author qiu_hao
+//! \date 2018/01/03 09:04.am
+//
+//*****************************************************************************
 #ifndef __CQMATH_H__
 #define __CQMATH_H__
-
-#include "CQMacros.h"
-//#include "CQVector2.h"
 
 #include <cstdio>
 #include <cassert>
@@ -14,10 +15,9 @@
 #include <vector>
 #include <map>
 #include <limits>
+#include "CQMacros.h"
 
 NS_CQ_BEGIN
-
-// Use the tiny math library for temporary.
 
 #define PI                      3.14159265358979323
 #define TWO_PI                  6.28318530717958647
@@ -38,7 +38,9 @@ typedef unsigned short          ushort;
 typedef unsigned int            uint;
 typedef unsigned long           ulong;
 
-
+//*****************************************************************************
+// ! \brief LargeInt
+//*****************************************************************************
 union LargeInt
 {
 	struct  __LARGE_INT
@@ -48,9 +50,7 @@ union LargeInt
 	}_largeInt;
 	int64       int64Data;
 };
-/**
-*   产生64位数字
-*/
+
 inline  int64   makeInt64(unsigned low, unsigned hi)
 {
 	LargeInt    intdata;
@@ -59,7 +59,9 @@ inline  int64   makeInt64(unsigned low, unsigned hi)
 	return  intdata.int64Data;
 }
 
-
+//*****************************************************************************
+// ! \brief tvec2
+//*****************************************************************************
 template <typename T>
 struct tvec2
 {
@@ -374,7 +376,9 @@ tvec2<T> operator-- (tvec2<T> const & v, int)
 		);
 }
 
-
+//*****************************************************************************
+// ! \brief tvec3
+//*****************************************************************************
 template <typename T>
 struct tvec3
 {
@@ -636,12 +640,15 @@ tvec3<T> rotateZ(tvec3<T> const & v, T angle)
 	res.y = v.x * s + v.y * c;
 	return res;
 }
-/**
-*   两个向量的夹角
-*   定义两个向量 A,B
-*   A·B = |A|*|B|*cos(@)
-*   cos(@) = A·B/|A|*|B|
-*   @ = acos(@)
+
+//! \brief Cal the angle between two vector.
+/*! \param a	one vec3
+	\param b	another vec3
+	\retval		return the value.
+
+	A·B = |A|*|B|*cos(@)
+	cos(@) = A·B / | A | *| B |
+	@ = acos(@)
 */
 template <typename T>
 T angleBetweenVector(tvec3<T> const & a, tvec3<T> const & b)
@@ -1005,14 +1012,16 @@ tvec3<T> operator-- (tvec3<T> const & v, int)
 		v.y - T(1),
 		v.z - T(1));
 }
+
+//*****************************************************************************
+// ! \brief tvec4
+//*****************************************************************************
 template <typename T>
 struct tvec4
 {
 	typedef T           value_type;
 	typedef std::size_t size_type;
 	typedef tvec4<T>  type;
-
-
 
 	value_type x, y, z, w;
 
@@ -1399,6 +1408,9 @@ bool operator!=(tvec4<T> const & v1, tvec4<T> const & v2)
 	return (v1.x != v2.x) || (v1.y != v2.y) || (v1.z != v2.z) || (v1.w != v2.w);
 }
 
+//*****************************************************************************
+// ! \brief trect
+//*****************************************************************************
 template<typename T>
 class   trect
 {
@@ -1437,6 +1449,9 @@ public:
 	T    _bottom;
 };
 
+//*****************************************************************************
+// ! \brief tmat2x2
+//*****************************************************************************
 template <typename T>
 struct tmat2x2
 {
@@ -1731,8 +1746,9 @@ tmat2x2<T> operator*(tmat2x2<T> const & m1, tmat2x2<T> const & m2)
 		m1[0][1] * m2[1][0] + m1[1][1] * m2[1][1]);
 }
 
-
-
+//*****************************************************************************
+// ! \brief tmat3x3
+//*****************************************************************************
 template <typename T>
 struct tmat3x3
 {
@@ -2207,8 +2223,9 @@ bool operator!=(tmat3x3<T> const & m1, tmat3x3<T> const & m2)
 	return (m1[0] != m2[0]) || (m1[1] != m2[1]) || (m1[2] != m2[2]);
 }
 
-
-
+//*****************************************************************************
+// ! \brief tmat4x4
+//*****************************************************************************
 template <typename T>
 struct tmat4x4
 {
@@ -3419,11 +3436,9 @@ tvec4<T> normalize(tvec4<T> const & x)
 	return x * inversesqrt(sqr);
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
+//*****************************************************************************
+//! \brief tquat
+//*****************************************************************************
 template <typename T>
 struct tquat
 {
@@ -5831,7 +5846,6 @@ protected:
 	Plane<T>    _planes[6];
 };
 
-
 typedef float             real;
 typedef tvec2<int>        int2;
 typedef tvec2<float>      float2;
@@ -5852,14 +5866,6 @@ typedef tvec4<double>     double4;
 typedef tvec4<real>       real4;
 typedef tvec4<real>       Vector4;
 
-typedef trect<real>       rect4;
-
-typedef AxisAlignedBox<float>   aabb3d;
-typedef AxisAlignedBox<real>    aabbr;
-
-typedef AxisAlignedBox2D<float>   AABB2D;
-typedef AxisAlignedBox2D<real>    aabb2dr;
-
 typedef tmat2x2<float>      matrix2;
 typedef tmat2x2<float>      Matrix2;
 typedef tmat3x3<float>      matrix3;
@@ -5870,11 +5876,16 @@ typedef tmat4x4<real>       matrix4r;
 
 typedef tquat<float>        quaternion;
 typedef tquat<real>         quatr;
+typedef tquat<real>         Quaternion;
+
+typedef trect<real>       rect4;
+typedef AxisAlignedBox<float>   aabb3d;
+typedef AxisAlignedBox<real>    aabbr;
+typedef AxisAlignedBox2D<float>   AABB2D;
+typedef AxisAlignedBox2D<real>    aabb2dr;
 typedef tray<float>         Ray;
 typedef tfrustum<float>     Frustum;
-
 typedef tellipsoidModel<float>  ellipsoid;
-
 
 NS_CQ_END
 
