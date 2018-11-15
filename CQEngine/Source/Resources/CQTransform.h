@@ -24,7 +24,7 @@ public:
 
 	CQTransform(const CQTransform & other);
 
-	CQTransform& operator=(const CQTransform &);
+	CQTransform& operator=(const CQTransform &other);
 
 public:
 	virtual const std::string& getName() const;
@@ -60,6 +60,9 @@ public:
 	Matrix4& calWorldToLcalMatRH();
 
 	Matrix4& calWorldToLcalMatLH();
+
+private:
+	void __setTransform(const CQTransform & other);
 
 private:
 	Vector3 scale_;

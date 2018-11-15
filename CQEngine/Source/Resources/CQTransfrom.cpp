@@ -18,23 +18,12 @@ CQTransform::~CQTransform()
 
 CQTransform::CQTransform(const CQTransform & other)
 {
-	//this->scale_ = other.getScale();
-	//this->localPos_ = other.getLocalPos();
-
-	//Vector3 scale_;
-	//Vector3 localPos_;
-	//Vector3 worldPos_;
-	//Vector3 eulerRot_;
-	//Quaternion quatrRot_;
-
-	//// Local coordinate system.
-	//Vector3 up_;
-	//Vector3 right_;
-	//Vector3 target_;/* FRONT = POS - TARGET */
+	__setTransform(other);
 }
 
-CQTransform& CQTransform::operator=(const CQTransform &)
+CQTransform& CQTransform::operator=(const CQTransform & other)
 {
+	__setTransform(other);
 	return *this;
 }
 
@@ -61,12 +50,8 @@ void CQTransform::setRotEuler(const Vector3& _rot)
 	quatrRot_ = *q;
 	CQ_DELETE(q, quaternion);
 
-	//auto angleRight = eulerRot_.x;
-	//auto angleUp    = eulerRot_.y;
-	//auto angleFront = eulerRot_.z;
-
-	//up_ = rotate(angleRight, up_);
-
+	auto rotMat = mat4_cast(quatrRot_);
+	up_ = up_ * rotMat;
 }
 
 void CQTransform::setRotQuart(const Quaternion& _quart)
@@ -161,4 +146,18 @@ Matrix4& CQTransform::calWorldToLcalMatLH()
 	res[3][1] = -dot(up_,    target_);
 	res[3][2] = -dot(front,  target_);
 	return res;
+}
+
+void CQTransform::__setTransform(const CQTransform & other)
+{
+	//Vector3 scale_;
+	//Vector3 localPos_;
+	//Vector3 worldPos_;
+	//Vector3 eulerRot_;
+	//Quaternion quatrRot_;
+
+	//// Local coordinate system.
+	//Vector3 up_;
+	//Vector3 right_;
+	//Vector3 target_;/* FRONT = POS - TARGET */
 }
