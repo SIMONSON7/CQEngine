@@ -11,9 +11,12 @@
 #define __CQCAMERA_H__
 
 #include <memory>
+#include "CQMath.h"
 #include "CQObject.h"
 
 NS_CQ_BEGIN
+
+class CQTransform;
 
 class CQCamera : CQObject
 {
@@ -24,23 +27,32 @@ public:
 		PERSPECTIVE,
 		ORTHOGRAPHIC,
 	};
-//public:
-//	explicit CQCamera();
-//
-//	virtual ~CQCamera();
-//
-//public:
-//	virtual void onInit();
-//
-//	virtual void update();
-//
-//	virtual void onDestory();
-//
-//public:
-//	std::shared_ptr<CQTransform> getTransform();
+public:
+	explicit CQCamera();
+
+	virtual ~CQCamera();
+
+public:
+	virtual void onInit();
+
+	virtual void update();
+
+	virtual void onDestory();
+
+public:
+	void setType(PROJECTION_TYPE _type);
+
+	Matrix4& calPerspectiveMat(float _fovy, float _aspect, float _zNear, float _zFar);
+
+	Matrix4& calOrthographicMat(float _left, float _right, float _bottom,float _top, float _zNear, float _zFar);
+
+	std::shared_ptr<CQTransform> getTransform();
+
+	PROJECTION_TYPE getType() const;
 
 private:
-
+	Matrix4 projMat_;
+	PROJECTION_TYPE type_;
 };
 
 NS_CQ_END
