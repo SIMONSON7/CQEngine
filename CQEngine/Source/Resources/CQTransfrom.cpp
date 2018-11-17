@@ -5,8 +5,11 @@ USING_NS_CQ;
 
 CQTransform::CQTransform()
 	:
+	up_(0, 1, 0),
+	right_(1, 0, 0),
 	scale_(1, 1, 1),
-	up_(0, 1, 0)
+	worldPos_(0, 0, 0),
+	eulerRot_(0, 0, 0)
 {
 
 }
@@ -46,12 +49,12 @@ void CQTransform::setWorldPos(const Vector3& _pos)
 void CQTransform::setRotEuler(const Vector3& _rot)
 {
 	eulerRot_ = _rot;
-	quaternion* q = CQ_NEW(quaternion, _rot);
-	quatrRot_ = *q;
-	CQ_DELETE(q, quaternion);
+	quaternion q(_rot);
+	quatrRot_ = q;
 
 	auto rotMat = mat4_cast(quatrRot_);
-	up_ = up_ * rotMat;
+	up_		= up_ * rotMat;
+	right_	= right_ * rotMat;
 }
 
 void CQTransform::setRotQuart(const Quaternion& _quart)
@@ -92,7 +95,7 @@ Vector3& CQTransform::getScale()
 
 Vector3& CQTransform::getFront()
 {
-	return normalize(worldPos_ - target_);
+	return normalize(cross(right_, up_));
 }
 
 Vector3& CQTransform::getUp()
@@ -112,7 +115,7 @@ void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _world
 
 Matrix4& CQTransform::calWorldToLcalMatRH()
 {
-	Vector3 front = getFront();
+	Vector3 front = normalize(worldPos_ - target_);
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
@@ -131,7 +134,7 @@ Matrix4& CQTransform::calWorldToLcalMatRH()
 
 Matrix4& CQTransform::calWorldToLcalMatLH()
 {
-	Vector3 front = getFront();
+	Vector3 front = normalize(worldPos_ - target_);
 	Matrix4 res(1);
 	res[0][0] =  right_.x;
 	res[1][0] =  right_.y;
@@ -150,14 +153,13 @@ Matrix4& CQTransform::calWorldToLcalMatLH()
 
 void CQTransform::__setTransform(const CQTransform & other)
 {
-	//Vector3 scale_;
-	//Vector3 localPos_;
-	//Vector3 worldPos_;
-	//Vector3 eulerRot_;
-	//Quaternion quatrRot_;
+	this->scale_ = other.scale_;
+	this->localPos_ = other.localPos_;
+	this->worldPos_ = other.worldPos_;
+	this->eulerRot_ = other.eulerRot_;
+	this->quatrRot_ = other.quatrRot_;
 
-	//// Local coordinate system.
-	//Vector3 up_;
-	//Vector3 right_;
-	//Vector3 target_;/* FRONT = POS - TARGET */
+	this->up_ = other.up_;;
+	this->right_ = other.right_;
+	this->target_ = other.target_;
 }
