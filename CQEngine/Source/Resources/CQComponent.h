@@ -18,8 +18,10 @@ NS_CQ_BEGIN
 class CQComponent
 {
 public:
-	virtual const std::string& getName() const = 0;
+	virtual std::string getName() const;
 
+protected:
+	std::string name_;
 };
 
 NS_CQ_END

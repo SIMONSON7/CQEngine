@@ -43,6 +43,8 @@ private:
 
 	std::shared_ptr<Data> d1_;
 	std::shared_ptr<Data> d2_;
+
+	CQCamera* camera_;
 };
 
 #endif /* __HELLOWORLD_SCENE_H__ */

@@ -37,8 +37,11 @@ std::shared_ptr<CQTransform> CQCamera::getTransform()
 	auto com = this->getComponentByName("Transform");
 	if (com == nullptr)
 	{
-		std::shared_ptr<CQTransform> tPtr = std::make_shared<CQTransform>();
-		auto cPtr = std::dynamic_pointer_cast<CQComponent>(tPtr);
+		std::shared_ptr<CQTransform> tPtr;
+		std::shared_ptr<CQComponent> cPtr;
+		tPtr = std::make_shared<CQTransform>();
+		cPtr = std::dynamic_pointer_cast<CQComponent>(tPtr);
+
 		this->setComponent(cPtr);
 		return tPtr;
 	}

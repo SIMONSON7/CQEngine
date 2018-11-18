@@ -23,7 +23,7 @@ const uint64_t CQObject::genID() const
 void CQObject::setComponent(std::shared_ptr<CQComponent> _component)
 {
 	CQASSERT(_component);
-	std::string key = _component->getName();
+	const std::string key = _component->getName();
 	compMap_[key] = _component;
 }
 

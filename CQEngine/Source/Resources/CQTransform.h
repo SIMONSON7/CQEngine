@@ -15,7 +15,7 @@
 
 NS_CQ_BEGIN
 
-class CQTransform : CQComponent
+class CQTransform : public CQComponent
 {
 public:
 	explicit CQTransform();
@@ -27,7 +27,7 @@ public:
 	CQTransform& operator=(const CQTransform &other);
 
 public:
-	virtual const std::string& getName() const;
+	virtual std::string getName() const;
 
 public:
 	// Build local right hand coordinate system.

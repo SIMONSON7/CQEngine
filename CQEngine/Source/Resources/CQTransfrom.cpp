@@ -30,7 +30,7 @@ CQTransform& CQTransform::operator=(const CQTransform & other)
 	return *this;
 }
 
-const std::string& CQTransform::getName() const
+std::string CQTransform::getName() const
 {
 	return "Transform";
 }

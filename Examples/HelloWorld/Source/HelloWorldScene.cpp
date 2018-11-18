@@ -7,7 +7,12 @@ REGISTER_START_SCENE(HelloWorldScene)
 void HelloWorldScene::onInit()
 {
 	dbgPuts("[HelloWorldScene] init success!");
-	
+
+	// camera
+	// TODO : should have a default camera.
+	camera_ = CQ_NEW(CQCamera);
+
+	// IO
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/shader/");
 	CQIO::addSearchPath(CQIO::getCurDir() + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
@@ -90,6 +95,13 @@ void HelloWorldScene::update()
 	glClearColor(1.0f, 1.f, 0.f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// camera
+	auto transform = camera_->getTransform();
+	transform->lookAt(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	auto viewMat = transform->calWorldToLcalMatRH();
+	auto projMat = camera_->calPerspectiveMat(60, 800/600, 0 , 100);
+
+	// program
 	program_.load();
 
 	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
@@ -115,6 +127,7 @@ void HelloWorldScene::onDestory()
 
 	program_.unLoad();
 	CQ_DELETE(texture_, CQGLTexture);
+	CQ_DELETE(camera_, CQCamera);
 	CQResLoader::shareLoader()->unloadImgData(img_);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
