@@ -98,23 +98,27 @@ void HelloWorldScene::update()
 	// camera
 	// NOTICE: zNear can NOT be zero, otherwise result will occur NAN!
 	// TODO : add Assert.
-	Matrix4 viewMat = lookAt(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	//Matrix4 viewMat = lookAt(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	//Matrix4 projMat = perspective(60.0f, 1.5f, 0.1f, 100.0f);
+
 	auto transform = camera_->getTransform();
 	transform->lookAt(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	float aspect(800.0f / 600.0f);
-	//auto viewMat = transform->calWorldToLcalMatRH();
+	auto viewMat = transform->calWorldToLcalMatRH();
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
 
 	// program
 	program_.load();
 
 	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
-	//Matrix4 mat(1.0f);
-	//Vector3 v(0.0f, 1.0f, 0.0f);
-	//Matrix4 model = rotate(mat, ++angle_, v);
-	Matrix4 modelMat(1);
-	modelMat.translate(0.0f, 0.0f, -1.0f);
+	Matrix4 tmp(1.0f);
+	Vector3 v(0.0f, 1.0f, 0.0f);
+	Matrix4 rotateMat = rotate(tmp, ++angle_, v);
+
+	//Matrix4 translateMat(1);
+	//translateMat.translate(0.0f, 0.0f, -1.0f);
+
+	Matrix4 modelMat = rotateMat;//* translateMat;
 
 	Matrix4 mvp = projMat * viewMat * modelMat;
 	program_.setMatrix("mvp", mvp);

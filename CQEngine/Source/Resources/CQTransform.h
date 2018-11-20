@@ -75,6 +75,8 @@ private:
 	Vector3 up_;
 	Vector3 right_;
 	Vector3 target_;/* FRONT = POS - TARGET */
+
+	Matrix4 toLocalMat_;
 };
 
 NS_CQ_END

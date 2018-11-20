@@ -9,7 +9,8 @@ CQTransform::CQTransform()
 	right_(1, 0, 0),
 	scale_(1, 1, 1),
 	worldPos_(0, 0, 0),
-	eulerRot_(0, 0, 0)
+	eulerRot_(0, 0, 0),
+	toLocalMat_(1)
 {
 
 }
@@ -116,39 +117,37 @@ void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _world
 Matrix4& CQTransform::calWorldToLcalMatRH()
 {
 	Vector3 front = normalize(worldPos_ - target_);
-	Matrix4 res(1);
-	res[0][0] =  right_.x;
-	res[1][0] =  right_.y;
-	res[2][0] =  right_.z;
-	res[0][1] =  up_.x;
-	res[1][1] =  up_.y;
-	res[2][1] =  up_.z;
-	res[0][2] = -front.x;
-	res[1][2] = -front.y;
-	res[2][2] = -front.z;
-	res[3][0] = -dot(right_, target_);
-	res[3][1] = -dot(up_,    target_);
-	res[3][2] =  dot(front,  target_);
-	return res;
+	toLocalMat_[0][0] =  right_.x;
+	toLocalMat_[1][0] =  right_.y;
+	toLocalMat_[2][0] =  right_.z;
+	toLocalMat_[0][1] =  up_.x;
+	toLocalMat_[1][1] =  up_.y;
+	toLocalMat_[2][1] =  up_.z;
+	toLocalMat_[0][2] = -front.x;
+	toLocalMat_[1][2] = -front.y;
+	toLocalMat_[2][2] = -front.z;
+	toLocalMat_[3][0] = -dot(right_, target_);
+	toLocalMat_[3][1] = -dot(up_,    target_);
+	toLocalMat_[3][2] =  dot(front,  target_);
+	return toLocalMat_;
 }
 
 Matrix4& CQTransform::calWorldToLcalMatLH()
 {
 	Vector3 front = normalize(worldPos_ - target_);
-	Matrix4 res(1);
-	res[0][0] =  right_.x;
-	res[1][0] =  right_.y;
-	res[2][0] =  right_.z;
-	res[0][1] =  up_.x;
-	res[1][1] =  up_.y;
-	res[2][1] =  up_.z;
-	res[0][2] =  front.x;
-	res[1][2] =  front.y;
-	res[2][2] =  front.z;
-	res[3][0] = -dot(right_, target_);
-	res[3][1] = -dot(up_,    target_);
-	res[3][2] = -dot(front,  target_);
-	return res;
+	toLocalMat_[0][0] =  right_.x;
+	toLocalMat_[1][0] =  right_.y;
+	toLocalMat_[2][0] =  right_.z;
+	toLocalMat_[0][1] =  up_.x;
+	toLocalMat_[1][1] =  up_.y;
+	toLocalMat_[2][1] =  up_.z;
+	toLocalMat_[0][2] =  front.x;
+	toLocalMat_[1][2] =  front.y;
+	toLocalMat_[2][2] =  front.z;
+	toLocalMat_[3][0] = -dot(right_, target_);
+	toLocalMat_[3][1] = -dot(up_,    target_);
+	toLocalMat_[3][2] = -dot(front,  target_);
+	return toLocalMat_;
 }
 
 void CQTransform::__setTransform(const CQTransform & other)
@@ -162,4 +161,6 @@ void CQTransform::__setTransform(const CQTransform & other)
 	this->up_ = other.up_;;
 	this->right_ = other.right_;
 	this->target_ = other.target_;
+
+	this->toLocalMat_ = other.toLocalMat_;
 }
