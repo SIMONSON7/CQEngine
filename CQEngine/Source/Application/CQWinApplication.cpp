@@ -129,65 +129,95 @@ void CQWinApp::__createWnd()
 	UpdateWindow(hWnd_);
 }
 
+int CQWinApp::getWndWidth() const
+{
+	return winWidth_;
+}
+
+int CQWinApp::getWndHeight() const
+{
+	return winHeight_;
+}
+
+void CQWinApp::wndResize(int _width, int _height)
+{
+	winWidth_  = _width;
+	winHeight_ = _height;
+}
+
 LRESULT CALLBACK CQWinApp::wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	switch (_nMsg)
 	{
-	case WM_CREATE:
-	{
+		case WM_CREATE:
+		{
 
 
-	}
-	break;
-	case WM_COMMAND:
-	{
-
-	}
-	break;
-	case WM_PAINT:
-	{
-
-	}
-	break;
-	case WM_LBUTTONDOWN:
-	{
-
-	}
-	break;
-	case WM_LBUTTONUP:
-	{
-
-	}
-	break;
-	case WM_RBUTTONDOWN:
-	{
-
-	}
-	break;
-	case WM_RBUTTONUP:
-	{
-
-	}
-	break;
-	case WM_MOUSEMOVE:
-	{
-
-	}
-	break;
-	case WM_LBUTTONDBLCLK:
-
+		}
 		break;
-	case WM_MOUSEWHEEL:
-	{
+		case WM_COMMAND:
+		{
 
-	}
-	break;
-	case WM_DESTROY:
-	{
-		isExit_ = true;
-		PostQuitMessage(0);
-	}
-	break;
+		}
+		break;
+		case WM_PAINT:
+		{
+
+		}
+		break;
+		case WM_LBUTTONDOWN:
+		{
+
+		}
+		break;
+		case WM_LBUTTONUP:
+		{
+
+		}
+		break;
+		case WM_RBUTTONDOWN:
+		{
+
+		}
+		break;
+		case WM_RBUTTONUP:
+		{
+
+		}
+		break;
+		case WM_MOUSEMOVE:
+		{
+
+		}
+		break;
+		case WM_LBUTTONDBLCLK:
+		{
+
+		}
+		break;
+		case WM_MOUSEWHEEL:
+		{
+
+		}
+		break;
+		case WM_SIZE:
+		{
+			int width = (int)(LOWORD(_lParam));
+			int height = (int)(HIWORD(_lParam));
+			//////////// TMP ! ////////////
+			/// NEED REFACTOR NOW! //////
+			if (g_app != nullptr)
+			{
+				CQCore::shareCore()->shareCQRender()->resize(width, height);
+			}
+		}
+		break;
+		case WM_DESTROY:
+		{
+			isExit_ = true;
+			PostQuitMessage(0);
+		}
+		break;
 	}
 	return DefWindowProc(_hWnd, _nMsg,
 		_wParam, _lParam);

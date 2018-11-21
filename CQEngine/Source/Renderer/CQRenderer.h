@@ -32,6 +32,9 @@ public:
 
 	void destory();
 
+public:
+	void resize(int _width, int _height);
+
 private:
 	friend class CQCore;
 

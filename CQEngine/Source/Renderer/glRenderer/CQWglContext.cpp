@@ -118,6 +118,14 @@ void CQWglContext::swapBuff()
 	}
 }
 
+void CQWglContext::resizeView(int _width, int _height)
+{
+	if (hdc_)
+	{
+		glViewport(0, 0, (GLsizei)_width, _height);
+	}
+}
+
 void CQWglContext::printRenderInfo()
 {
 	// OpenGL info

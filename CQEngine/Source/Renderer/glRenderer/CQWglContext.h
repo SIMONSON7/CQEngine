@@ -26,6 +26,8 @@ struct CQWglContext
 
 	void swapBuff();
 
+	void resizeView(int _width, int _height);
+
 	void destroy();
 
 	void printRenderInfo();

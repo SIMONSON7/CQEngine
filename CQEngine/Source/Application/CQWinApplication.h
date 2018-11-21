@@ -25,17 +25,21 @@ public:
 
 	virtual ~CQWinApp();
 
-	///
+public:
 	virtual void run();
 
-	///
 	virtual void init();
 
-	///
 	virtual void tick();
 
-	///
 	virtual void destroy();
+
+public:
+	int getWndWidth() const;
+
+	int getWndHeight() const;
+
+	void wndResize(int _width, int _height);
 
 public:
 	static LRESULT CALLBACK  wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);

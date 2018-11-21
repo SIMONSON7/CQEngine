@@ -25,6 +25,11 @@ void CQRenderer::destory()
 	ctx_.destroy();
 }
 
+void CQRenderer::resize(int _width, int _height)
+{
+	ctx_.resizeView(_width, _height);
+}
+
 void CQRenderer::__initDisplayCtx(HWND _hWnd)
 {
 	ctx_.hWnd_ = _hWnd;
