@@ -10,6 +10,13 @@
 
 NS_CQ_BEGIN
 
+/*
+	run()
+	- init()
+	- tick()
+	- destroy()
+*/
+
 class CQAppI
 {
 public:

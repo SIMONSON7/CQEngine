@@ -41,22 +41,18 @@ public:
 
 	void wndResize(int _width, int _height);
 
-public:
-	static LRESULT CALLBACK  wndProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
-
 private:
 	void __createWnd();
 
 	void __destroyWnd();
 
 private:
-	HINSTANCE hInstance_;
-	HWND hWnd_;
 	int winWidth_;
 	int	winHeight_;
 	const char *appName_;
 
-	static bool isExit_;
+	HWND hWnd_;
+	HINSTANCE hInstance_;
 };
 
 NS_CQ_END
