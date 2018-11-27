@@ -13,8 +13,8 @@ void HelloWorldScene::onInit()
 	camera_ = CQ_NEW(CQCamera);
 
 	// IO
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE" */+ "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE" */+ "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 	// shader
 	d1_ = CQIO::cvLoadFile("def.vs");

@@ -53,6 +53,17 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 
 		}
 		break;
+		case WM_CHAR:
+		{
+
+		}
+		break;
+		case WM_KEYDOWN:
+		{
+			dbgPuts("[WM_KEYDOWN]\n");
+
+		}
+		break;
 		case WM_RBUTTONUP:
 		{
 
@@ -146,18 +157,22 @@ void CQWinApp::run()
 		CQCore::shareCore()->updateTime();
 		if (!time->isPause() && time->getDeltaGameSceond() > 1 / 60.0f)
 		{
+			// time.
 			time->tick();
 			CQCore::shareCore()->updateScheduler();
 
-			cur->update();
-
-			CQCore::shareCore()->shareCQRender()->update();
-
+			// event.
 			while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+
+			// update.
+			cur->update();
+
+			// render.
+			CQCore::shareCore()->shareCQRender()->update();
 		}
 		else
 		{
