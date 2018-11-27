@@ -16,14 +16,16 @@ NS_CQ_BEGIN
 class CQEvtDispatcher
 {
 public:
-	static
-	CQEvtDispatcher *shareDispatcher();
-
 	virtual ~CQEvtDispatcher();
 
 public:
+	void onMousePressL();
+
+	void onMouseReleaseR();
 
 private:
+	friend class CQCore;
+
 	explicit CQEvtDispatcher();
 
 	// non-copyable

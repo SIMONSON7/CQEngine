@@ -25,7 +25,6 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		case WM_CREATE:
 		{
 
-
 		}
 		break;
 		case WM_COMMAND:
@@ -40,6 +39,9 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		break;
 		case WM_LBUTTONDOWN:
 		{
+			dbgPuts("[WM_KEYDOWN]\n");
+			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+
 
 		}
 		break;
@@ -50,17 +52,6 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		break;
 		case WM_RBUTTONDOWN:
 		{
-
-		}
-		break;
-		case WM_CHAR:
-		{
-
-		}
-		break;
-		case WM_KEYDOWN:
-		{
-			dbgPuts("[WM_KEYDOWN]\n");
 
 		}
 		break;
@@ -80,6 +71,16 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		}
 		break;
 		case WM_MOUSEWHEEL:
+		{
+
+		}
+		break;
+		case WM_CHAR:
+		{
+
+		}
+		break;
+		case WM_KEYDOWN:
 		{
 
 		}

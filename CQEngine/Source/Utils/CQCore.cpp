@@ -1,12 +1,16 @@
 #include "CQCore.h"
 #include "CQTime.h"
 #include "CQScheduler.h"
+#include "CQEvtDispatcher.h"
 #include "CQRenderer.h"
+
+USING_NS_CQ
 
 CQCore::CQCore()
 {
 	time_ = CQ_NEW(CQTime);
 	scheduler_ = CQ_NEW(CQScheduler);
+	evtDispatcher_ = CQ_NEW(CQEvtDispatcher);
 	render_ = CQ_NEW(CQRenderer);
 }
 
@@ -14,6 +18,7 @@ CQCore::~CQCore()
 {
 	CQ_DELETE(time_, CQTime);
 	CQ_DELETE(scheduler_, CQScheduler);
+	CQ_DELETE(evtDispatcher_, CQEvtDispatcher);
 	CQ_DELETE(render_, CQRenderer);
 }
 
@@ -31,6 +36,11 @@ CQTime* CQCore::shareCQTime()
 CQScheduler* CQCore::shareCQScheduler()
 {
 	return scheduler_;
+}
+
+CQEvtDispatcher* CQCore::shareEvtDispatcher()
+{
+	 return evtDispatcher_;
 }
 
 CQRenderer* CQCore::shareCQRender()

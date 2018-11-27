@@ -15,6 +15,7 @@ NS_CQ_BEGIN
 
 class CQTime;
 class CQScheduler;
+class CQEvtDispatcher;
 class CQRenderer;
 
 class CQCore
@@ -29,6 +30,8 @@ public:
 	CQTime *shareCQTime();
 
 	CQScheduler *shareCQScheduler();
+
+	CQEvtDispatcher *shareEvtDispatcher();
 
 	CQRenderer *shareCQRender();
 
@@ -49,7 +52,10 @@ private:
 
 	CQScheduler *scheduler_;
 
+	CQEvtDispatcher *evtDispatcher_;
+
 	CQRenderer *render_;
+
 };
 
 NS_CQ_END
