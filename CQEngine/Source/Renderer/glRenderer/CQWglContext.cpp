@@ -72,7 +72,7 @@ void CQWglContext::init()
 	};
 
 	int pixelFormat;
-	size_t  numFormats;
+	UINT  numFormats;
 	wglChoosePixelFormatARB(hdc_, attrs, NULL, 1, &pixelFormat, &numFormats);
 	SetPixelFormat(hdc_, pixelFormat, &pfd);
 
