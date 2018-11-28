@@ -108,6 +108,11 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 
 		}
 		break;
+		case WM_KEYUP:
+		{
+
+		}
+		break;
 		case WM_SIZE:
 		{
 			int w = (int)(LOWORD(_lParam));

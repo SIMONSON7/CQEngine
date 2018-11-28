@@ -9,9 +9,13 @@
 #ifndef __CQEVTDISPATCHER_H__
 #define __CQEVTDISPATCHER_H__
 
+#include <vector>
+#include <memory>
 #include "CQMacros.h"
 
 NS_CQ_BEGIN
+
+class CQEvtListener;
 
 class CQEvtDispatcher
 {
@@ -29,6 +33,13 @@ public:
 
 	void onMouseWheel(int _x, int _y, int _zDelta);
 
+public:
+	void registerListener(std::shared_ptr<CQEvtListener> _listener);
+
+	void unregisterListener(std::shared_ptr<CQEvtListener> _listener);
+
+	void notify(unsigned int _evtID);
+
 private:
 	friend class CQCore;
 
@@ -38,6 +49,9 @@ private:
 	CQEvtDispatcher(const CQEvtDispatcher &) = delete;
 
 	CQEvtDispatcher& operator=(const CQEvtDispatcher &) = delete;
+
+private:
+	std::vector<std::shared_ptr<CQEvtListener>> listenerVec_;
 
 };
 
