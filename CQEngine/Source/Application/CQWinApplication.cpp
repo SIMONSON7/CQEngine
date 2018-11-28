@@ -39,30 +39,22 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		break;
 		case WM_LBUTTONDOWN:
 		{
-			dbgPuts("[WM_KEYDOWN]\n");
+			dbgPuts("[WM_LBUTTONDOWN]\n");
+
+			int x = (int)(LOWORD(_lParam));
+			int y = (int)(HIWORD(_lParam));
 			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-
-
+			dispatcher->onMousePressL(x, y);
 		}
 		break;
 		case WM_LBUTTONUP:
 		{
+			dbgPuts("[WM_LBUTTONUP]\n");
 
-		}
-		break;
-		case WM_RBUTTONDOWN:
-		{
-
-		}
-		break;
-		case WM_RBUTTONUP:
-		{
-
-		}
-		break;
-		case WM_MOUSEMOVE:
-		{
-
+			int x = (int)(LOWORD(_lParam));
+			int y = (int)(HIWORD(_lParam));
+			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			dispatcher->onMouseReleaseL(x, y);
 		}
 		break;
 		case WM_LBUTTONDBLCLK:
@@ -70,9 +62,40 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 
 		}
 		break;
-		case WM_MOUSEWHEEL:
+		case WM_RBUTTONDOWN:
+		{
+			dbgPuts("[WM_RBUTTONDOWN]\n");
+
+			int x = (int)(LOWORD(_lParam));
+			int y = (int)(HIWORD(_lParam));
+			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			dispatcher->onMousePressR(x, y);
+		}
+		break;
+		case WM_RBUTTONUP:
+		{
+			dbgPuts("[WM_RBUTTONUP]\n");
+
+			int x = (int)(LOWORD(_lParam));
+			int y = (int)(HIWORD(_lParam));
+			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			dispatcher->onMouseReleaseR(x, y);
+		}
+		break;
+		case WM_MOUSEMOVE:
 		{
 
+		}
+		break;
+		case WM_MOUSEWHEEL:
+		{
+			dbgPuts("[WM_MOUSEWHEEL]\n");
+
+			int x = (int)(LOWORD(_lParam));
+			int y = (int)(HIWORD(_lParam));
+			int delta = GET_WHEEL_DELTA_WPARAM(_wParam);
+			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			dispatcher->onMouseWheel(x, y, delta);
 		}
 		break;
 		case WM_CHAR:
@@ -87,9 +110,9 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		break;
 		case WM_SIZE:
 		{
-			int width = (int)(LOWORD(_lParam));
-			int height = (int)(HIWORD(_lParam));
-			CQCore::shareCore()->shareCQRender()->resize(width, height);
+			int w = (int)(LOWORD(_lParam));
+			int h = (int)(HIWORD(_lParam));
+			CQCore::shareCore()->shareCQRender()->resize(w, h);
 		}
 		break;
 		case WM_DESTROY:

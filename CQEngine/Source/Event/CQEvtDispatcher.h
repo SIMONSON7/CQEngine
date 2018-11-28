@@ -19,9 +19,15 @@ public:
 	virtual ~CQEvtDispatcher();
 
 public:
-	void onMousePressL();
+	void onMousePressL(int _x, int _y);
 
-	void onMouseReleaseR();
+	void onMousePressR(int _x, int _y);
+
+	void onMouseReleaseL(int _x, int _y);
+
+	void onMouseReleaseR(int _x, int _y);
+
+	void onMouseWheel(int _x, int _y, int _zDelta);
 
 private:
 	friend class CQCore;
