@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include "CQMacros.h"
+#include "CQInput.h"
 
 NS_CQ_BEGIN
 
@@ -23,22 +24,13 @@ public:
 	virtual ~CQEvtDispatcher();
 
 public:
-	void onMousePressL(int _x, int _y);
-
-	void onMousePressR(int _x, int _y);
-
-	void onMouseReleaseL(int _x, int _y);
-
-	void onMouseReleaseR(int _x, int _y);
-
-	void onMouseWheel(int _x, int _y, int _zDelta);
-
-public:
 	void registerListener(std::shared_ptr<CQEvtListener> _listener);
 
 	void unregisterListener(std::shared_ptr<CQEvtListener> _listener);
 
-	void notify(unsigned int _evtID);
+	void notify(CQInput::MouseEvt& _me);
+
+	void notify(CQInput::KeyboardEvt& _ke);
 
 private:
 	friend class CQCore;

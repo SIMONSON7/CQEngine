@@ -27,10 +27,23 @@ public:
 		MOUSE_R_CLICK_END,
 		MOUSE_L_DOUBLE_CLICK,
 		MOUSE_WHEEL,
-		//
+		// Touch
 		TOUCH,
-		//
+		// Keyboard
 		KEYBOARD,
+	};
+
+	struct MouseEvt
+	{
+		EvtID id_;
+		int x_;
+		int y_;
+		int delta_;
+	};
+
+	struct KeyboardEvt
+	{
+
 	};
 };
 

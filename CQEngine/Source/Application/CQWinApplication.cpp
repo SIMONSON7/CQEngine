@@ -41,20 +41,24 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		{
 			dbgPuts("[WM_LBUTTONDOWN]\n");
 
-			int x = (int)(LOWORD(_lParam));
-			int y = (int)(HIWORD(_lParam));
-			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			dispatcher->onMousePressL(x, y);
+			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			CQInput::MouseEvt me;
+			me.id_ = CQInput::EvtID::MOUSE_L_CLICK_BEGIN;
+			me.x_ = (int)(LOWORD(_lParam));
+			me.y_ = (int)(HIWORD(_lParam));
+			dispatcher->notify(me);
 		}
 		break;
 		case WM_LBUTTONUP:
 		{
 			dbgPuts("[WM_LBUTTONUP]\n");
 
-			int x = (int)(LOWORD(_lParam));
-			int y = (int)(HIWORD(_lParam));
-			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			dispatcher->onMouseReleaseL(x, y);
+			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			CQInput::MouseEvt me;
+			me.id_ = CQInput::EvtID::MOUSE_L_CLICK_END;
+			me.x_ = (int)(LOWORD(_lParam));
+			me.y_ = (int)(HIWORD(_lParam));
+			dispatcher->notify(me);
 		}
 		break;
 		case WM_LBUTTONDBLCLK:
@@ -66,20 +70,22 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		{
 			dbgPuts("[WM_RBUTTONDOWN]\n");
 
-			int x = (int)(LOWORD(_lParam));
-			int y = (int)(HIWORD(_lParam));
-			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			dispatcher->onMousePressR(x, y);
+			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			CQInput::MouseEvt me;
+			me.id_ = CQInput::EvtID::MOUSE_R_CLICK_BEGIN;
+			me.x_ = (int)(LOWORD(_lParam));
+			me.y_ = (int)(HIWORD(_lParam));
+			dispatcher->notify(me);
 		}
 		break;
 		case WM_RBUTTONUP:
 		{
-			dbgPuts("[WM_RBUTTONUP]\n");
-
-			int x = (int)(LOWORD(_lParam));
-			int y = (int)(HIWORD(_lParam));
-			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			dispatcher->onMouseReleaseR(x, y);
+			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			CQInput::MouseEvt me;
+			me.id_ = CQInput::EvtID::MOUSE_R_CLICK_END;
+			me.x_ = (int)(LOWORD(_lParam));
+			me.y_ = (int)(HIWORD(_lParam));
+			dispatcher->notify(me);
 		}
 		break;
 		case WM_MOUSEMOVE:
@@ -91,11 +97,13 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		{
 			dbgPuts("[WM_MOUSEWHEEL]\n");
 
-			int x = (int)(LOWORD(_lParam));
-			int y = (int)(HIWORD(_lParam));
-			int delta = GET_WHEEL_DELTA_WPARAM(_wParam);
-			auto dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			dispatcher->onMouseWheel(x, y, delta);
+			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+			CQInput::MouseEvt me;
+			me.id_ = CQInput::EvtID::MOUSE_WHEEL;
+			me.x_ = (int)(LOWORD(_lParam));
+			me.y_ = (int)(HIWORD(_lParam));
+			me.delta_ = GET_WHEEL_DELTA_WPARAM(_wParam);
+			dispatcher->notify(me);
 		}
 		break;
 		case WM_CHAR:
