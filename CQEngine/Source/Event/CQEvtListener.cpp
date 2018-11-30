@@ -1,6 +1,5 @@
 #include "CQEvtListener.h"
 #include "CQInput.h"
-#include "CQMemory.h"
 
 USING_NS_CQ
 
@@ -9,19 +8,18 @@ CQEvtListener::CQEvtListener()
 
 }
 
-CQEvtListener::CQEvtListener(unsigned int _evtID, Action *_cb)
+CQEvtListener::CQEvtListener(unsigned int _evtID, CQEvtListener::Callback& _cb)
+	:
+	evtID_(_evtID),
+	cb_(_cb)
 {
-	evtID_ = _evtID;
-	setCB(_cb);
+
 }
 
 CQEvtListener::~CQEvtListener()
 {
 	evtID_ = static_cast<unsigned int>(CQInput::EvtID::NONE);
-	if (cb_)
-	{
-		CQ_RAW_DELETE(cb_);
-	}
+	cb_ = nullptr;
 }
 
 void CQEvtListener::setEvtID(unsigned int _evtID)
@@ -29,25 +27,15 @@ void CQEvtListener::setEvtID(unsigned int _evtID)
 	evtID_ = _evtID;
 }
 
-void CQEvtListener::setCB(Action *_cb)
+void CQEvtListener::setCB(CQEvtListener::Callback _cb)
 {
-	if (_cb)
-	{
-		CQ_RAW_DELETE(cb_);
-		cb_ = _cb;
-	}
+	cb_ = nullptr;
+	cb_ = _cb;
 }
 
-Action* CQEvtListener::getCB()
+CQEvtListener::Callback CQEvtListener::getCB()
 {
-	if (cb_)
-	{
-		return cb_;
-	}
-	else
-	{
-		return nullptr;
-	}
+	return cb_;
 }
 
 unsigned int CQEvtListener::getEvtID() const
@@ -57,10 +45,10 @@ unsigned int CQEvtListener::getEvtID() const
 
 bool CQEvtListener::isCBValid()
 {
-	if (getCB())
+	if (cb_ == nullptr)
 	{
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 

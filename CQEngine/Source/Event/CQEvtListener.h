@@ -9,8 +9,8 @@
 #ifndef __CQEVTLISTENER_H__
 #define __CQEVTLISTENER_H__
 
+#include <functional>
 #include "CQMacros.h"
-#include "CQAction.h"
 
 NS_CQ_BEGIN
 
@@ -21,20 +21,23 @@ NS_CQ_BEGIN
 class CQEvtListener
 {
 public:
+	typedef std::function<void(void*)> Callback;
+
+public:
 	explicit CQEvtListener();
 
-	CQEvtListener(unsigned int _evtID, Action *_cb);
+	CQEvtListener(unsigned int _evtID, Callback& _cb);
 
 	virtual ~CQEvtListener();
 
 public:
 	void setEvtID(unsigned int _evtID);
 	
-	void setCB(Action *_cb);
+	void setCB(Callback _cb);
 
 	unsigned int getEvtID() const;
 
-	Action *getCB();
+	Callback getCB();
 
 	bool isCBValid();
 
@@ -47,7 +50,7 @@ private:
 private:
 	unsigned int evtID_;
 
-	Action *cb_;
+	Callback cb_;
 };
 
 NS_CQ_END

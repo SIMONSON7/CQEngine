@@ -33,15 +33,19 @@ public:
 		KEYBOARD,
 	};
 
-	struct MouseEvt
+	struct Evt
 	{
 		EvtID id_;
+	};
+
+	struct MouseEvt : public Evt
+	{
 		int x_;
 		int y_;
 		int delta_;
 	};
 
-	struct KeyboardEvt
+	struct KeyboardEvt : public Evt
 	{
 
 	};

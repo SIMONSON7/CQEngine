@@ -22,14 +22,13 @@ private:
 	void debugOutput();
 
 public:
-	///
 	virtual void onInit();
 
-	///
 	virtual void update();
 
-	///
 	virtual void onDestory();
+
+	void onMouseClick(void* mouseData);
 
 private:
 	/////////////////////// TMP //////////////////
@@ -45,6 +44,8 @@ private:
 	std::shared_ptr<Data> d2_;
 
 	CQCamera* camera_;
+
+	std::shared_ptr<CQEvtListener> mouseListener_;
 };
 
 #endif /* __HELLOWORLD_SCENE_H__ */

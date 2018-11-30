@@ -28,9 +28,8 @@ public:
 
 	void unregisterListener(std::shared_ptr<CQEvtListener> _listener);
 
-	void notify(CQInput::MouseEvt& _me);
-
-	void notify(CQInput::KeyboardEvt& _ke);
+	// The caller negative destructs _evt.
+	void notify(CQInput::Evt* _evt);
 
 private:
 	friend class CQCore;

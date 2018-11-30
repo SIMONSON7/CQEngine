@@ -42,10 +42,10 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 			dbgPuts("[WM_LBUTTONDOWN]\n");
 
 			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			CQInput::MouseEvt me;
-			me.id_ = CQInput::EvtID::MOUSE_L_CLICK_BEGIN;
-			me.x_ = (int)(LOWORD(_lParam));
-			me.y_ = (int)(HIWORD(_lParam));
+			CQInput::MouseEvt* me = CQ_NEW(CQInput::MouseEvt);
+			me->id_ = CQInput::EvtID::MOUSE_L_CLICK_BEGIN;
+			me->x_ = (int)(LOWORD(_lParam));
+			me->y_ = (int)(HIWORD(_lParam));
 			dispatcher->notify(me);
 		}
 		break;
@@ -54,10 +54,10 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 			dbgPuts("[WM_LBUTTONUP]\n");
 
 			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			CQInput::MouseEvt me;
-			me.id_ = CQInput::EvtID::MOUSE_L_CLICK_END;
-			me.x_ = (int)(LOWORD(_lParam));
-			me.y_ = (int)(HIWORD(_lParam));
+			CQInput::MouseEvt* me = CQ_NEW(CQInput::MouseEvt);
+			me->id_ = CQInput::EvtID::MOUSE_L_CLICK_END;
+			me->x_ = (int)(LOWORD(_lParam));
+			me->y_ = (int)(HIWORD(_lParam));
 			dispatcher->notify(me);
 		}
 		break;
@@ -71,20 +71,20 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 			dbgPuts("[WM_RBUTTONDOWN]\n");
 
 			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			CQInput::MouseEvt me;
-			me.id_ = CQInput::EvtID::MOUSE_R_CLICK_BEGIN;
-			me.x_ = (int)(LOWORD(_lParam));
-			me.y_ = (int)(HIWORD(_lParam));
+			CQInput::MouseEvt* me = CQ_NEW(CQInput::MouseEvt);
+			me->id_ = CQInput::EvtID::MOUSE_R_CLICK_BEGIN;
+			me->x_ = (int)(LOWORD(_lParam));
+			me->y_ = (int)(HIWORD(_lParam));
 			dispatcher->notify(me);
 		}
 		break;
 		case WM_RBUTTONUP:
 		{
 			CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			CQInput::MouseEvt me;
-			me.id_ = CQInput::EvtID::MOUSE_R_CLICK_END;
-			me.x_ = (int)(LOWORD(_lParam));
-			me.y_ = (int)(HIWORD(_lParam));
+			CQInput::MouseEvt* me = CQ_NEW(CQInput::MouseEvt);
+			me->id_ = CQInput::EvtID::MOUSE_R_CLICK_END;
+			me->x_ = (int)(LOWORD(_lParam));
+			me->y_ = (int)(HIWORD(_lParam));
 			dispatcher->notify(me);
 		}
 		break;
@@ -103,7 +103,7 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 			me.x_ = (int)(LOWORD(_lParam));
 			me.y_ = (int)(HIWORD(_lParam));
 			me.delta_ = GET_WHEEL_DELTA_WPARAM(_wParam);
-			dispatcher->notify(me);
+			dispatcher->notify(&me);
 		}
 		break;
 		case WM_CHAR:

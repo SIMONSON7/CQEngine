@@ -12,9 +12,16 @@ void HelloWorldScene::onInit()
 	// TODO : should have a default camera.
 	camera_ = CQ_NEW(CQCamera);
 
+	// Evt
+	mouseListener_ = std::make_shared<CQEvtListener>();
+	mouseListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
+	mouseListener_->setCB(std::bind(&HelloWorldScene::onMouseClick, this, std::placeholders::_1));
+	CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+	dispatcher->registerListener(mouseListener_);
+
 	// IO
-	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 	// shader
 	d1_ = CQIO::cvLoadFile("def.vs");
@@ -131,6 +138,19 @@ void HelloWorldScene::update()
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, sizeof(indexs_) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
+	}
+}
+
+void HelloWorldScene::onMouseClick(void* mouseData)
+{
+	if (mouseData)
+	{
+		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(mouseData);
+		if (evt)
+		{
+			dbgPuts("[HelloWorldScene] click." + evt->x_);
+			//CQ_DELETE(evt, CQInput::MouseEvt);
+		}
 	}
 }
 
