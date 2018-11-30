@@ -9,14 +9,14 @@ USING_NS_CQ
 
 bool g_isExit = false;
 
-CQAppI *g_app = CQ_RAW_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
+CQAppI *g_app = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
 
 LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	if (g_app == nullptr)
 	{
 		// It should Never be executed here!
-		g_app = CQ_RAW_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
+		g_app = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
 		g_app->init();
 	}
 
