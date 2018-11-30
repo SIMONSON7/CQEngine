@@ -20,8 +20,8 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(mouseListener_);
 
 	// IO
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 	// shader
 	d1_ = CQIO::cvLoadFile("def.vs");
@@ -146,10 +146,9 @@ void HelloWorldScene::onMouseClick(void* mouseData)
 	if (mouseData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(mouseData);
-		if (evt)
+		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
 		{
-			dbgPuts("[HelloWorldScene] click." + evt->x_);
-			//CQ_DELETE(evt, CQInput::MouseEvt);
+			dbgPrintf("[HelloWorldScene] click x : %d", evt->x_);
 		}
 	}
 }

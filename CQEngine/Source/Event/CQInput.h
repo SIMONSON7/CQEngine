@@ -49,7 +49,14 @@ public:
 	{
 
 	};
+
+	struct tmp
+	{
+
+	};
 };
+
+
 
 NS_CQ_END
 
