@@ -20,7 +20,17 @@ void CQEvtDispatcher::registerListener(std::shared_ptr<CQEvtListener> _listener)
 
 void CQEvtDispatcher::unregisterListener(std::shared_ptr<CQEvtListener> _listener)
 {
-
+	for (auto it = listenerVec_.begin(); it != listenerVec_.end();)
+	{
+		if (*it == _listener)
+		{
+			it = listenerVec_.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 void CQEvtDispatcher::notify(CQInput::Evt* _evt)

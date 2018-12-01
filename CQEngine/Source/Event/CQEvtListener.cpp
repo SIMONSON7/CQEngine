@@ -16,6 +16,16 @@ CQEvtListener::CQEvtListener(unsigned int _evtID, CQEvtListener::Callback& _cb)
 
 }
 
+bool CQEvtListener::operator==(const CQEvtListener& _other)
+{
+	return (this->evtID_ == _other.evtID_) && (this->cb_.target_type() == _other.cb_.target_type());
+}
+
+bool CQEvtListener::operator!=(const CQEvtListener& _other)
+{
+	return !(operator==(_other));
+}
+
 CQEvtListener::~CQEvtListener()
 {
 	evtID_ = static_cast<unsigned int>(CQInput::EvtID::NONE);

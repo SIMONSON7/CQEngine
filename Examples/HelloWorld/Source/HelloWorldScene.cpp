@@ -160,6 +160,7 @@ void HelloWorldScene::onDestory()
 	program_.unLoad();
 	CQ_DELETE(texture_, CQGLTexture);
 	CQ_DELETE(camera_, CQCamera);
+	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(mouseListener_);
 	CQResLoader::shareLoader()->unloadImgData(img_);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);

@@ -28,6 +28,10 @@ public:
 
 	CQEvtListener(unsigned int _evtID, Callback& _cb);
 
+	bool operator==(const CQEvtListener& _other);
+
+	bool operator!=(const CQEvtListener& _other);
+
 	virtual ~CQEvtListener();
 
 public:
