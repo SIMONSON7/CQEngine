@@ -31,7 +31,7 @@ public:
 
 public:
 	// Build local right hand coordinate system.
-	void lookAt(Vector3 _worldPos, Vector3 _targetPos, Vector3 _worldUp);
+	void lookAt(Vector3 _worldPos, Vector3 _worldTargetPos, Vector3 _worldUp);
 
 	void setLocalPos(const Vector3& _pos);
 

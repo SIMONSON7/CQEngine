@@ -104,10 +104,10 @@ Vector3& CQTransform::getUp()
 	return up_;
 }
 
-void CQTransform::lookAt(Vector3 _worldPos, Vector3 _targetPos, Vector3 _worldUp)
+void CQTransform::lookAt(Vector3 _worldPos, Vector3 _worldTargetPos, Vector3 _worldUp)
 {
 	worldPos_		= _worldPos;
-	target_			= _targetPos;
+	target_			= _worldTargetPos;
 	Vector3 front	= normalize(target_ - worldPos_);
 	Vector3 u		= normalize(_worldUp);
 	right_			= normalize(cross(front, u));
