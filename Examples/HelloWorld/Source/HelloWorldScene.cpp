@@ -13,11 +13,18 @@ void HelloWorldScene::onInit()
 	camera_ = CQ_NEW(CQCamera);
 
 	// Evt
-	mouseListener_ = std::make_shared<CQEvtListener>();
-	mouseListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
-	mouseListener_->setCB(std::bind(&HelloWorldScene::onMouseClick, this, std::placeholders::_1));
 	CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-	dispatcher->registerListener(mouseListener_);
+
+	clickListener_ = std::make_shared<CQEvtListener>();
+	clickListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
+	clickListener_->setCB(std::bind(&HelloWorldScene::onMouseClick, this, std::placeholders::_1));
+
+	wheelListener_ = std::make_shared<CQEvtListener>();
+	clickListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
+	clickListener_->setCB(std::bind(&HelloWorldScene::onMouseWheel, this, std::placeholders::_1));
+	
+	dispatcher->registerListener(clickListener_);
+	dispatcher->registerListener(wheelListener_);
 
 	// IO
 	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/shader/");
@@ -109,7 +116,7 @@ void HelloWorldScene::update()
 	//Matrix4 projMat = perspective(60.0f, 1.5f, 0.1f, 100.0f);
 
 	auto transform = camera_->getTransform();
-	transform->lookAt(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	transform->lookAt(Vector3(0, 0, radius_), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	float aspect(800.0f / 600.0f);
 	auto viewMat = transform->calWorldToLcalMatRH();
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
@@ -141,14 +148,36 @@ void HelloWorldScene::update()
 	}
 }
 
-void HelloWorldScene::onMouseClick(void* mouseData)
+void HelloWorldScene::onMouseClick(void* _clickData)
 {
-	if (mouseData)
+	if (_clickData)
 	{
-		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(mouseData);
+		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_clickData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
 		{
 			dbgPrintf("[HelloWorldScene] click x : %d", evt->x_);
+		}
+	}
+}
+
+void HelloWorldScene::onMouseWheel(void* _wheelData)
+{
+	if (_wheelData)
+	{
+		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_wheelData);
+		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_WHEEL)
+		{
+			dbgPrintf("[HelloWorldScene] wheel delta : %d", evt->delta_);
+
+			if (evt->delta_ > 0)
+			{
+				radius_ *= 1.2f;
+			}
+			
+			if (evt->delta_ < 0)
+			{
+				radius_ *= 0.8f;
+			}
 		}
 	}
 }
@@ -159,11 +188,13 @@ void HelloWorldScene::onDestory()
 
 	program_.unLoad();
 	CQ_DELETE(texture_, CQGLTexture);
-	CQ_DELETE(camera_, CQCamera);
-	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(mouseListener_);
+	CQ_DELETE(camera_, CQCamera);	
 	CQResLoader::shareLoader()->unloadImgData(img_);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+
+	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(clickListener_);
+	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(wheelListener_);
 }
 
 void HelloWorldScene::debugOutput()

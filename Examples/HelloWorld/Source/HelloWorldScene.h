@@ -28,7 +28,9 @@ public:
 
 	virtual void onDestory();
 
-	void onMouseClick(void* mouseData);
+	void onMouseClick(void* _clickData);
+
+	void onMouseWheel(void* _wheelData);
 
 private:
 	/////////////////////// TMP //////////////////
@@ -36,6 +38,7 @@ private:
 	CQGLTexture *texture_;
 	ImgData* img_;
 
+	float radius_ = 1.0f;
 	float angle_ = 0;
 	unsigned int VBO, VAO, EBO;
 	unsigned int indexs_[3];
@@ -45,7 +48,8 @@ private:
 
 	CQCamera* camera_;
 
-	std::shared_ptr<CQEvtListener> mouseListener_;
+	std::shared_ptr<CQEvtListener> clickListener_; 
+	std::shared_ptr<CQEvtListener> wheelListener_;
 };
 
 #endif /* __HELLOWORLD_SCENE_H__ */
