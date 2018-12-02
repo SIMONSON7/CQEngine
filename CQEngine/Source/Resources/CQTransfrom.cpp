@@ -44,7 +44,7 @@ void CQTransform::setLocalPos(const Vector3& _pos)
 void CQTransform::setWorldPos(const Vector3& _pos)
 {
 	worldPos_ = _pos;
-	lookAt(target_, worldPos_, up_);
+	lookAt(worldPos_, target_, up_);
 }
 
 void CQTransform::setRotEuler(const Vector3& _rot)
@@ -104,11 +104,11 @@ Vector3& CQTransform::getUp()
 	return up_;
 }
 
-void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _worldUp)
+void CQTransform::lookAt(Vector3 _worldPos, Vector3 _targetPos, Vector3 _worldUp)
 {
-	target_			= _worldTarget;
 	worldPos_		= _worldPos;
-	Vector3 front	= normalize(worldPos_ - target_);
+	target_			= _targetPos;
+	Vector3 front	= normalize(target_ - worldPos_);
 	Vector3 u		= normalize(_worldUp);
 	right_			= normalize(cross(front, u));
 	up_				= cross(right_, front);
@@ -116,7 +116,7 @@ void CQTransform::lookAt(Vector3 _worldTarget, Vector3 _worldPos, Vector3 _world
 
 Matrix4& CQTransform::calWorldToLcalMatRH()
 {
-	Vector3 front = normalize(worldPos_ - target_);
+	Vector3 front = normalize(target_ - worldPos_);
 	toLocalMat_[0][0] =  right_.x;
 	toLocalMat_[1][0] =  right_.y;
 	toLocalMat_[2][0] =  right_.z;
@@ -126,15 +126,15 @@ Matrix4& CQTransform::calWorldToLcalMatRH()
 	toLocalMat_[0][2] = -front.x;
 	toLocalMat_[1][2] = -front.y;
 	toLocalMat_[2][2] = -front.z;
-	toLocalMat_[3][0] = -dot(right_, target_);
-	toLocalMat_[3][1] = -dot(up_,    target_);
-	toLocalMat_[3][2] =  dot(front,  target_);
+	toLocalMat_[3][0] = -dot(right_, worldPos_);
+	toLocalMat_[3][1] = -dot(up_,    worldPos_);
+	toLocalMat_[3][2] =  dot(front,  worldPos_);
 	return toLocalMat_;
 }
 
 Matrix4& CQTransform::calWorldToLcalMatLH()
 {
-	Vector3 front = normalize(worldPos_ - target_);
+	Vector3 front = normalize(target_ - worldPos_);
 	toLocalMat_[0][0] =  right_.x;
 	toLocalMat_[1][0] =  right_.y;
 	toLocalMat_[2][0] =  right_.z;
@@ -144,9 +144,9 @@ Matrix4& CQTransform::calWorldToLcalMatLH()
 	toLocalMat_[0][2] =  front.x;
 	toLocalMat_[1][2] =  front.y;
 	toLocalMat_[2][2] =  front.z;
-	toLocalMat_[3][0] = -dot(right_, target_);
-	toLocalMat_[3][1] = -dot(up_,    target_);
-	toLocalMat_[3][2] = -dot(front,  target_);
+	toLocalMat_[3][0] = -dot(right_, worldPos_);
+	toLocalMat_[3][1] = -dot(up_,    worldPos_);
+	toLocalMat_[3][2] = -dot(front,  worldPos_);
 	return toLocalMat_;
 }
 
