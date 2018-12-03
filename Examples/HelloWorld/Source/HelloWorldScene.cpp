@@ -20,15 +20,15 @@ void HelloWorldScene::onInit()
 	clickListener_->setCB(std::bind(&HelloWorldScene::onMouseClick, this, std::placeholders::_1));
 
 	wheelListener_ = std::make_shared<CQEvtListener>();
-	clickListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
-	clickListener_->setCB(std::bind(&HelloWorldScene::onMouseWheel, this, std::placeholders::_1));
+	wheelListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
+	wheelListener_->setCB(std::bind(&HelloWorldScene::onMouseWheel, this, std::placeholders::_1));
 	
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
 	// IO
-	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + /*"/GIT_SOURCE" +*/ "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 	// shader
 	d1_ = CQIO::cvLoadFile("def.vs");
