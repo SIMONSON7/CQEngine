@@ -38,8 +38,8 @@ private:
 	CQGLTexture *texture_;
 	ImgData* img_;
 
-	float radius_ = 1.0f;
-	float angle_ = 0;
+	float camRadisZ_ = 1.0f;
+	float modelAngle_ = 0;
 	unsigned int VBO, VAO, EBO;
 	unsigned int indexs_[3];
 

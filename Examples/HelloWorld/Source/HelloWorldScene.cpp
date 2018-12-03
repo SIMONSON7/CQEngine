@@ -27,8 +27,8 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(wheelListener_);
 
 	// IO
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 	// shader
 	d1_ = CQIO::cvLoadFile("def.vs");
@@ -116,7 +116,7 @@ void HelloWorldScene::update()
 	//Matrix4 projMat = perspective(60.0f, 1.5f, 0.1f, 100.0f);
 
 	auto transform = camera_->getTransform();
-	transform->lookAt(Vector3(0, 0, radius_), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	transform->lookAt(Vector3(0, 0, camRadisZ_), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	float aspect(800.0f / 600.0f);
 	auto viewMat = transform->calWorldToLcalMatRH();
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
@@ -127,7 +127,7 @@ void HelloWorldScene::update()
 	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
 	Matrix4 tmp(1.0f);
 	Vector3 v(0.0f, 1.0f, 0.0f);
-	Matrix4 rotateMat = rotate(tmp, ++angle_, v);
+	Matrix4 rotateMat = rotate(tmp, ++modelAngle_, v);
 
 	//Matrix4 translateMat(1);
 	//translateMat.translate(0.0f, 0.0f, -1.0f);
@@ -171,12 +171,12 @@ void HelloWorldScene::onMouseWheel(void* _wheelData)
 
 			if (evt->delta_ > 0)
 			{
-				radius_ *= 1.2f;
+				camRadisZ_ *= 1.2f;
 			}
 			
 			if (evt->delta_ < 0)
 			{
-				radius_ *= 0.8f;
+				camRadisZ_ *= 0.8f;
 			}
 		}
 	}
