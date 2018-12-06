@@ -13,31 +13,38 @@
 #include <glad/glad.h> 
 #include <wgl/wglext.h>
 #include "CQMacros.h"
+#include "CQContext.h"
 
 #pragma comment(lib,"opengl32.lib")
 
 NS_CQ_BEGIN
 
-struct CQWglContext
+class CQWglContext : public CQContext
 {
+public:
 	CQWglContext();
 
-	void init();
+	virtual ~CQWglContext();
 
-	void swapBuff();
+public:
+	virtual void initRenderContext();
 
-	void resizeView(int _width, int _height);
+	virtual void destroyRenderContext();
 
-	void destroy();
+	virtual void swapFrameBuff();
+
+	virtual void resizeView(int _width, int _height);
+
+public:
+	void setWndContext(HWND _hWnd);
 
 	void printRenderInfo();
 
 	//void makeCurrent();
 
-	HWND hWnd_;
-
+private:
 	HDC hdc_;
-
+	HWND hWnd_;
 	HGLRC hglrc_;
 };
 

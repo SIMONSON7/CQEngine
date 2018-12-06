@@ -18,7 +18,12 @@ CQWglContext::CQWglContext()
 
 }
 
-void CQWglContext::init()
+CQWglContext::~CQWglContext()
+{
+
+}
+
+void CQWglContext::initRenderContext()
 {
 	// error checks have been omitted for brevity
 	// tmp render context //
@@ -96,7 +101,7 @@ void CQWglContext::init()
 
 }
 
-void  CQWglContext::destroy()
+void  CQWglContext::destroyRenderContext()
 {
 	if (hWnd_)
 	{
@@ -110,7 +115,7 @@ void  CQWglContext::destroy()
 	}
 }
 
-void CQWglContext::swapBuff()
+void CQWglContext::swapFrameBuff()
 {
 	if (hdc_)
 	{
@@ -191,4 +196,9 @@ void CQWglContext::printRenderInfo()
 
 	//dbgPrintf(" accum red: %u accum green: %u accum blue: %u accum alpha: %u aux buffers: %u\n",
 	//	accumredbits, accumgreenbits, accumbluebits, accumalphabits, auxbuffers);
+}
+
+void CQWglContext::setWndContext(HWND _hWnd)
+{
+	hWnd_ = _hWnd;
 }

@@ -130,7 +130,9 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 		{
 			int w = (int)(LOWORD(_lParam));
 			int h = (int)(HIWORD(_lParam));
-			CQCore::shareCore()->shareCQRender()->resize(w, h);
+			auto context = static_cast<CQWglContext*>(CQCore::shareCore()->shareCQRender()->getContext());
+			CQASSERT(context);
+			context->resizeView(w, h);
 		}
 		break;
 		case WM_DESTROY:
@@ -163,7 +165,10 @@ CQWinApp::~CQWinApp()
 void CQWinApp::init()
 {
 	__createWnd();
-	CQCore::shareCore()->shareCQRender()->init(hWnd_);
+	context_ = static_cast<CQWglContext*>(CQCore::shareCore()->shareCQRender()->getContext());
+	CQASSERT(context_);
+	context_->setWndContext(hWnd_);
+	context_->initRenderContext();
 }
 
 void CQWinApp::tick()
@@ -214,7 +219,8 @@ void CQWinApp::run()
 			cur->update();
 
 			// render.
-			CQCore::shareCore()->shareCQRender()->update();
+			/*CQCore::shareCore()->shareCQRender()->update();*/
+			context_->swapFrameBuff();
 		}
 		else
 		{
@@ -223,7 +229,7 @@ void CQWinApp::run()
 	}
 
 	sm->cleanAllScene();
-	CQCore::shareCore()->shareCQRender()->destory();
+	context_->destroyRenderContext();
 	return;
 }
 

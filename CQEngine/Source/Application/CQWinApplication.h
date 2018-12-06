@@ -18,6 +18,8 @@
 
 NS_CQ_BEGIN
 
+class CQWglContext;
+
 class CQWinApp : public CQAppI
 {
 public:
@@ -53,6 +55,8 @@ private:
 
 	HWND hWnd_;
 	HINSTANCE hInstance_;
+
+	CQWglContext* context_;
 };
 
 NS_CQ_END

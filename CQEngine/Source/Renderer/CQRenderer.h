@@ -9,12 +9,13 @@
 #ifndef __CQRENDERER_H__
 #define __CQRENDERER_H__
 
+#include <vector>
 #include "CQMacros.h"
-#if defined(_MSC_VER)
-	#include "CQWglContext.h"
-#endif
+#include "CQVisiableObj.h"
 
 NS_CQ_BEGIN
+
+class CQContext;
 
 class CQRenderer
 {
@@ -22,18 +23,9 @@ public:
 	virtual ~CQRenderer();
 
 public:
-#if defined(_MSC_VER)
-	void init(HWND _hWnd);
-#else
-	void init();
-#endif
+	CQContext* getContext();
 
-	void update();
-
-	void destory();
-
-public:
-	void resize(int _width, int _height);
+	void draw(std::vector<CQVisiableObj*> _visibleObjVec);
 
 private:
 	friend class CQCore;
@@ -46,12 +38,7 @@ private:
 	CQRenderer& operator=(const CQRenderer &) = delete;
 
 private:
-	void __initDisplayCtx(HWND _hWnd);
-
-private:
-#if defined(_MSC_VER)
-	CQWglContext ctx_;
-#endif
+	CQContext * context_;
 };
 
 NS_CQ_END

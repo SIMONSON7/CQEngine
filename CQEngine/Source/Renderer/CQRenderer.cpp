@@ -1,39 +1,40 @@
+#include "CQMemory.h"
+#include "CQWglContext.h"
 #include "CQRenderer.h"
 
 USING_NS_CQ
 
 CQRenderer::CQRenderer()
 {
+#if defined(_MSC_VER)
+	CQWglContext* wc = CQ_NEW(CQWglContext);
+	context_ = dynamic_cast<CQContext*>(wc);
+#else
+#endif
 }
 
 CQRenderer:: ~CQRenderer()
 {
+	if (context_ != nullptr)
+	{
+#if defined(_MSC_VER)
+		CQWglContext* wc = static_cast<CQWglContext*>(context_);
+		CQASSERT(wc);
+		wc->destroyRenderContext();
+		CQ_DELETE(wc, CQWglContext);
+		context_ = nullptr;
+#else
+#endif
+	}
 }
 
-void CQRenderer::init(HWND _hWnd)
+CQContext * CQRenderer::getContext()
 {
-	__initDisplayCtx(_hWnd);
+	return context_;
 }
 
-void CQRenderer::update()
+void CQRenderer::draw(std::vector<CQVisiableObj *> _visibleObjVec)
 {
-	ctx_.swapBuff();
-}
 
-void CQRenderer::destory()
-{
-	ctx_.destroy();
-}
-
-void CQRenderer::resize(int _width, int _height)
-{
-	ctx_.resizeView(_width, _height);
-}
-
-void CQRenderer::__initDisplayCtx(HWND _hWnd)
-{
-	ctx_.hWnd_ = _hWnd;
-	ctx_.init();
-	ctx_.printRenderInfo();
 }
 
