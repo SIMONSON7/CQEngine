@@ -15,7 +15,13 @@ NS_CQ_BEGIN
 
 class CQBuffer
 {
+public:
+	virtual ~CQBuffer();
+public:
+	char* getData() const;
 
+private:
+	char* buffer_;
 };
 
 class CQVertexBuffer : public CQBuffer
