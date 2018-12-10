@@ -16,8 +16,21 @@ NS_CQ_BEGIN
 class CQBuffer
 {
 public:
-	virtual ~CQBuffer();
+	enum USAGE
+	{
+		STATIC,
+		DYNAMIC,
+		STREAM,
+	};
+
 public:
+	virtual ~CQBuffer();
+
+	CQBuffer(USAGE _usage);
+	
+public:
+	USAGE getUsage() const;
+
 	char* getData() const;
 
 private:
