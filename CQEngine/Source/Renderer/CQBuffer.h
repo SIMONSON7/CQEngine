@@ -24,9 +24,9 @@ public:
 	};
 
 public:
-	virtual ~CQBuffer();
+	explicit CQBuffer(USAGE _usage);
 
-	CQBuffer(USAGE _usage);
+	virtual ~CQBuffer();
 	
 public:
 	USAGE getUsage() const;

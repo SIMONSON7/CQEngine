@@ -29,7 +29,16 @@ void CQObject::setComponent(std::shared_ptr<CQComponent> _component)
 
 std::shared_ptr<CQComponent> CQObject::getComponentByName(const std::string& _name)
 {
-	return compMap_[_name];
+	CQASSERT(!_name.empty());
+	auto itr = compMap_.find(_name);
+	if (itr != compMap_.end())
+	{
+		return (itr->second);
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void CQObject::removeComponent(const std::string& _name)

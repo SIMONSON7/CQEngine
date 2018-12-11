@@ -32,10 +32,11 @@
 #include "CQTransform.h"
 
 // Render
-#include "CQRenderer.h"
 #include "CQCamera.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
+#include "CQMesh.h"
+#include "CQRenderer.h"
 
 // Manager
 #include "CQScene.h"

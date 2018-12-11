@@ -33,8 +33,9 @@ public:
 
 	const unsigned int getPriority() const;
 
-private:
+protected:
 	unsigned int p_;
+
 	std::vector<std::shared_ptr<CQObject>> nodes_;
 };
 

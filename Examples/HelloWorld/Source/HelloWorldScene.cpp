@@ -1,3 +1,4 @@
+#include <memory>
 #include "HelloWorldScene.h"
 
 REGISTER_START_SCENE(HelloWorldScene)
@@ -26,11 +27,11 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
-	// IO
+	// Shader
 	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/shader/");
 	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
-	// shader
+
 	d1_ = CQIO::cvLoadFile("def.vs");
 	d2_ = CQIO::cvLoadFile("def.fs");
 	if (d1_->staus_ != Data::LOAD_SUCCESS ||
@@ -42,6 +43,16 @@ void HelloWorldScene::onInit()
 	program_.attachNativeShader(static_cast<char*>(d1_->buff_), CQGLProgram::SHADER_VERTEX);
 	program_.attachNativeShader(static_cast<char*>(d2_->buff_), CQGLProgram::SHADER_PIXEL);
 	program_.genProgram();
+
+	// Node
+	//auto model = std::make_shared<CQVisiableObj>();
+	//std::shared_ptr<CQMesh> mPtr;
+	//std::shared_ptr<CQComponent> cPtr;
+	//mPtr = std::make_shared<CQTransform>();
+	//cPtr = std::dynamic_pointer_cast<CQComponent>(mPtr);
+	//model->setComponent(cPtr);
+	//
+	//this->nodes_.push_back(model);
 
 	// macros
 #define VERTEX_POS_SIZE			3
