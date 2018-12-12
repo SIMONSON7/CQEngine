@@ -5,14 +5,15 @@
 #ifndef __CQTIME_H__
 #define __CQTIME_H__
 
-#include "CQMacros.h"
 #include <chrono>
+#include "CQMacros.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
 using namespace std::chrono;
 
-class CQTime
+class CQTime : private CQNoncopyable
 {
 public:
 	virtual ~CQTime();
@@ -46,11 +47,6 @@ private:
 	friend class CQCore;
 
 	explicit CQTime();
-
-	// non-copyable
-	CQTime(const CQTime &) = delete;
-
-	CQTime& operator=(const CQTime &) = delete;
 
 	void __update(double _dtRealSecond);
 

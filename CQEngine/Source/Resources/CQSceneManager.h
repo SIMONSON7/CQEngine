@@ -2,16 +2,18 @@
 *
 *		qiu_hao		2018/08/18		11:21.pm
 */
-#include <stack>
-#include <memory>
-#include "CQScene.h"
-
 #ifndef __CQSCENEMANAGER_H__
 #define __CQSCENEMANAGER_H__
 
+#include <stack>
+#include <memory>
+#include "CQMacros.h"
+#include "CQNoncopyable.h"
+#include "CQScene.h"
+
 NS_CQ_BEGIN
 
-class CQSceneManager 
+class CQSceneManager : private CQNoncopyable
 {
 public:
 	virtual ~CQSceneManager();
@@ -31,14 +33,8 @@ public:
 
 	void cleanAllScene();
 
-
 private:
 	explicit CQSceneManager();
-
-	// non-copyable
-	CQSceneManager(const CQSceneManager &) = delete;
-
-	CQSceneManager& operator=(const CQSceneManager &) = delete;
 
 private:
 	std::vector<std::shared_ptr<CQScene>> scenes_;

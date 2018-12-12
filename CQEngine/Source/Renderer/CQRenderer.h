@@ -11,13 +11,14 @@
 
 #include <vector>
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
 #include "CQVisiableObj.h"
 
 NS_CQ_BEGIN
 
 class CQContext;
 
-class CQRenderer
+class CQRenderer : private CQNoncopyable
 {
 public:
 	virtual ~CQRenderer();
@@ -31,11 +32,6 @@ private:
 	friend class CQCore;
 
 	explicit CQRenderer();
-
-	// non-copyable
-	CQRenderer(const CQRenderer &) = delete;
-
-	CQRenderer& operator=(const CQRenderer &) = delete;
 
 private:
 	CQContext * context_;

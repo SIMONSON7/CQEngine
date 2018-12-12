@@ -13,12 +13,13 @@
 #include <memory>
 #include "CQMacros.h"
 #include "CQInput.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
 class CQEvtListener;
 
-class CQEvtDispatcher
+class CQEvtDispatcher : private CQNoncopyable
 {
 public:
 	virtual ~CQEvtDispatcher();
@@ -35,11 +36,6 @@ private:
 	friend class CQCore;
 
 	explicit CQEvtDispatcher();
-
-	// non-copyable
-	CQEvtDispatcher(const CQEvtDispatcher &) = delete;
-
-	CQEvtDispatcher& operator=(const CQEvtDispatcher &) = delete;
 
 private:
 	std::vector<std::shared_ptr<CQEvtListener>> listenerVec_;

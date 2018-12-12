@@ -15,6 +15,7 @@
 #include <condition_variable>
 
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
 #include "CQSafeStack.h"
 #include "CQAction.h"
 
@@ -28,7 +29,7 @@ struct ImgData
 	int height_;
 };
 
-class CQResLoader
+class CQResLoader : private CQNoncopyable
 {
 public:
 	struct AsyncImgData
@@ -53,11 +54,6 @@ public:
 
 private:
 	explicit CQResLoader();
-
-	// non-copyable
-	CQResLoader(const CQResLoader &) = delete;
-
-	CQResLoader& operator=(const CQResLoader &) = delete;
 
 	void __loadImg();
 

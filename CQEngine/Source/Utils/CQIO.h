@@ -65,6 +65,7 @@ struct Data
 private:
 	// non-copyable
 	Data(const Data &) = delete;
+
 	Data& operator=(const Data &) = delete;
 };
 

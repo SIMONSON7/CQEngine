@@ -14,11 +14,12 @@
 #include <mutex>
 #include <stack>
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
 template <typename TYPE>
-class CQSafeStack
+class CQSafeStack : private CQNoncopyable
 {
 public:
 	CQSafeStack();
@@ -52,9 +53,6 @@ public:
 	void wait_and_pop(TYPE& _val);
 
 	bool empty() const;
-
-private:
-	CQSafeStack& operator=(const CQSafeStack&) = delete;
 
 private:
 	mutable std::mutex mut_;

@@ -7,8 +7,10 @@
 
 #include <map>
 #include <memory>
-#include "CQAction.h"
+
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
+#include "CQAction.h"
 #include "CQMemory.h"
 
 NS_CQ_BEGIN
@@ -69,7 +71,7 @@ private:
 	double expiredSecond_;
 };
 
-class CQScheduler
+class CQScheduler : private CQNoncopyable
 {
 public:
 	virtual ~CQScheduler();
@@ -84,11 +86,6 @@ private:
 	friend class CQCore;
 
 	explicit CQScheduler();
-
-	// non-copyable
-	CQScheduler(const CQScheduler &) = delete;
-
-	CQScheduler& operator=(const CQScheduler &) = delete;
 
 	void __update(float _gameTime);
 

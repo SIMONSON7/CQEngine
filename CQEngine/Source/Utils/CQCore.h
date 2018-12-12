@@ -10,6 +10,7 @@
 #define __CQCORE_H__
 
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
@@ -18,7 +19,7 @@ class CQScheduler;
 class CQEvtDispatcher;
 class CQRenderer;
 
-class CQCore
+class CQCore : private CQNoncopyable
 {
 public:
 	static
@@ -41,11 +42,6 @@ public:
 
 private:
 	explicit CQCore();
-
-	// non-copyable
-	CQCore(const CQCore &) = delete;
-
-	CQCore& operator=(const CQCore &) = delete;
 
 private:
 	CQTime *time_;

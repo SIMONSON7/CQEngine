@@ -11,6 +11,7 @@
 
 #include <functional>
 #include "CQMacros.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
@@ -18,7 +19,7 @@ NS_CQ_BEGIN
 // Very similar to TimeAction, except that one is based on time and one is based on events. 
 // Both can be unified in the future.
 
-class CQEvtListener
+class CQEvtListener : private CQNoncopyable
 {
 public:
 	typedef std::function<void(void*)> Callback;
@@ -44,12 +45,6 @@ public:
 	Callback getCB();
 
 	bool isCBValid();
-
-private:
-	// non-copyable
-	CQEvtListener(const CQEvtListener &) = delete;
-
-	CQEvtListener& operator=(const CQEvtListener &) = delete;
 
 private:
 	unsigned int evtID_;
