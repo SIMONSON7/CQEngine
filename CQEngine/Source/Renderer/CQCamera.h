@@ -50,14 +50,10 @@ public:
 
 	PROJECTION_TYPE getType() const;
 
-	Frustum* genFrustum();
-
 private:
 	PROJECTION_TYPE type_;
 
 	Matrix4 projMat_;
-
-	Frustum *frustum_;
 };
 
 NS_CQ_END
