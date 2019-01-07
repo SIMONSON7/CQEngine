@@ -4,7 +4,7 @@ USING_NS_CQ
 
 CQScene::CQScene()
 	:
-	p_(0)
+	pri_(0)
 {
 	
 }

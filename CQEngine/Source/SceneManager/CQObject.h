@@ -9,12 +9,13 @@
 #include <memory>
 #include <map>
 #include "CQMacros.h"
+#include "CQRunnable.h"
 
 NS_CQ_BEGIN
 
 class CQComponent;
 
-class CQObject
+class CQObject : public CQRunnable
 {
 public:
 	explicit CQObject();
@@ -22,11 +23,11 @@ public:
 	virtual ~CQObject();
 
 public:
-	virtual void onInit() = 0;
+	virtual void onInit();
 
-	virtual void update() = 0;
+	virtual void update();
 
-	virtual void onDestory() = 0;
+	virtual void onDestory();
 
 public:
 	void setName(const std::string _name);

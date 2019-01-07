@@ -18,9 +18,6 @@ public:
 
 	virtual ~HelloWorldScene() {}
 
-private:
-	void debugOutput();
-
 public:
 	virtual void onInit();
 
@@ -28,9 +25,13 @@ public:
 
 	virtual void onDestory();
 
+public:
 	void onMouseClick(void* _clickData);
 
 	void onMouseWheel(void* _wheelData);
+
+private:
+	void debugOutput();
 
 private:
 	/////////////////////// TMP //////////////////

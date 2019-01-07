@@ -18,7 +18,7 @@ NS_CQ_BEGIN
 
 class CQTransform;
 
-class CQCamera : CQObject
+class CQCamera : public CQObject
 {
 public:
 	enum PROJECTION_TYPE

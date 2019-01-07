@@ -13,6 +13,21 @@ CQObject::CQObject()
 	
 }
 
+void CQObject::onInit()
+{
+
+}
+
+void CQObject::update()
+{
+
+}
+
+void CQObject::onDestory()
+{
+
+}
+
 const uint64_t CQObject::genID() const
 {
 	auto now = system_clock::now();
