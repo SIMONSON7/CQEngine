@@ -39,6 +39,7 @@
 #include "CQRenderer.h"
 
 // Manager
+#include "CQSceneNode.h"
 #include "CQScene.h"
 #include "CQSceneManager.h"
 #include "CQCore.h"

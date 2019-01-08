@@ -10,7 +10,7 @@
 #define __CQSCENENODE_H__
 
 #include <vector>
-#include <memory>
+#include <string>
 #include "CQMacros.h"
 #include "CQNoncopyable.h"
 #include "CQObject.h"
@@ -20,15 +20,35 @@ NS_CQ_BEGIN
 class CQSceneNode : public CQNoncopyable 
 {
 public:
+	typedef std::vector<CQSceneNode*> SceneNodePtrVec;
 
+	typedef std::string string;
+
+public:
+	CQSceneNode(CQSceneNode* _parent, const string& _name);
+
+	virtual ~CQSceneNode();
+
+public:
+	void attachParent(CQSceneNode* _parent);
+
+	void attachChild(CQSceneNode* _child);
+
+	void attachObj(CQObject* _obj);
+
+	void detach(const string& _childName);
+
+	void detachChildren();
+
+protected:
+	CQSceneNode* parent_;
+
+	SceneNodePtrVec children_;
 
 private:
-	std::unique_ptr<CQSceneNode> parent_;
+	CQObject* obj_;
 
-	std::vector<std::unique_ptr<CQSceneNode>> children_;
-
-private:
-	std::unique_ptr<CQObject> obj_;
+	string name_;
 };
 
 NS_CQ_END
