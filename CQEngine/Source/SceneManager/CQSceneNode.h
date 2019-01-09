@@ -20,25 +20,31 @@ NS_CQ_BEGIN
 class CQSceneNode : public CQNoncopyable 
 {
 public:
+	static CQSceneNode * s_root_;
+public:
 	typedef std::vector<CQSceneNode*> SceneNodePtrVec;
 
 	typedef std::string string;
 
 public:
-	CQSceneNode(CQSceneNode* _parent, const string& _name);
+	CQSceneNode(CQSceneNode* _parent, CQObject* _obj, const string & _name);
 
 	virtual ~CQSceneNode();
 
 public:
-	void attachParent(CQSceneNode* _parent);
+	bool attachParent(CQSceneNode* _parent);
 
-	void attachChild(CQSceneNode* _child);
+	bool attachChild(CQSceneNode* _child);
 
 	void attachObj(CQObject* _obj);
 
-	void detach(const string& _childName);
+	bool detach(const string & _childName);
 
 	void detachChildren();
+
+	inline CQSceneNode* getParent() { return parent_; }
+
+	inline const string & getName() const { return name_ };
 
 protected:
 	CQSceneNode* parent_;
@@ -49,6 +55,8 @@ private:
 	CQObject* obj_;
 
 	string name_;
+
+	bool visiable_;
 };
 
 NS_CQ_END
