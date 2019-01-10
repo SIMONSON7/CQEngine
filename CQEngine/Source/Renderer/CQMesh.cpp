@@ -27,8 +27,3 @@ CQMesh::~CQMesh()
 {
 
 }
-
-std::string CQMesh::getName() const
-{
-	return "Mesh";
-}

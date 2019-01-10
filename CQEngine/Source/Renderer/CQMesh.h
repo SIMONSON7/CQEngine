@@ -17,7 +17,7 @@ NS_CQ_BEGIN
 class CQVertexBuffer;
 class CQIndexBuffer;
 
-class CQMesh : public CQComponent
+class CQMesh /*: public CQComponent*/
 {
 public:
 	explicit CQMesh();
@@ -30,8 +30,8 @@ public:
 
 	virtual ~CQMesh();
 
-public:
-	virtual std::string getName() const;
+//public:
+//	virtual const std::string& getName() const { return "Mesh"; }
 };
 
 NS_CQ_END

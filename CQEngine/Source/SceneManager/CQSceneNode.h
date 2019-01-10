@@ -42,9 +42,11 @@ public:
 
 	void detachChildren();
 
-	inline CQSceneNode* getParent() { return parent_; }
+	inline CQSceneNode& getParent() { return *parent_; }
 
-	inline const string & getName() const { return name_ };
+	inline SceneNodePtrVec& getChildren() { return children_; }
+
+	inline const string & getName() const { return name_; }
 
 protected:
 	CQSceneNode* parent_;

@@ -12,7 +12,7 @@ CQTransform::CQTransform()
 	eulerRot_(0, 0, 0),
 	toLocalMat_(1)
 {
-
+	name_ = "Transform";
 }
 
 CQTransform::~CQTransform()
@@ -29,11 +29,6 @@ CQTransform& CQTransform::operator=(const CQTransform & other)
 {
 	__setTransform(other);
 	return *this;
-}
-
-std::string CQTransform::getName() const
-{
-	return "Transform";
 }
 
 void CQTransform::setLocalPos(const Vector3& _pos)

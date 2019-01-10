@@ -24,7 +24,7 @@ CQSceneNode::~CQSceneNode()
 	{
 		parent_->detach(name_);
 	}
-	// detachChildren ?
+
 	CQ_DELETE(obj_, CQObject);
 	for each (auto child in children_)
 	{
@@ -42,23 +42,21 @@ bool CQSceneNode::attachParent(CQSceneNode* _parent)
 	if (parent_)
 	{
 		parent_->detach(name_);
+	}
 
-		parent_ = _parent;
-		parent_->attachChild(this);
-		return true;
-	}
-	else
-	{
-		parent_ = _parent;
-		parent_->attachChild(this);
-		return true;
-	}
+	parent_ = _parent;
+	parent_->attachChild(this);
+	//auto pTransMat = obj_->getComponentByName("Transform")->getTransMat();
+	// updateTransform(pTransmat);
+
+	return true;
 }
 
 bool CQSceneNode::attachChild(CQSceneNode* _child)
 {
 	CQASSERT(_child);
 	children_.push_back(_child);
+	return true;
 }
 
 void CQSceneNode::attachObj(CQObject* _obj)

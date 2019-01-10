@@ -22,12 +22,12 @@ public:
 
 	virtual ~CQTransform();
 
-	CQTransform(const CQTransform & other);
+	CQTransform(const CQTransform& other);
 
-	CQTransform& operator=(const CQTransform &other);
+	CQTransform& operator=(const CQTransform& other);
 
-public:
-	virtual std::string getName() const;
+//public:
+//	virtual std::string getName() const { return name_; }
 
 public:
 	// Build local right hand coordinate system.
