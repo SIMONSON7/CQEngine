@@ -36,11 +36,7 @@ void CQTransform::setLocalPos(const Vector3& _pos)
 	localPos_ = _pos;
 }
 
-void CQTransform::setWorldPos(const Vector3& _pos)
-{
-	worldPos_ = _pos;
-	lookAt(worldPos_, target_, up_);
-}
+
 
 void CQTransform::setRotEuler(const Vector3& _rot)
 {
@@ -62,31 +58,6 @@ void CQTransform::setRotQuart(const Quaternion& _quart)
 void CQTransform::setScale(const Vector3& _scale)
 {
 	scale_ = _scale;
-}
-
-Vector3& CQTransform::getLocalPos()
-{
-	return localPos_;
-}
-
-Vector3& CQTransform::getWorldPos()
-{
-	return worldPos_;
-}
-
-Vector3& CQTransform::getRotEuler()
-{
-	return eulerRot_;
-}
-
-quaternion& CQTransform::getRotQuart()
-{
-	return quatrRot_;
-}
-
-Vector3& CQTransform::getScale()
-{
-	return scale_;
 }
 
 Vector3& CQTransform::getFront()
@@ -158,4 +129,10 @@ void CQTransform::__setTransform(const CQTransform & other)
 	this->target_ = other.target_;
 
 	this->toLocalMat_ = other.toLocalMat_;
+}
+
+void CQTransform::__setWorldPos(const Vector3& _pos)
+{
+	worldPos_ = _pos;
+	lookAt(worldPos_, target_, up_);
 }
