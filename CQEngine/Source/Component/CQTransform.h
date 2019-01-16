@@ -27,24 +27,110 @@ public:
 	CQTransform& operator=(const CQTransform& other);
 
 public:
+	static const Vector3 sWorldUp;
+
+	static const Vector3 sWorldRight;
+
+	static const Vector3 sWorldFront;
+
+	// Origin
+	static const Vector3 sLocalPos;
+
+// Scale :
+public:
+	void setScale(const Vector3& _scale);
+
+	inline Vector3& getScale() { return scale_; }
+
+// Rotation
+public:
+	void rot(const float angle, const Vector3& axis);
+
+	void rotateX(const float _angle);
+
+	void rotateY(const float _angle);
+
+	void rotateZ(const float _angle);
+
+	inline Vector3 getRotEuler() { return eulerAngles(rotQuatr_); }
+
+	inline Matrix4 getRotMat() { return mat4_cast(rotQuatr_); }
+
+	inline Quaternion& getRotQuatr() { return rotQuatr_; }
+
+// Translate
+public:
+	Matrix4 getTranslateMat();
+
+	void move(Vector3& _worldPos);
+
+	void moveTo(Vector3& _worldOffset);
+
+private:
+	void __updateMvpMat();
+
+	void __updateAxis();
+
+
+private:
+	CQTransform *parent_;
+
+	Matrix4 mvpMat_;
+
+	Quaternion rotQuatr_;
+
+	Vector3 scale_;
+
+	Vector3 relativePos_;
+
+	Vector3 worldPos_;
+
+	// Local coordinate system.
+	Vector3 up_;
+
+	Vector3 right_;
+
+	Vector3 front_;
+
+	Vector3 target_;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public:
 	void setLocalPos(const Vector3& _pos);
 
 	void setRotEuler(const Vector3& _rot);
 
 	void setRotQuart(const Quaternion& _quart);
 
-	void setScale(const Vector3& _scale);
+	
 
 public:
 	inline Vector3& getLocalPos() { return localPos_; }
 
 	inline Vector3& getWorldPos() { return worldPos_; }
 
-	inline Vector3& getRotEuler() { return eulerRot_; }
 
-	inline Quaternion& getRotQuart() { return quatrRot_; }
+	
 
-	inline Vector3& getScale() { return scale_; }
+	
 
 public:
 	Vector3& getFront();
@@ -74,29 +160,25 @@ public:
 //	Matrix4& moveToZ(const float _dist);
 //
 //public:
-//	Matrix4& rotateX(const float _angle);
-//
-//	Matrix4& rotateY(const float _angle);
-//
-//	Matrix4& rotateZ(const float _angle);
+
 
 private:
+
+
 	void __setTransform(const CQTransform & other);
 
 	void __setWorldPos(const Vector3& _pos);
 
 private:
-	Vector3 scale_;
+
+
+
 	Vector3 localPos_;
 	Vector3 worldPos_;
 	Vector3 eulerRot_;
 	Quaternion quatrRot_;
 
-	// Local coordinate system.
-	Vector3 up_;
-	Vector3 right_;
-	Vector3 front_;
-	Vector3 target_;/* FRONT = POS - TARGET */
+
 
 	Matrix4 toLocalMat_;
 };

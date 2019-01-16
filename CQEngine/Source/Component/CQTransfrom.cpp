@@ -3,6 +3,14 @@
 
 USING_NS_CQ;
 
+const Vector3 CQTransform::sWorldUp = Vector3(0, 1, 0);
+
+const Vector3 CQTransform::sWorldRight = Vector3(1, 0, 0);
+
+const Vector3 CQTransform::sWorldFront = Vector3(0, 0, 1);
+
+const Vector3 CQTransform::sLocalPos = Vector3(0, 0, 0);
+
 CQTransform::CQTransform()
 	:
 	up_(0, 1, 0),
@@ -31,6 +39,99 @@ CQTransform& CQTransform::operator=(const CQTransform & other)
 	return *this;
 }
 
+void CQTransform::setScale(const Vector3& _scale)
+{
+	scale_ = _scale;
+
+	__updateMvpMat();
+}
+
+void CQTransform::rot(const float angle, const Vector3& axis)
+{
+	rotQuatr_ = rotate(angle, axis);
+
+	__updateAxis();
+	__updateMvpMat();
+}
+
+void CQTransform::rotateX(const float _angle)
+{
+	rot(_angle, sWorldRight);
+}
+
+void CQTransform::rotateY(const float _angle)
+{
+	rot(_angle, sWorldUp);
+}
+
+void CQTransform::rotateZ(const float _angle)
+{
+	rot(_angle, sWorldFront);
+}
+
+Matrix4 CQTransform::getTranslateMat()
+{
+	Matrix4 res;
+	return translate(res, worldPos_);
+}
+
+void CQTransform::move(Vector3& _worldPos)
+{
+	moveTo(_worldPos - worldPos_);
+}
+
+void CQTransform::moveTo(Vector3& _worldOffset)
+{
+
+}
+
+void CQTransform::__updateMvpMat()
+{
+
+}
+
+void CQTransform::__updateAxis()
+{	
+	up_	   *= rotQuatr_;
+	right_ *= rotQuatr_;
+	front_ *= rotQuatr_;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void CQTransform::setLocalPos(const Vector3& _pos)
 {
 	localPos_ = _pos;
@@ -55,10 +156,7 @@ void CQTransform::setRotQuart(const Quaternion& _quart)
 	eulerRot_ = eulerAngles(_quart);
 }
 
-void CQTransform::setScale(const Vector3& _scale)
-{
-	scale_ = _scale;
-}
+
 
 Vector3& CQTransform::getFront()
 {
@@ -115,6 +213,8 @@ Matrix4& CQTransform::calWorldToLcalMatLH()
 	toLocalMat_[3][2] = -dot(front,  worldPos_);
 	return toLocalMat_;
 }
+
+
 
 void CQTransform::__setTransform(const CQTransform & other)
 {
