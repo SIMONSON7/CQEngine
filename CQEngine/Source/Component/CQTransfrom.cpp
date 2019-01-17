@@ -82,12 +82,27 @@ void CQTransform::move(Vector3& _worldPos)
 
 void CQTransform::moveTo(Vector3& _worldOffset)
 {
+	// Root Node
+	if (parent_ == nullptr)
+	{
+		relativePos_ += _worldOffset;
+		worldPos_ = relativePos_;
+	}
+	// Non Root Node
+	else
+	{
+		relativePos_ += _worldOffset;
+		auto parentRotTransMat = parent_->getTranslateMat() * parent_->getRotMat();
+		worldPos_ = relativePos_ * parentRotTransMat.inverse();
+	}
 
+	__updateMvpMat();
 }
 
 void CQTransform::__updateMvpMat()
 {
-
+	Matrix4 mat;
+	auto scaleMat = mat.scale(scale_);
 }
 
 void CQTransform::__updateAxis()
