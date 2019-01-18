@@ -40,6 +40,8 @@ public:
 public:
 	void setScale(const Vector3& _scale);
 
+	Matrix4 getScaleMat();
+
 	inline Vector3& getScale() { return scale_; }
 
 // Rotation
@@ -60,23 +62,47 @@ public:
 
 // Translate
 public:
-	Matrix4 getTranslateMat();
-
 	void move(Vector3& _worldPos);
 
 	void moveTo(Vector3& _worldOffset);
 
+	Matrix4 getTranslateMat();
+
+	inline Vector3& getLocalPos() { return relativePos_; }
+
+	inline Vector3& getWorldPos() { return worldPos_; }
+
+// Coordinate transformation
+public:
+	// Build local right hand coordinate system.
+	void buildLocalCoordinate(Vector3& _worldPos, Vector3& _worldTargetPos, Vector3& _worldUp);
+
+	Matrix4& calWorldToLcalMatRH();
+
+	Matrix4& calWorldToLcalMatLH();
+
+	inline Vector3& getRight() { return right_; }
+
+	inline Vector3& getFront() { return front_; }
+
+	inline Vector3& getUp() { return up_; }
+
+public:
+	inline Matrix4& getModelMat() { return srtMat_; }
+
 private:
-	void __updateMvpMat();
+	void __updateModelMat();
 
 	void __updateAxis();
 
+	void __setTransform(const CQTransform & other);
 
 private:
 	CQTransform *parent_;
 
-	Matrix4 mvpMat_;
+	Matrix4 srtMat_;
 
+	// Basic transform.
 	Quaternion rotQuatr_;
 
 	Vector3 scale_;
@@ -93,92 +119,6 @@ private:
 	Vector3 front_;
 
 	Vector3 target_;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public:
-	void setLocalPos(const Vector3& _pos);
-
-	void setRotEuler(const Vector3& _rot);
-
-	void setRotQuart(const Quaternion& _quart);
-
-	
-
-public:
-	inline Vector3& getLocalPos() { return localPos_; }
-
-	inline Vector3& getWorldPos() { return worldPos_; }
-
-
-	
-
-	
-
-public:
-	Vector3& getFront();
-
-	Vector3& getUp();
-
-	Matrix4& calWorldToLcalMatRH();
-
-	Matrix4& calWorldToLcalMatLH();
-
-	// Build local right hand coordinate system.
-	void lookAt(Vector3 _worldPos, Vector3 _worldTargetPos, Vector3 _worldUp);
-//public:
-//	Matrix4& scaleX(const float _scale);
-//
-//	Matrix4& scaleY(const float _scale);
-//
-//	Matrix4& scaleZ(const float _scale);
-//
-//	Matrix4& scale(const Vector3& _scale);
-//
-//public:
-//	Matrix4& moveToX(const float _dist);
-//
-//	Matrix4& moveToY(const float _dist);
-//
-//	Matrix4& moveToZ(const float _dist);
-//
-//public:
-
-
-private:
-
-
-	void __setTransform(const CQTransform & other);
-
-	void __setWorldPos(const Vector3& _pos);
-
-private:
-
-
-
-	Vector3 localPos_;
-	Vector3 worldPos_;
-	Vector3 eulerRot_;
-	Quaternion quatrRot_;
-
-
 
 	Matrix4 toLocalMat_;
 };
