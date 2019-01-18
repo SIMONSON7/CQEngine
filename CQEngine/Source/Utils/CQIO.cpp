@@ -27,6 +27,7 @@ std::shared_ptr<Data> CQIO::loadFile(const std::string _fileName, const char *_m
 	if (fileLength <= 0)
 	{
 		sp->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
+		fclose(fp);
 		return sp;
 	}
 
@@ -35,6 +36,7 @@ std::shared_ptr<Data> CQIO::loadFile(const std::string _fileName, const char *_m
 	if (len != fileLength)
 	{
 		sp->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
+		fclose(fp);
 		return sp;
 	}
 
