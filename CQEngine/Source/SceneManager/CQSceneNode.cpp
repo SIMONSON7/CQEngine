@@ -1,4 +1,6 @@
 #include <algorithm>
+#include "CQTransform.h"
+#include "CQObject.h"
 #include "CQSceneNode.h"
 #include "CQMemory.h"
 
@@ -46,7 +48,11 @@ bool CQSceneNode::attachParent(CQSceneNode* _parent)
 
 	parent_ = _parent;
 	parent_->attachChild(this);
-	//auto pTransMat = obj_->getComponentByName("Transform")->getTransMat();
+
+	//if (obj_ && parent_->obj_)
+	//{
+	//	obj_->getComponentByName("Transform");//obj_->getComponentByName("Transform")->getTransMat();
+	//}
 	// updateTransform(pTransmat);
 
 	return true;

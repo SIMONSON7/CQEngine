@@ -12,13 +12,17 @@ const Vector3 CQTransform::sWorldFront = Vector3(0, 0, 1);
 const Vector3 CQTransform::sLocalPos = Vector3(0, 0, 0);
 
 CQTransform::CQTransform()
-	//:
-	//up_(0, 1, 0),
-	//right_(1, 0, 0),
-	//scale_(1, 1, 1),
-	//worldPos_(0, 0, 0),
-	//eulerRot_(0, 0, 0),
-	//toLocalMat_(1)
+	:
+	parent_(nullptr),
+	srtMat_(1),
+	scale_(1.0f),
+	relativePos_(0.0f),
+	worldPos_(relativePos_),
+	up_(sWorldUp),
+	right_(sWorldRight),
+	front_(sWorldFront),
+	target_(0),
+	toLocalMat_(1)
 {
 	name_ = "Transform";
 }
@@ -171,15 +175,15 @@ void CQTransform::__updateAxis()
 
 void CQTransform::__setTransform(const CQTransform & other)
 {
-	//this->scale_ = other.scale_;
-	//this->localPos_ = other.localPos_;
-	//this->worldPos_ = other.worldPos_;
-	//this->eulerRot_ = other.eulerRot_;
-	//this->quatrRot_ = other.quatrRot_;
-
-	//this->up_ = other.up_;;
-	//this->right_ = other.right_;
-	//this->target_ = other.target_;
-
-	//this->toLocalMat_ = other.toLocalMat_;
+	this->parent_ = other.parent_;
+	this->srtMat_ = other.srtMat_;
+	this->rotQuatr_ = other.rotQuatr_;
+	this->scale_ = other.scale_;
+	this->relativePos_ = other.relativePos_;
+	this->worldPos_ = other.worldPos_;
+	this->up_ = other.up_;
+	this->right_ = other.right_;
+	this->front_ = other.front_;
+	this->target_ = other.target_;
+	this->toLocalMat_ = other.toLocalMat_;
 }
