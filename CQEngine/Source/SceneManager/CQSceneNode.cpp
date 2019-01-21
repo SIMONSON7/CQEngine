@@ -45,16 +45,7 @@ bool CQSceneNode::attachParent(CQSceneNode* _parent)
 	{
 		parent_->detach(name_);
 	}
-
-	parent_ = _parent;
-	parent_->attachChild(this);
-
-	//if (obj_ && parent_->obj_)
-	//{
-	//	obj_->getComponentByName("Transform");//obj_->getComponentByName("Transform")->getTransMat();
-	//}
-	// updateTransform(pTransmat);
-
+	_parent->attachChild(this);
 	return true;
 }
 
@@ -62,6 +53,8 @@ bool CQSceneNode::attachChild(CQSceneNode* _child)
 {
 	CQASSERT(_child);
 	children_.push_back(_child);
+	_child->parent_ = this;
+	__updateGraph(this);
 	return true;
 }
 
@@ -74,13 +67,13 @@ void CQSceneNode::attachObj(CQObject* _obj)
 bool CQSceneNode::detach(const string & _childName)
 {
 	auto itr = std::find_if(children_.begin(), children_.end(), 
-							[=](CQSceneNode* node) { return node->getName() == _childName; });
+		[=](CQSceneNode* node) { return node->getName() == _childName; });
 
 	if (itr != children_.end())
 	{
-		(*itr)->parent_ = nullptr;
-
 		children_.erase(itr);
+		(*itr)->parent_ = nullptr;
+		__updateGraph(*itr);
 		return true;
 	}
 	return false;
@@ -94,4 +87,9 @@ void CQSceneNode::detachChildren()
 	}
 
 	children_.clear();
+}
+
+void CQSceneNode::__updateGraph(CQSceneNode* _root)
+{
+
 }

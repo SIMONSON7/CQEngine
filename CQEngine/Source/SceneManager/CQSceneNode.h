@@ -46,7 +46,12 @@ public:
 
 	inline SceneNodePtrVec& getChildren() { return children_; }
 
+	inline CQObject* getObj() { return obj_; }
+
 	inline const string & getName() const { return name_; }
+
+private:
+	void __updateGraph(CQSceneNode* _root);
 
 protected:
 	CQSceneNode* parent_;
