@@ -32,22 +32,6 @@ void CQCamera::onDestory()
 
 }
 
-std::shared_ptr<CQTransform> CQCamera::getTransform()
-{
-	auto com = this->getComponentByName("Transform");
-	if (com == nullptr)
-	{
-		std::shared_ptr<CQTransform> tPtr;
-		std::shared_ptr<CQComponent> cPtr;
-		tPtr = std::make_shared<CQTransform>();
-		cPtr = std::dynamic_pointer_cast<CQComponent>(tPtr);
-
-		this->setComponent(cPtr);
-		return tPtr;
-	}
-	return std::dynamic_pointer_cast<CQTransform>(com);
-}
-
 void CQCamera::setType(CQCamera::PROJECTION_TYPE _type)
 {
 	type_ = _type;

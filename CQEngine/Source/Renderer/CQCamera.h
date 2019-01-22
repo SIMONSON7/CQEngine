@@ -46,8 +46,6 @@ public:
 
 	Matrix4& calOrthographicMat(float _left, float _right, float _bottom,float _top, float _zNear, float _zFar);
 
-	std::shared_ptr<CQTransform> getTransform();
-
 	PROJECTION_TYPE getType() const;
 
 private:

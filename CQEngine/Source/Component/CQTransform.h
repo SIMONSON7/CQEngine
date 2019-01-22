@@ -72,6 +72,8 @@ public:
 
 	inline Vector3& getWorldPos() { return worldPos_; }
 
+	inline void setParent(CQTransform* _parent) { parent_ = _parent; }
+
 // Coordinate transformation
 public:
 	// Build local right hand coordinate system.

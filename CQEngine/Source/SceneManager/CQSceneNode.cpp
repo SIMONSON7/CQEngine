@@ -91,5 +91,15 @@ void CQSceneNode::detachChildren()
 
 void CQSceneNode::__updateGraph(CQSceneNode* _root)
 {
+	if (_root == nullptr)
+	{
+		return;
+	}
+
+
+
+
+
+
 
 }

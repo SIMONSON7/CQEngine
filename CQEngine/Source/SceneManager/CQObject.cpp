@@ -1,5 +1,5 @@
 #include <chrono>
-#include "CQComponent.h"
+#include "CQTransform.h"
 #include "CQObject.h"
 
 USING_NS_CQ
@@ -59,4 +59,20 @@ std::shared_ptr<CQComponent> CQObject::getComponentByName(const std::string& _na
 void CQObject::removeComponent(const std::string& _name)
 {
 	compMap_.erase(_name);
+}
+
+std::shared_ptr<CQTransform> CQObject::getTransform()
+{
+	auto com = this->getComponentByName("Transform");
+	if (com == nullptr)
+	{
+		std::shared_ptr<CQTransform> tPtr;
+		std::shared_ptr<CQComponent> cPtr;
+		tPtr = std::make_shared<CQTransform>();
+		cPtr = std::dynamic_pointer_cast<CQComponent>(tPtr);
+
+		this->setComponent(cPtr);
+		return tPtr;
+	}
+	return std::dynamic_pointer_cast<CQTransform>(com);
 }

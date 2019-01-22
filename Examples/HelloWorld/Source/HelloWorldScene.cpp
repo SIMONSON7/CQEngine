@@ -28,8 +28,8 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(wheelListener_);
 
 	// Shader
-	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/texture/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
+	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
 	dbgPuts(CQIO::getCurDir().c_str());
 
 	d1_ = CQIO::cvLoadFile("def.vs");
@@ -127,7 +127,7 @@ void HelloWorldScene::update()
 	//Matrix4 projMat = perspective(60.0f, 1.5f, 0.1f, 100.0f);
 
 	auto transform = camera_->getTransform();
-	transform->lookAt(Vector3(0, 0, camRadisZ_), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	transform->buildLocalCoordinate(Vector3(0, 0, camRadisZ_), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	float aspect(800.0f / 600.0f);
 	auto viewMat = transform->calWorldToLcalMatRH();
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);

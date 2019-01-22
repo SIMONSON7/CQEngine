@@ -168,9 +168,9 @@ void CQTransform::__updateModelMat()
 
 void CQTransform::__updateAxis()
 {	
-	up_	   *= rotQuatr_;
-	right_ *= rotQuatr_;
-	front_ *= rotQuatr_;
+	up_ = up_* getRotMat();
+	right_ = right_ * getRotMat();
+	front_ = front_ * getRotMat();
 }
 
 void CQTransform::__setTransform(const CQTransform & other)

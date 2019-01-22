@@ -15,6 +15,8 @@ NS_CQ_BEGIN
 
 class CQComponent;
 
+class CQTransform;
+
 class CQObject : public CQRunnable
 {
 public:
@@ -46,6 +48,10 @@ public:
 	std::shared_ptr<CQComponent> getComponentByName(const std::string& _name);
 
 	void removeComponent(const std::string& _name);
+
+public:
+	// There must be a transform by default.
+	std::shared_ptr<CQTransform> getTransform();
 
 private:
 	const uint64_t genID() const;
