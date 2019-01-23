@@ -110,6 +110,20 @@ void CQTransform::moveTo(Vector3& _worldOffset)
 	__updateModelMat();
 }
 
+void CQTransform::setParent(CQTransform* _parent)
+{
+	CQASSERT(_parent);
+
+	parent_ = _parent;
+	auto parentRotMat = parent_->getRotMat();
+	auto parentWorldPos = parent_->getWorldPos();
+
+	rotQuatr_ = quat_cast(mat4_cast(rotQuatr_) * parentRotMat);
+	__updateAxis();
+
+	move(getWorldPos());
+}
+
 void CQTransform::buildLocalCoordinate(Vector3& _worldPos, Vector3& _worldTargetPos, Vector3& _worldUp)
 {
 	target_		= _worldTargetPos;

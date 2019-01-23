@@ -96,10 +96,18 @@ void CQSceneNode::__updateGraph(CQSceneNode* _root)
 		return;
 	}
 
+	if (_root->getParent() && _root->getParent()->getObj())
+	{
+		auto obj = _root->getObj();
+		if (obj)
+		{
+			auto sp = obj->getTransform();
+			sp->setParent(_root->getParent()->getObj()->getTransform().get());
+		}
+	}
 
-
-
-
-
-
+	for each (auto child in children_)
+	{
+		__updateGraph(child);
+	}
 }

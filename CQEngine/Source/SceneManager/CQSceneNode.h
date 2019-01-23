@@ -42,7 +42,7 @@ public:
 
 	void detachChildren();
 
-	inline CQSceneNode& getParent() { return *parent_; }
+	inline CQSceneNode* getParent() { return parent_; }
 
 	inline SceneNodePtrVec& getChildren() { return children_; }
 

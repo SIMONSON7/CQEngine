@@ -72,13 +72,11 @@ public:
 
 	inline Vector3& getWorldPos() { return worldPos_; }
 
-	inline void setParent(CQTransform* _parent) { parent_ = _parent; }
-
 // Coordinate transformation
 public:
 	// Build local right hand coordinate system.
 	void buildLocalCoordinate(Vector3& _worldPos, Vector3& _worldTargetPos, Vector3& _worldUp);
-
+	
 	Matrix4& calWorldToLcalMatRH();
 
 	Matrix4& calWorldToLcalMatLH();
@@ -90,6 +88,10 @@ public:
 	inline Vector3& getUp() { return up_; }
 
 public:
+	void setParent(CQTransform* _parent);
+
+	inline CQTransform* getParent() const { return parent_; }
+
 	inline Matrix4& getModelMat() { return srtMat_; }
 
 private:
