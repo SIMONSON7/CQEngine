@@ -11,11 +11,15 @@ CQSceneNode* CQSceneNode::s_root_ = CQ_NEW(CQSceneNode, nullptr, nullptr, "ROOT"
 CQSceneNode::CQSceneNode(CQSceneNode* _parent, CQObject* _obj, const string & _name)
 	:
 	parent_(_parent),
-	obj_(_obj),
 	name_(_name),
 	visiable_(true)
 {
+	if (_obj == nullptr)
+	{
+		_obj = CQ_NEW(CQObject);
+	}
 
+	obj_ = _obj;
 }
 
 CQSceneNode::~CQSceneNode()
