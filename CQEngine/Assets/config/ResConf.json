@@ -1,0 +1,19 @@
+{
+    "Res":
+    [
+        {
+            "name" : "DEF_VERTEX_SHADER",
+            "url" : "shader/def.vs"
+        },
+
+        {
+            "name" : "DEF_FRAGMENT_SHADER",
+            "url" : "shader/def.fs"
+        },
+
+        {
+            "name" : "HELLOWORLD_WALL_TEX",
+            "url" : "texture/img.jpg"
+        }
+    ]
+}
