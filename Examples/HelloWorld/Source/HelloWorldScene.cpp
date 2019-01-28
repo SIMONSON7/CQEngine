@@ -28,10 +28,6 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(wheelListener_);
 
 	// Shader
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
-	dbgPuts(CQIO::getCurDir().c_str());
-
 	d1_ = CQIO::cvLoadFile("def.vs");
 	d2_ = CQIO::cvLoadFile("def.fs");
 	if (d1_->staus_ != Data::LOAD_SUCCESS ||

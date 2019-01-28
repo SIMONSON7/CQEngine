@@ -20,8 +20,17 @@
 
 NS_CQ_BEGIN
 
-struct CQResConfg
+struct CQResConfig
 {
+public:
+	CQResConfig() {}
+
+	CQResConfig(std::string & _name, std::string & _path)
+		:
+		name_(_name),
+		path_(_path)
+	{}
+
 	std::string name_;
 	std::string path_;
 	std::string abPath_;
@@ -33,8 +42,6 @@ public:
 	typedef std::shared_ptr<CQResI> SpCQResI;
 
 public:
-	CQResManager();
-
 	~CQResManager();
 
 public:
@@ -53,9 +60,16 @@ public:
 	// SpCQResI poolGetRes(const ResID _resID);
 
 	// ResID getResIDByName(const std::string & _name);
+private:
+	friend class CQCore;
+
+	explicit CQResManager();
 
 private:
-	std::map<ResID, CQResConfg> resMap_;
+	void __parseResCfg();
+
+private:
+	std::map<ResID, CQResConfig> resMap_;
 
 	std::map<std::string, SpCQResI> resLoadedMap_;
 
