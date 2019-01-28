@@ -71,9 +71,9 @@ void CQResManager::__parseResCfg()
 						Value & it = res[i];
 						std::string name = it["name"].GetString();
 						std::string url = it["url"].GetString();
-						std::string fullUrl = assestsPath + url;
+						std::string abPath = assestsPath + url;
 
-						CQResConfig cfg(name, url);
+						CQResConfig cfg(name, url, abPath);
 						ResID id(i);
 						resMap_.insert(std::make_pair(id, cfg));
 					}

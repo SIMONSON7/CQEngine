@@ -22,13 +22,13 @@ NS_CQ_BEGIN
 
 struct CQResConfig
 {
-public:
 	CQResConfig() {}
 
-	CQResConfig(std::string & _name, std::string & _path)
+	CQResConfig(std::string & _name, std::string & _path, std::string & _abPath)
 		:
 		name_(_name),
-		path_(_path)
+		path_(_path),
+		abPath_(_abPath)
 	{}
 
 	std::string name_;
