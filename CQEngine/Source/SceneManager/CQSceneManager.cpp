@@ -1,4 +1,6 @@
 #include "CQSceneManager.h"
+#include "CQMemory.h"
+#include "CQSceneNode.h"
 
 USING_NS_CQ
 
@@ -55,4 +57,7 @@ void CQSceneManager::cleanAllScene()
 	{
 		scene->onDestory();
 	}
+
+	// CQSceneNode::s_root_ shared by every scene.
+	CQ_DELETE(CQSceneNode::s_root_, CQSceneNode);
 }
