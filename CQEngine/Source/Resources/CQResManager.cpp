@@ -1,6 +1,17 @@
 #include "CQResManager.h"
+#include "rapidjson/document.h"
 
 USING_NS_CQ
+
+CQResManager::CQResManager()
+{
+
+}
+
+CQResManager::~CQResManager()
+{
+
+}
 
 CQResManager::SpCQResI CQResManager::getRes(const ResID _resID)
 {
@@ -21,3 +32,4 @@ bool CQResManager::destroyRes(const std::string & _path)
 {
 	return false;
 }
+

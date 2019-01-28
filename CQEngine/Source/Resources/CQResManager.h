@@ -10,7 +10,8 @@
 #define __CQRESMANAGER_H__
 
 #include <string>
-#include <unordered_map>
+//#include <unordered_map>
+#include <map>
 #include <memory>
 #include "CQMacros.h"
 #include "CQNoncopyable.h"
@@ -46,17 +47,19 @@ public:
 	bool destroyRes(const std::string & _path);
 
 public:
-	//getResAsync();
+	// getResAsync();
 
 public:
-	//SpCQResI poolGetRes(const ResID _resID);
+	// SpCQResI poolGetRes(const ResID _resID);
+
+	// ResID getResIDByName(const std::string & _name);
 
 private:
-	std::unordered_map<ResID, CQResConfg> resMap_;
+	std::map<ResID, CQResConfg> resMap_;
 
-	std::unordered_map<std::string, SpCQResI> resLoadedMap_;
+	std::map<std::string, SpCQResI> resLoadedMap_;
 
-	std::unordered_map<std::string, SpCQResI> resDontDestroyMap_;
+	std::map<std::string, SpCQResI> resDontDestroyMap_;
 };
 
 NS_CQ_END
