@@ -42,11 +42,11 @@ bool CQResManager::destroyRes(const std::string & _path)
 
 void CQResManager::__parseResCfg()
 {
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/config/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/img/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/shader/");
-	CQIO::addSearchPath(CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/texture/");
-	dbgPuts(CQIO::getCurDir().c_str());
+	std::string assestsPath = CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/";
+	CQIO::addSearchPath(assestsPath + "config/");
+	CQIO::addSearchPath(assestsPath + "img/");
+	CQIO::addSearchPath(assestsPath + "shader/");
+	CQIO::addSearchPath(assestsPath + "texture/");
 
 	auto jsonData = CQIO::cvLoadFile("ResConf.json");
 	if (jsonData->staus_ == Data::LOAD_SUCCESS)
@@ -71,6 +71,7 @@ void CQResManager::__parseResCfg()
 						Value & it = res[i];
 						std::string name = it["name"].GetString();
 						std::string url = it["url"].GetString();
+						std::string fullUrl = assestsPath + url;
 
 						CQResConfig cfg(name, url);
 						ResID id(i);
