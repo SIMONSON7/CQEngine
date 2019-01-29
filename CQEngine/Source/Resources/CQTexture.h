@@ -15,12 +15,32 @@
 
 NS_CQ_BEGIN
 
+enum TexType
+{
+	NONE = 0,
+	D1,
+	D2, // Default
+	D3,
+	CUBE,
+};
+
 class CQTexture : public CQResI
 {
 public:
 	CQTexture();
 
 	virtual ~CQTexture();
+
+public:
+	inline void setResID(ResID & _resID) { resID_ = _resID; }
+
+	inline TexType getTexType() const { return type_; }
+
+	inline unsigned int getTexWidth() const { return width_; }
+
+	inline unsigned int getTexHeight() const { return height_; }
+
+	inline unsigned char * getData() const { return data_; }
 
 public:
 	virtual ResID getResID() const { return resID_; }
@@ -33,6 +53,14 @@ public:
 
 private:
 	ResID resID_;
+
+	TexType type_;
+
+	int width_;
+
+	int height_;
+
+	unsigned char * data_;
 
 };
 
