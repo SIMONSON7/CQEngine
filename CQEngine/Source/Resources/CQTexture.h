@@ -12,6 +12,7 @@
 #include "CQMacros.h"
 #include "CQResI.h"
 #include "ResID.h"
+#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
@@ -24,7 +25,7 @@ enum TexType
 	CUBE,
 };
 
-class CQTexture : public CQResI
+class CQTexture : public CQResI, private CQNoncopyable
 {
 public:
 	CQTexture();
