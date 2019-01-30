@@ -25,6 +25,12 @@ struct Vertex
 	Vector2 uv_;
 };
 
+struct SubMesh
+{
+	std::vector<Vertex> vBuff_;
+	std::vector<unsigned int> iBuff_;
+};
+
 class CQMesh : public CQResI, private CQNoncopyable
 {
 public:
@@ -44,9 +50,7 @@ public:
 private:
 	ResID resID_;
 
-	std::vector<Vertex> vBuff_;
-
-	std::vector<unsigned int> iBuff_;
+	std::vector<SubMesh*> sharedMesh_;
 };
 
 NS_CQ_END
