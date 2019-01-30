@@ -41,7 +41,7 @@ public:
 public:
 	virtual ResID getResID() const { return resID_; }
 
-	virtual CQResType getResType() const { return CQResType::MESH; }
+	virtual Type getResType() const { return Type::MESH; }
 
 	virtual void onLoadDiskRes(const std::string & _abPath);
 

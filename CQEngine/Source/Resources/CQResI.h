@@ -15,19 +15,21 @@
 
 NS_CQ_BEGIN
 
-enum CQResType
-{
-	NONE = 0,
-	TEXTURE,
-	SHADER,
-	MESH
-};
+
 
 class CQResI
 {
 public:
+	enum Type
+	{
+		NONE = 0,
+		TEXTURE,
+		SHADER,
+		MESH
+	};
+public:
 	virtual ResID getResID() const = 0;
-	virtual CQResType getResType() const = 0;
+	virtual Type getResType() const = 0;
 	virtual void onLoadDiskRes(const std::string & _abPath) = 0;
 	virtual void onDestory() = 0;
 };
