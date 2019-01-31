@@ -18,7 +18,6 @@ NS_CQ_BEGIN
 
 enum TexType
 {
-	NONE = 0,
 	D1,
 	D2, // Default
 	D3,

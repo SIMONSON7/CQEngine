@@ -13,6 +13,7 @@
 #include "CQMacros.h"
 #include "CQDebug.h"
 #include "CQMemory.h"
+#include "CQIO.h"
 #include "CQMath.h"
 #include "CQUtils.h"
 
@@ -27,21 +28,30 @@
 #include "CQInput.h"
 
 // Res
-#include "CQIO.h"
+#include "ResID_Def.h"
 #include "CQResLoader.h"
+#include "CQTexture.h"
+#include "CQMesh.h"
+#include "CQResManager.h"
+
+// Component
+#include "CQComponent.h"
 #include "CQTransform.h"
+#include "CQMeshRenderer.h"
+
+// Scene
+#include "CQObject.h"
+#include "CQSceneNode.h"
+#include "CQScene.h"
+#include "CQSceneManager.h"
 
 // Render
 #include "CQCamera.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
-#include "CQMesh.h"
 #include "CQRenderer.h"
 
-// Manager
-#include "CQSceneNode.h"
-#include "CQScene.h"
-#include "CQSceneManager.h"
+// Core
 #include "CQCore.h"
 
 #endif /* __CQENGINE__ */

@@ -15,14 +15,14 @@ class CQTexture;
 * If the user does not specify the way to load, it will be selected automatically
 * according to the size of the file, type, and so on.
 */
-CQTexture* loadTexture(const char *_filePath);
+//CQTexture* loadTexture(const char *_filePath);
 
 // TODO : return pointer of Mesh
 /*
 * If the user does not specify the way to load, it will be selected automatically
 * according to the size of the file, type, and so on.
 */
-void * loadMesh(const char *_filePath);
+//void * loadMesh(const char *_filePath);
 
 /*
 *

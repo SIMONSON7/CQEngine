@@ -3,8 +3,6 @@
 
 REGISTER_START_SCENE(HelloWorldScene)
 
-
-
 void HelloWorldScene::onInit()
 {
 	dbgPuts("[HelloWorldScene] init success!");
@@ -99,10 +97,12 @@ void HelloWorldScene::onInit()
 	glBindVertexArray(0);
 
 	// texture
-	img_ = CQResLoader::shareLoader()->loadImgDataSync("img.jpg");
+	ResID id(2);
+	std::shared_ptr<CQTexture> tex = std::dynamic_pointer_cast<CQTexture>
+		(CQCore::shareCore()->shareResManager()->getRes(id));
 
 	program_.setInt("uTexture0", 0);
-	texture_ = CQ_NEW(CQGLTexture,img_->width_, img_->height_, img_->data_);
+	texture_ = CQ_NEW(CQGLTexture,tex->getTexWidth(), tex->getTexHeight(), tex->getData());
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -196,7 +196,7 @@ void HelloWorldScene::onDestory()
 	program_.unLoad();
 	CQ_DELETE(texture_, CQGLTexture);
 	CQ_DELETE(camera_, CQCamera);	
-	CQResLoader::shareLoader()->unloadImgData(img_);
+	CQCore::shareCore()->shareResManager()->destroyRes("HELLOWORLD_WALL_TEX");
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 

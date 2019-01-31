@@ -74,6 +74,9 @@ private:
 	SubMesh * __processSubMesh(aiMesh* mesh);
 
 private:
+	explicit CQResLoader();
+
+private:
 	int64_t asyncDCHd_;
 
 	CQSafeStack<AsyncRawData*> asyncStack_;
