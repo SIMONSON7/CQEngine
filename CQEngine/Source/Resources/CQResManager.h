@@ -24,16 +24,19 @@ struct CQResConfig
 {
 	CQResConfig() {}
 
-	CQResConfig(std::string & _name, std::string & _path, std::string & _abPath)
+	CQResConfig(std::string & _name, std::string & _path, 
+		std::string & _abPath, ResType _type)
 		:
 		name_(_name),
 		path_(_path),
-		abPath_(_abPath)
+		abPath_(_abPath),
+		type_(_type)
 	{}
 
 	std::string name_;
 	std::string path_;
 	std::string abPath_;
+	ResType type_;
 };
 
 class CQResManager : private CQNoncopyable
