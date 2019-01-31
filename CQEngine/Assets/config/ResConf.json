@@ -3,17 +3,27 @@
     [
         {
             "name" : "DEF_VERTEX_SHADER",
-            "url" : "shader/def.vs"
+            "url" : "shader/def.vs",
+            "type" : 2
         },
 
         {
             "name" : "DEF_FRAGMENT_SHADER",
-            "url" : "shader/def.fs"
+            "url" : "shader/def.fs",
+            "type" : 2
         },
 
         {
             "name" : "HELLOWORLD_WALL_TEX",
-            "url" : "texture/img.jpg"
+            "url" : "texture/img.jpg",
+            "type" : 1
+        },
+        
+        {
+            "name" : "BUNNY_MESH",
+            "url" : "mesh/bunny/bunny.obj",
+            "type" : 3
         }
+
     ]
 }

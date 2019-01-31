@@ -23,7 +23,8 @@ public:
 public:
 	static const ResID HELLOWORLD_WALL_TEX;
 
-
+public:
+	static const ResID BUNNY_MESH;
 
 
 
