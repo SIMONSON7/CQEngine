@@ -8,8 +8,8 @@ NS_CQ_BEGIN
 
 CQTexture* loadTexture(const char *_filePath)
 {
-	ImgData *data = CQResLoader::shareLoader()->loadImgDataSync(_filePath);
-	CQResLoader::shareLoader()->unloadImgData(data);
+	ImgData *data = CQResLoader::shareLoader()->loadRawDataSync(_filePath);
+	CQResLoader::shareLoader()->unloadRawData(data);
 
 	return 0;
 }

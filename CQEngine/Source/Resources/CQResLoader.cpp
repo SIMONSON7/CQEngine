@@ -3,6 +3,8 @@
 #include "CQResLoader.h"
 #include "CQIO.h"
 #include "CQUtils.h"
+#include "CQTexture.h"
+#include "CQMesh.h"
 
 USING_NS_CQ;
 
@@ -14,110 +16,183 @@ CQResLoader *CQResLoader::shareLoader()
 
 CQResLoader::~CQResLoader()
 {
-	if (imgCbHd_)
+	if (asyncDCHd_)
 	{
-		cancelDelayCall(imgCbHd_);
+		cancelDelayCall(asyncDCHd_);
 	}
 }
 
 CQResLoader::CQResLoader()
 	:
-	imgCbHd_(0)
+	asyncDCHd_(0)
 {
 
 }
 
-ImgData *CQResLoader::loadImgDataSync(const std::string& _filePath)
+RawData * CQResLoader::loadRawDataSync(const std::string & _abPath)
 {
-	ImgData *imgData = (ImgData*)CQ_MALLOC(sizeof(ImgData));
-	int w, h, nrComponents;
+	RawData * rData = (RawData*)CQ_MALLOC(sizeof(RawData));
+	auto data = CQIO::cvLoadFile(_abPath);
+	if (data->LOAD_SUCCESS)
+	{
+		rData->data_ = reinterpret_cast<unsigned char *>(data->buff_);
+		rData->size_ = data->size_;
+	}
 
-	// flip textures y coordinate
-	stbi_set_flip_vertically_on_load(true);
-	imgData->data_ = stbi_load(CQIO::searchFullPath(_filePath).c_str(), &w, &h, &nrComponents, 0);
-	imgData->type_ = nrComponents;
-	imgData->width_ = w;
-	imgData->height_ = h;
-
-	return imgData;
+	return rData;
 }
 
-void CQResLoader::unloadImgData(ImgData * _data)
+void CQResLoader::unloadRawData(RawData * _data)
 {
 	CQASSERT(_data);
-	stbi_image_free(_data->data_);
+	CQ_FREE(_data->data_);
+	_data->size_ = 0;
 	CQ_FREE(_data);
 }
 
-void CQResLoader::loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb)
+void CQResLoader::loadRawDataAsync(const std::string & _abPath, std::function<void(RawData*)> & _cb)
 {
-	ImgData* data = nullptr;
-	std::string fullPath = CQIO::searchFullPath(_filePath);
-
-	// Check cache.
-	// Call callback directly if the res exist in cache already or file is not exist at all.
-	auto res = imgCache_.find(fullPath);
-	if ( res != imgCache_.end())
-	{
-		data = res->second.get();
-	}
-	
-	if (data != nullptr || !CQIO::isFileExist(fullPath))
-	{
-		_cb(data);
-		return;
-	}
+	RawData* data = nullptr;
 
 	// Lazy init.
-	if (imgLoadThd_ == nullptr)
+	if (rdLoadThd_ == nullptr)
 	{
-		imgLoadThd_ = std::make_shared<std::thread>(&CQResLoader::__loadImg, this);
+		rdLoadThd_ = std::make_shared<std::thread>(&CQResLoader::__rdLoadThreadFun, this);
 	}
 
-	if (imgCbHd_ == 0)
+	if (asyncDCHd_ == 0)
 	{
-		imgCbHd_ = delayCall(makeAction(&CQResLoader::__doCallBack, this), 0, true);
+		asyncDCHd_ = delayCall(makeAction(&CQResLoader::__doCallBack, this), 0, true);
 	}
 
 	// Create.
-	auto asyncData = CQ_NEW(AsyncImgData);
+	AsyncRawData * asyncData = CQ_NEW(AsyncRawData);
 	asyncData->cb_ = _cb;
-	asyncData->imgData_ = nullptr;
-	asyncData->fullPath_ = fullPath;
+	asyncData->rawData_ = data;
+	asyncData->abPath_ = _abPath;
 
-	imgStack_.push(asyncData);
+	asyncStack_.push(asyncData);
 }
 
 // Threads dedicated to loading pictures continuously.
-void CQResLoader::__loadImg()
+void CQResLoader::__rdLoadThreadFun()
 {
-	AsyncImgData *data = nullptr;
+	AsyncRawData *data = nullptr;
 
 	while (true)
 	{
-		imgStack_.wait_and_pop(data);
+		asyncStack_.wait_and_pop(data);
 
-		data->imgData_ = loadImgDataSync(data->fullPath_);
+		data->rawData_= loadRawDataSync(data->abPath_);
 
 		cbStack_.push(data);
 	}
 }
 
-// Run int main thread.Avoid block the main thread.
 void CQResLoader::__doCallBack()
 {
-	AsyncImgData *data = nullptr;
+	AsyncRawData *data = nullptr;
 	
 	if (cbStack_.try_pop(data))
 	{
 		if (data->cb_)
 		{
-			data->cb_(data->imgData_);
+			data->cb_(data->rawData_);
 		}
 
+		// User responsible for release the rawData.
 		//unloadImgData(data->imgData_);
-		CQ_DELETE(data, AsyncImgData);
+		CQ_DELETE(data, AsyncRawData);
 	}
+}
+
+Img * CQResLoader::loadImgSync(const std::string & _abPath)
+{
+	auto img = (Img*)CQ_MALLOC(sizeof(Img));
+	int nrComponents;
+
+	// flip textures y coordinate
+	stbi_set_flip_vertically_on_load(true);
+	img->data_ = stbi_load(_abPath.c_str(), &(img->width_), &(img->height_), &nrComponents, 0);
+	return img;
+}
+
+void CQResLoader::unloadImg(Img * _img)
+{
+	if (_img)
+	{
+		stbi_image_free(_img->data_);
+		CQ_FREE(_img);
+	}
+}
+
+std::vector<SubMesh*> CQResLoader::loadSubMeshesSync(const std::string & _abPath)
+{
+	std::vector<SubMesh*> vector;
+
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(_abPath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		return vector;
+	}
+
+	auto root = scene->mRootNode;
+	for (int i = 0; i < root->mNumMeshes; ++i)
+	{
+		aiMesh * mesh = scene->mMeshes[root->mMeshes[i]];
+		vector.push_back(__processSubMesh(mesh));
+	}
+}
+
+void CQResLoader::unloadMesh(SubMesh * _mesh)
+{
+	if (_mesh)
+	{
+		CQ_DELETE(_mesh, SubMesh);
+	}
+}
+
+SubMesh * CQResLoader::__processSubMesh(aiMesh* mesh)
+{
+	SubMesh* subMesh = CQ_NEW(SubMesh);
+
+	// Vertex
+	for (int i = 0; i < mesh->mNumVertices; ++i)
+	{
+		Vertex vertex;
+		// pos
+		vertex.pos_.x = mesh->mVertices[i].x;
+		vertex.pos_.y = mesh->mVertices[i].y;
+		vertex.pos_.z = mesh->mVertices[i].z;
+
+		// normal
+		vertex.normal_.x = mesh->mNormals[i].x;
+		vertex.normal_.y = mesh->mNormals[i].y;
+		vertex.normal_.z = mesh->mNormals[i].z;
+
+		// uv
+		if (mesh->mTextureCoords[0])
+		{
+			vertex.uv_.x = mesh->mTextureCoords[0][i].x;
+			vertex.uv_.y = mesh->mTextureCoords[0][i].y;
+		}
+
+		subMesh->vBuff_.push_back(vertex);
+	}
+
+	// Index
+	// face == triangle
+	for (int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (int j = 0; j < face.mNumIndices; j++)
+		{
+			subMesh->iBuff_.push_back(face.mIndices[j]);
+		}
+	}
+
+	return subMesh;
 }
 
 

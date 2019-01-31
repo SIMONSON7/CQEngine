@@ -9,10 +9,14 @@
 #ifndef __CORESLOADER_H__
 #define __CORESLOADER_H__
 
-#include <map>
+#include <vector>
 #include <string>
 #include <thread>
 #include <condition_variable>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "CQMacros.h"
 #include "CQNoncopyable.h"
@@ -21,54 +25,63 @@
 
 NS_CQ_BEGIN
 
-struct ImgData
+struct Img;
+struct SubMesh;
+
+struct RawData
 {
 	unsigned char * data_;
-	unsigned int	type_;
-	int width_;
-	int height_;
+	size_t size_;
+};
+
+struct AsyncRawData
+{
+	RawData * rawData_;
+	std::string abPath_;
+	std::function<void(RawData*)> cb_;
 };
 
 class CQResLoader : private CQNoncopyable
 {
 public:
-	struct AsyncImgData
-	{
-		ImgData *imgData_;
-		std::string fullPath_;
-		std::function<void(ImgData*)> cb_;
-	};
-
-public:
 	static
-	CQResLoader *shareLoader();
+	CQResLoader * shareLoader();
 
 	virtual ~CQResLoader();
 
 public:
-	ImgData *loadImgDataSync(const std::string& _filePath);
+	RawData * loadRawDataSync(const std::string & _abPath);
 
-	void loadImgDataAsync(const std::string& _filePath, std::function<void(ImgData*)>& _cb);
+	void loadRawDataAsync(const std::string & _abPath, std::function<void(RawData*)> & _cb);
 
-	void unloadImgData(ImgData *_data);
+	void unloadRawData(RawData * _data);
+
+public:
+	Img * loadImgSync(const std::string & _abPath);
+
+	void unloadImg(Img * _img);
+
+	std::vector<SubMesh*> loadSubMeshesSync(const std::string & _abPath);
+
+	void unloadMesh(SubMesh * _mesh);
 
 private:
-	explicit CQResLoader();
-
-	void __loadImg();
+	void __rdLoadThreadFun();
 
 	void __doCallBack();
 
 private:
-	int64_t imgCbHd_;
+	SubMesh * __processSubMesh(aiMesh* mesh);
 
-	CQSafeStack<AsyncImgData*> imgStack_;
+private:
+	int64_t asyncDCHd_;
 
-	CQSafeStack<AsyncImgData*> cbStack_;
+	CQSafeStack<AsyncRawData*> asyncStack_;
 
-	std::shared_ptr<std::thread> imgLoadThd_;
+	CQSafeStack<AsyncRawData*> cbStack_;
 
-	std::map<std::string, std::shared_ptr<ImgData>> imgCache_;
+	std::shared_ptr<std::thread> rdLoadThd_;
+
 };
 
 NS_CQ_END

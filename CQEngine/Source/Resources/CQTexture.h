@@ -25,6 +25,13 @@ enum TexType
 	CUBE,
 };
 
+struct Img
+{
+	int width_;
+	int height_;
+	unsigned char * data_;
+};
+
 class CQTexture : public CQResI, private CQNoncopyable
 {
 public:
@@ -37,11 +44,11 @@ public:
 
 	inline TexType getTexType() const { return type_; }
 
-	inline unsigned int getTexWidth() const { return width_; }
+	inline unsigned int getTexWidth() const { return img_->width_; }
 
-	inline unsigned int getTexHeight() const { return height_; }
+	inline unsigned int getTexHeight() const { return img_->height_; }
 
-	inline unsigned char * getData() const { return data_; }
+	inline unsigned char * getData() const { return img_->data_; }
 
 public:
 	virtual ResID getResID() const { return resID_; }
@@ -57,11 +64,7 @@ private:
 
 	TexType type_;
 
-	int width_;
-
-	int height_;
-
-	unsigned char * data_;
+	Img * img_;
 
 };
 
