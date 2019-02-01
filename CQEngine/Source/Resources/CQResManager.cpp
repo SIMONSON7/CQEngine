@@ -1,10 +1,13 @@
 #include <utility>
+
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+
 #include "CQResManager.h"
 #include "CQIO.h"
 #include "CQDebug.h"
+#include "CQShader.h"
 #include "CQTexture.h"
 #include "CQMesh.h"
 
@@ -49,7 +52,12 @@ CQResManager::SpCQResI CQResManager::getRes(const std::string & _resName)
 		switch (cfg->second.type_)
 		{
 		case ResType::SHADER:
-			break;
+		{
+			std::shared_ptr<CQShader> shaderResSP = std::make_shared<CQShader>();
+			shaderResSP->onLoadDiskRes(cfg->second.abPath_);
+			baseResSP = std::dynamic_pointer_cast<CQResI>(shaderResSP);
+		}
+		break;
 		case ResType::TEXTURE:
 		{
 			std::shared_ptr<CQTexture> texResSP = std::make_shared<CQTexture>();

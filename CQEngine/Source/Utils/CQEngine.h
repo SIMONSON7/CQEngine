@@ -30,6 +30,7 @@
 // Res
 #include "ResID_Def.h"
 #include "CQResLoader.h"
+#include "CQShader.h"
 #include "CQTexture.h"
 #include "CQMesh.h"
 #include "CQResManager.h"
