@@ -114,6 +114,22 @@ Img * CQResLoader::loadImgSync(const std::string & _abPath)
 	// flip textures y coordinate
 	stbi_set_flip_vertically_on_load(true);
 	img->data_ = stbi_load(_abPath.c_str(), &(img->width_), &(img->height_), &nrComponents, 0);
+	switch (nrComponents)
+	{
+	case 1:
+		img->format_ = Img::Format::RED;
+		break;
+	case 3:
+		img->format_ = Img::Format::RGB;
+		break;
+	case 4:
+		img->format_ = Img::Format::RGBA;
+		break;
+	default:
+		img->format_ = Img::Format::NONE;
+		break;
+	}
+
 	return img;
 }
 

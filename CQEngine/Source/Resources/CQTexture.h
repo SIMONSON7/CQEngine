@@ -26,8 +26,17 @@ enum TexType
 
 struct Img
 {
+	enum Format
+	{
+		NONE,
+		RED,
+		RGB,
+		RGBA
+	};
+
 	int width_;
 	int height_;
+	Format format_;
 	unsigned char * data_;
 };
 
