@@ -97,9 +97,8 @@ void HelloWorldScene::onInit()
 	glBindVertexArray(0);
 
 	// texture
-	ResID id(2);
 	std::shared_ptr<CQTexture> tex = std::dynamic_pointer_cast<CQTexture>
-		(CQCore::shareCore()->shareResManager()->getRes(id));
+		(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
 
 	program_.setInt("uTexture0", 0);
 	texture_ = CQ_NEW(CQGLTexture,tex->getTexWidth(), tex->getTexHeight(), tex->getData());

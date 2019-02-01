@@ -22,15 +22,15 @@ CQResManager::~CQResManager()
 	resDontDestroyMap_.clear();
 }
 
-CQResManager::SpCQResI CQResManager::getRes(const ResID _resID)
+CQResManager::SpCQResI CQResManager::getRes(const std::string & _resName)
 {
-	if (_resID == ResID::INVALID)
+	if (_resName.empty())
 	{
-		dbgPuts("[CQResManager] getRes() : invalid resID.");
+		dbgPuts("[CQResManager] getRes() : invalid resName.");
 		return nullptr;
 	}
 
-	auto cfg = resMap_.find(_resID);
+	auto cfg = resMap_.find(_resName);
 	if (cfg != resMap_.end())
 	{
 		auto loadedRes = resLoadedMap_.find(cfg->second.path_);
@@ -56,14 +56,14 @@ CQResManager::SpCQResI CQResManager::getRes(const ResID _resID)
 			texResSP->onLoadDiskRes(cfg->second.abPath_);
 			baseResSP = std::dynamic_pointer_cast<CQResI>(texResSP);
 		}
-			break;
+		break;
 		case ResType::MESH:
 		{
 			std::shared_ptr<CQMesh> meshRes = std::make_shared<CQMesh>();
 			meshRes->onLoadDiskRes(cfg->second.abPath_);
 			baseResSP = std::dynamic_pointer_cast<CQResI>(meshRes);
 		}
-			break;
+		break;
 		default:
 			break;
 		}
@@ -74,14 +74,15 @@ CQResManager::SpCQResI CQResManager::getRes(const ResID _resID)
 	return nullptr;
 }
 
-CQResManager::SpCQResI CQResManager::getRes(const std::string & _path)
+bool CQResManager::destroyRes(const std::string & _resName)
 {
-	return nullptr;
-}
+	if (_resName.empty())
+	{
+		dbgPuts("[CQResManager] getRes() : invalid resName.");
+		return nullptr;
+	}
 
-bool CQResManager::destroyRes(const ResID _resID)
-{
-	auto cfg = resMap_.find(_resID);
+	auto cfg = resMap_.find(_resName);
 	SpCQResI res = nullptr;
 	if (cfg != resMap_.end())
 	{
@@ -108,14 +109,9 @@ bool CQResManager::destroyRes(const ResID _resID)
 	return false;
 }
 
-bool CQResManager::destroyRes(const std::string & _path)
-{
-	return false;
-}
-
 void CQResManager::__parseResCfg()
 {
-	std::string assestsPath = CQIO::getCurDir() /*+ "/GIT_SOURCE" */+ "/CQEngine/CQEngine/Assets/";
+	std::string assestsPath = CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/";
 	CQIO::addSearchPath(assestsPath + "config/");
 	CQIO::addSearchPath(assestsPath + "img/");
 	CQIO::addSearchPath(assestsPath + "shader/");
@@ -143,14 +139,16 @@ void CQResManager::__parseResCfg()
 					for (int i = 0 ; i < res.Size(); ++i)
 					{
 						Value & it = res[i];
+
+						std::string prefix = "ResIDDef::";
 						std::string name = it["name"].GetString();
+						name = prefix + name;
 						std::string url = it["url"].GetString();
 						std::string abPath = assestsPath + url;
 						ResType type = static_cast<ResType>(it["type"].GetInt());
 
 						CQResConfig cfg(name, url, abPath, type);
-						ResID id(i);
-						resMap_.insert(std::make_pair(id, cfg));
+						resMap_.insert(std::make_pair(name, cfg));
 					}
 				}
 			}

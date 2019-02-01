@@ -48,21 +48,21 @@ public:
 	~CQResManager();
 
 public:
-	SpCQResI getRes(const ResID _resID);
+	SpCQResI getRes(const std::string & _resName);
 
-	SpCQResI getRes(const std::string & _path);
-
-	bool destroyRes(const ResID _resID);
-
-	bool destroyRes(const std::string & _path);
+	bool destroyRes(const std::string & _resName);
 
 public:
 	// getResAsync();
 
-public:
 	// SpCQResI poolGetRes(const ResID _resID);
 
 	// ResID getResIDByName(const std::string & _name);
+
+	// CPP No support reflection.
+	/*SpCQResI getRes(const ResID _resID);*/
+	/*bool destroyRes(const ResID _resID);*/
+
 private:
 	friend class CQCore;
 
@@ -72,10 +72,13 @@ private:
 	void __parseResCfg();
 
 private:
-	std::map<ResID, CQResConfig> resMap_;
+	// name : cfg
+	std::map<std::string, CQResConfig> resMap_;
 
+	// path : res
 	std::map<std::string, SpCQResI> resLoadedMap_;
 
+	// path : res
 	std::map<std::string, SpCQResI> resDontDestroyMap_;
 };
 

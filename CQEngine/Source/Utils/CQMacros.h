@@ -5,7 +5,6 @@
 #ifndef __CQMACROS_H__
 #define __CQMACROS_H__
 
-
 /// @name namespace CQEngine
 /// @{
 #ifdef __cplusplus
@@ -62,5 +61,6 @@
 #	define getcwd(d, s) (_getcwd(d, s))
 #endif
 
+#define VNAME(var) (#var)
 
 #endif /* __CQMACROS_H__ */
