@@ -16,12 +16,12 @@
 
 NS_CQ_BEGIN
 
-enum TexType
+enum TexMapType
 {
-	D1,
+	D1,	// Rendering line. Rain effect.
 	D2, // Default
-	D3,
-	CUBE,
+	D3, // Volume Textures
+	CUBE, 
 };
 
 struct Img
@@ -50,7 +50,7 @@ public:
 public:
 	inline void setResID(ResID & _resID) { resID_ = _resID; }
 
-	inline TexType getTexType() const { return type_; }
+	inline TexMapType getTexMapType() const { return type_; }
 
 	inline unsigned int getTexWidth() const { return img_->width_; }
 
@@ -70,7 +70,7 @@ public:
 private:
 	ResID resID_;
 
-	TexType type_;
+	TexMapType type_;
 
 	Img * img_;
 
