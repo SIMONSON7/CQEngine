@@ -50,8 +50,15 @@ public:
 
 	inline const string & getName() const { return name_; }
 
+	inline void setIsDirty(bool _v) { isDirty_ = _v; }
+
+	inline bool isDirty() const { return isDirty_; }
+
 private:
 	void __updateGraph(CQSceneNode* _root);
+
+private:
+	friend class CQCuller;
 
 protected:
 	CQSceneNode* parent_;
@@ -63,7 +70,9 @@ private:
 
 	string name_;
 
-	bool visiable_;
+	bool isDirty_;
+
+	bool isVisited_;
 };
 
 NS_CQ_END

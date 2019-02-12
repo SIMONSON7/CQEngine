@@ -12,7 +12,8 @@ CQSceneNode::CQSceneNode(CQSceneNode* _parent, CQObject* _obj, const string & _n
 	:
 	parent_(_parent),
 	name_(_name),
-	visiable_(true)
+	isDirty_(false),
+	isVisited_(false)
 {
 	if (_obj == nullptr)
 	{
@@ -24,8 +25,6 @@ CQSceneNode::CQSceneNode(CQSceneNode* _parent, CQObject* _obj, const string & _n
 
 CQSceneNode::~CQSceneNode()
 {
-	visiable_ = false;
-
 	if (parent_)
 	{
 		parent_->detach(name_);

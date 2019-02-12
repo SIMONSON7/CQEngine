@@ -8,7 +8,9 @@ using std::chrono::system_clock;
 
 CQObject::CQObject()
 	:
+	visible_(true),
 	id_(genID())
+	
 {
 	
 }
@@ -25,7 +27,7 @@ void CQObject::update()
 
 void CQObject::onDestory()
 {
-
+	visible_ = false;
 }
 
 const uint64_t CQObject::genID() const

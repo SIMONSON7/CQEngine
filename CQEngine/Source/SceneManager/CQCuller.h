@@ -31,6 +31,12 @@ private:
 
 	explicit CQCuller();
 
+private:
+	bool __isVisible(CQObject * _obj);
+
+private:
+	std::vector<CQObject*> visibleObjs_;
+
 };
 
 NS_CQ_END

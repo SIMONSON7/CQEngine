@@ -48,8 +48,12 @@ void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 		//switch (type)
 		//{
 		//case normal:
-		renderQueue_->
-			pushNormalQueue(std::dynamic_pointer_cast<CQMeshRenderer>(obj->getComponentByName("MeshRender")).get());
+		auto meshRender = std::dynamic_pointer_cast<CQMeshRenderer>
+			(obj->getComponentByName("MeshRender")).get();
+		if (meshRender)
+		{
+			renderQueue_->pushNormalQueue(meshRender);
+		}
 		//	break;
 		//default:
 		//	break;
