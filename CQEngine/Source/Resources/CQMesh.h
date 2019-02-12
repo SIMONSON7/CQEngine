@@ -21,7 +21,7 @@ struct Vertex
 {
 	Vector3 pos_;
 	Vector3 normal_;
-	Vector3 color_;
+	Vector3 tangent_;
 	Vector2 uv_;
 };
 

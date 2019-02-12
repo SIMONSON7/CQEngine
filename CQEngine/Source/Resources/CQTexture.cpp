@@ -7,7 +7,7 @@ USING_NS_CQ
 CQTexture::CQTexture()
 	:
 	resID_(ResID::INVALID),
-	type_(TexType::D2),
+	type_(TexMapType::D2),
 	img_(nullptr)
 {
 
