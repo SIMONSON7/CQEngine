@@ -23,10 +23,6 @@ public:
 	~CQRenderQueue();
 
 public:
-	static
-	CQRenderQueue *shareRenderQueue();
-
-public:
 	void pushNormalQueue(CQMeshRenderer* _com);
 
 	void pushTransQueue(CQMeshRenderer* _com);

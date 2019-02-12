@@ -10,13 +10,14 @@
 #define __CQRENDERER_H__
 
 #include <vector>
-#include "CQMacros.h"
 #include "CQNoncopyable.h"
-#include "CQVisiableObj.h"
 
 NS_CQ_BEGIN
 
 class CQContext;
+class CQObject;
+class CQRenderQueue;
+class CQMeshRenderer;
 
 class CQRenderer : private CQNoncopyable
 {
@@ -24,9 +25,14 @@ public:
 	virtual ~CQRenderer();
 
 public:
-	CQContext* getContext();
+	CQContext * getContext();
 
-	void draw(std::vector<CQVisiableObj*> _visibleObjVec);
+	void draw(std::vector<CQObject*> _visibleObjs);
+
+private:
+	void __drawNormal(CQMeshRenderer * _meshRender);
+
+	void __drawTransparent(CQMeshRenderer * _meshRender);
 
 private:
 	friend class CQCore;
@@ -35,6 +41,9 @@ private:
 
 private:
 	CQContext * context_;
+
+	CQRenderQueue * renderQueue_;
+
 };
 
 NS_CQ_END

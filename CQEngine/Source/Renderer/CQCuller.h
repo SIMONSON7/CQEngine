@@ -10,16 +10,18 @@
 #ifndef __CQCULLER_H__
 #define __CQCULLER_H__
 
+#include <vector>
 #include "CQMacros.h"
 #include "CQNoncopyable.h"
-#include "CQMath.h"
 
 NS_CQ_BEGIN
 
+class CQObject;
+
 class CQCuller : CQNoncopyable
 {
-
-
+public:
+	std::vector<CQObject*> getVisibleObjs();
 
 
 
