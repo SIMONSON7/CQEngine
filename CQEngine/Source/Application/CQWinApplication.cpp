@@ -219,7 +219,8 @@ void CQWinApp::run()
 			cur->update();
 
 			// render.
-			/*CQCore::shareCore()->shareCQRender()->update();*/
+			auto visibleObjs = CQCore::shareCore()->shareCuller()->getVisibleObjs();
+			CQCore::shareCore()->shareCQRender()->draw(visibleObjs);
 			context_->swapFrameBuff();
 		}
 		else

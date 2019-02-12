@@ -45,6 +45,7 @@
 #include "CQSceneNode.h"
 #include "CQScene.h"
 #include "CQSceneManager.h"
+#include "CQCuller.h"
 
 // Render
 #include "CQCamera.h"

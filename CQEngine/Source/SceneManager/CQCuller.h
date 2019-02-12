@@ -21,10 +21,15 @@ class CQObject;
 class CQCuller : CQNoncopyable
 {
 public:
+	virtual ~CQCuller();
+
+public:
 	std::vector<CQObject*> getVisibleObjs();
 
+private:
+	friend class CQCore;
 
-
+	explicit CQCuller();
 
 };
 

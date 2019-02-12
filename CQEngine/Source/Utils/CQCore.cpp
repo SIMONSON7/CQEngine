@@ -3,6 +3,7 @@
 #include "CQScheduler.h"
 #include "CQEvtDispatcher.h"
 #include "CQResManager.h"
+#include "CQCuller.h"
 #include "CQRenderer.h"
 
 USING_NS_CQ
@@ -13,6 +14,7 @@ CQCore::CQCore()
 	scheduler_ = CQ_NEW(CQScheduler);
 	evtDispatcher_ = CQ_NEW(CQEvtDispatcher);
 	resManager_ = CQ_NEW(CQResManager);
+	culler_ = CQ_NEW(CQCuller);
 	render_ = CQ_NEW(CQRenderer);
 }
 
@@ -22,6 +24,7 @@ CQCore::~CQCore()
 	CQ_DELETE(scheduler_, CQScheduler);
 	CQ_DELETE(evtDispatcher_, CQEvtDispatcher);
 	CQ_DELETE(resManager_, CQResManager);
+	CQ_DELETE(culler_, CQCuller);
 	CQ_DELETE(render_, CQRenderer);
 }
 
@@ -49,6 +52,11 @@ CQEvtDispatcher * CQCore::shareEvtDispatcher()
 CQResManager * CQCore::shareResManager()
 {
 	return resManager_;
+}
+
+CQCuller * CQCore::shareCuller()
+{
+	return culler_;
 }
 
 CQRenderer * CQCore::shareCQRender()

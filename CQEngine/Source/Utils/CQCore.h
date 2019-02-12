@@ -18,6 +18,7 @@ class CQTime;
 class CQScheduler;
 class CQEvtDispatcher;
 class CQResManager;
+class CQCuller;
 class CQRenderer;
 
 class CQCore : private CQNoncopyable
@@ -37,6 +38,8 @@ public:
 
 	CQResManager *shareResManager();
 
+	CQCuller *shareCuller();
+
 	CQRenderer *shareCQRender();
 
 public:
@@ -55,6 +58,8 @@ private:
 	CQEvtDispatcher *evtDispatcher_;
 
 	CQResManager *resManager_;
+
+	CQCuller *culler_;
 
 	CQRenderer *render_;
 
