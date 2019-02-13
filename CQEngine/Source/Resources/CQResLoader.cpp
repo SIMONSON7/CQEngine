@@ -154,11 +154,13 @@ std::vector<SubMesh*> CQResLoader::loadSubMeshesSync(const std::string & _abPath
 	}
 
 	auto root = scene->mRootNode;
-	for (int i = 0; i < root->mNumMeshes; ++i)
+	for (unsigned int i = 0; i < root->mNumMeshes; ++i)
 	{
 		aiMesh * mesh = scene->mMeshes[root->mMeshes[i]];
 		vector.push_back(__processSubMesh(mesh));
 	}
+
+	return vector;
 }
 
 void CQResLoader::unloadMesh(SubMesh * _mesh)
@@ -174,7 +176,7 @@ SubMesh * CQResLoader::__processSubMesh(aiMesh* mesh)
 	SubMesh* subMesh = CQ_NEW(SubMesh);
 
 	// Vertex
-	for (int i = 0; i < mesh->mNumVertices; ++i)
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
 		// pos
@@ -199,10 +201,10 @@ SubMesh * CQResLoader::__processSubMesh(aiMesh* mesh)
 
 	// Index
 	// face == triangle
-	for (int i = 0; i < mesh->mNumFaces; i++)
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
-		for (int j = 0; j < face.mNumIndices; j++)
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
 			subMesh->iBuff_.push_back(face.mIndices[j]);
 		}
