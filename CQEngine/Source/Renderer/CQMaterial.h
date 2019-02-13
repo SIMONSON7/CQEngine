@@ -10,11 +10,67 @@
 #define __CQMATERIAL_H__
 
 #include "CQMacros.h"
+#include "CQMath.h"
 
 NS_CQ_BEGIN
 
+class CQTexture;
+class CQShaderProgram;
+
+enum MColorType
+{
+	MCOLORTYPE_NONE = 0X0,
+	AMBIENT,
+	DIFFUSE,
+	SPECULAR,
+	OPACITY,
+	TRANSPARENCY,
+	EMISSIVE
+};
+
+enum MTexType
+{
+	MTEXTYPE_NONE = 0X0,
+	DIFFUSE,
+	SPECULAR,
+	NORMAL,
+	HEIGHT,
+	ROUGH,
+};
+
 class CQMaterial
 {
+public:
+	typedef Vector4 Color;
+
+public:
+	CQMaterial();
+
+	virtual ~CQMaterial();
+
+public:
+	void setColor(MColorType _type, Color _color);
+
+	void setTex(MTexType _type, CQTexture* _tex);
+
+private:
+	CQShaderProgram * program_;
+
+	Color ambientColor_;
+
+	Color diffuseColor_;
+	
+	Color specularColor_;
+
+	CQTexture * diffuseTex_;
+
+	CQTexture * specularTex_;
+
+	CQTexture * normalTex_;
+
+	CQTexture * heightTex_;
+
+	CQTexture * roughTex_;
 
 };
 

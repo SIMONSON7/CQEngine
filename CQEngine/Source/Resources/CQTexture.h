@@ -18,6 +18,7 @@ NS_CQ_BEGIN
 
 enum TexMapType
 {
+	D0, // NONE
 	D1,	// Rendering line. Rain effect.
 	D2, // Default
 	D3, // Volume Textures
