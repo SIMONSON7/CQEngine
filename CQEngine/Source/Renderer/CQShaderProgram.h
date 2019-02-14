@@ -77,6 +77,9 @@ public:
 	void setMatrix(const std::string & _location, const Matrix4 _value);
 
 private:
+	int __getUniformLocation(const std::string & _location);
+
+private:
 	struct Uniform
 	{
 		ShaderVariableType  type_;
