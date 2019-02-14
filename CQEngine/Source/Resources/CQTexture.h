@@ -29,7 +29,7 @@ struct Img
 {
 	enum Format
 	{
-		NONE,
+		NONE = 0X0,
 		RED,
 		RGB,
 		RGBA

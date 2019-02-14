@@ -20,6 +20,7 @@ struct RawData;
 
 enum ShaderType
 {
+	SHADERTYPE_NONE = 0X0,
 	VERTEX,
 	PIXEL,
 	GEOMETRY
