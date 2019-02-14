@@ -18,9 +18,9 @@ NS_CQ_BEGIN
 
 struct RawData;
 
-enum ShaderType
+enum class ShaderType
 {
-	SHADERTYPE_NONE = 0X0,
+	NONE = 0X0,
 	VERTEX,
 	PIXEL,
 	GEOMETRY

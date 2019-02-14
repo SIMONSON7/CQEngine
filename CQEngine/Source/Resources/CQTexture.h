@@ -16,7 +16,7 @@
 
 NS_CQ_BEGIN
 
-enum TexMapType
+enum class TexMapType
 {
 	D0, // NONE
 	D1,	// Rendering line. Rain effect.

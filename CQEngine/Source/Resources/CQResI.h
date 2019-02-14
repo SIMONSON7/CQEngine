@@ -15,7 +15,7 @@
 
 NS_CQ_BEGIN
 
-enum ResType
+enum class ResType
 {
 	NONE = 0,
 	TEXTURE,
