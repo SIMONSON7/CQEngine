@@ -47,10 +47,13 @@ public:
 
 	virtual void onDestory();
 
+public:
+	inline std::vector<SubMesh*> & sharedMesh() { return meshes_; }
+
 private:
 	ResID resID_;
 
-	std::vector<SubMesh*> sharedMesh_;
+	std::vector<SubMesh*> meshes_;
 };
 
 NS_CQ_END

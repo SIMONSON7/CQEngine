@@ -17,13 +17,13 @@ CQMesh::~CQMesh()
 
 void CQMesh::onLoadDiskRes(const std::string & _abPath)
 {
-	sharedMesh_ = CQResLoader::shareLoader()->loadSubMeshesSync(_abPath);
+	meshes_ = CQResLoader::shareLoader()->loadSubMeshesSync(_abPath);
 }
 
 void CQMesh::onDestory()
 {
 	auto loader = CQResLoader::shareLoader();
-	for each (auto subMesh in sharedMesh_)
+	for each (auto subMesh in meshes_)
 	{
 		loader->unloadMesh(subMesh);
 	}

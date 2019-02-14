@@ -51,6 +51,7 @@
 #include "CQCamera.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
+#include "CQShaderProgram.h"
 #include "CQRenderer.h"
 
 // Core

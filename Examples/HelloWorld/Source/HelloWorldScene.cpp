@@ -25,6 +25,33 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Shader
 	d1_ = CQIO::cvLoadFile("def.vs");
 	d2_ = CQIO::cvLoadFile("def.fs");
@@ -79,9 +106,9 @@ void HelloWorldScene::onInit()
 	glBindVertexArray(VAO);
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs_), indexs_, GL_STREAM_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs_), indexs_, GL_STATIC_DRAW);
 		{
 			// pos
 			glVertexAttribPointer(VERTEX_POS_INDEX, VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, VERTEX_ATTRIB_SIZE * sizeof(float), (void*)VERTEX_POS_OFFSET);

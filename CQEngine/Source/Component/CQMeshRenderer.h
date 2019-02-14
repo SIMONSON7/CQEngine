@@ -19,9 +19,11 @@ class CQMesh;
 class CQLight;
 class CQMaterial;
 
-
 class CQMeshRenderer : public CQComponent
 {
+public:
+	typedef unsigned int MeshVertexArrayHandle;
+
 public:
 	explicit CQMeshRenderer();
 
@@ -40,6 +42,9 @@ private:
 	CQLight * light_;
 
 	std::vector<CQMaterial*> materials_;
+
+	// array of VAO
+	std::vector<MeshVertexArrayHandle> handles_; 
 
 };
 
