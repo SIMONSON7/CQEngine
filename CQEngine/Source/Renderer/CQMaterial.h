@@ -49,6 +49,10 @@ public:
 	virtual ~CQMaterial();
 
 public:
+	inline void setProgram(CQShaderProgram * _program) { CQASSERT(_program); program_ = _program; }
+
+	inline CQShaderProgram * getProgram() const { return program_; }
+
 	void setColor(MColorType _type, Color _color);
 
 	void setTex(MTexType _type, CQTexture* _tex);

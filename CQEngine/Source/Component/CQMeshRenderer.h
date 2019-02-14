@@ -27,13 +27,12 @@ public:
 
 	virtual ~CQMeshRenderer();
 
-	CQMeshRenderer(const CQMeshRenderer& other);
+	CQMeshRenderer(const CQMeshRenderer& other) = default;
 
-	CQMeshRenderer& operator=(const CQMeshRenderer& other);
+	CQMeshRenderer& operator=(const CQMeshRenderer& other) = default;
 
 public:
-
-
+	void setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> & _materials);
 
 private:
 	CQMesh * mesh_;

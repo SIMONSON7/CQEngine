@@ -73,6 +73,11 @@ void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 
 void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 {
+	CQASSERT(_meshRender);
+
+
+
+
 
 }
 
