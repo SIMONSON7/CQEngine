@@ -1,6 +1,13 @@
+#include <glad/glad.h>
 #include "CQMemory.h"
+#include "CQDebug.h"
 #include "CQWglContext.h"
 #include "CQObject.h"
+#include "CQTexture.h"
+#include "CQShader.h"
+#include "CQShaderProgram.h"
+#include "CQMesh.h"
+#include "CQMaterial.h"
 #include "CQMeshRenderer.h"
 #include "CQRenderQueue.h"
 #include "CQRenderer.h"
@@ -75,9 +82,25 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 {
 	CQASSERT(_meshRender);
 
+	// TODO:
+	// * glClear
+	// * sharedMesh()[0]
+	auto handles = _meshRender->getSubMeshHandles();
+	auto mesh = _meshRender->getMesh()->sharedMesh()[0];
+	auto mat = _meshRender->getMaterials()[0];
+	auto program = mat->getProgram();
 
+	program->load();
 
+	glClearColor(1.0f, 1.f, 0.f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// draw elements
+	CQ_GLCHECK(glBindVertexArray(handles[0]));
+	{
+		CQ_GLCHECK(glDrawElements(GL_TRIANGLES, mesh->iBuff_.size(), GL_UNSIGNED_INT, 0));
+	}
+	CQ_GLCHECK(glBindVertexArray(0));
 
 }
 

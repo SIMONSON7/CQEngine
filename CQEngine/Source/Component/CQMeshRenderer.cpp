@@ -61,4 +61,6 @@ void CQMeshRenderer::setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMater
 
 	}
 	CQ_GLCHECK(glBindVertexArray(0));
+
+	subMeshHandles_.push_back(VAO);
 }

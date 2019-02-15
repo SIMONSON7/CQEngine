@@ -25,33 +25,6 @@ void HelloWorldScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Shader
 	d1_ = CQIO::cvLoadFile("def.vs");
 	d2_ = CQIO::cvLoadFile("def.fs");

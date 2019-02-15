@@ -36,6 +36,15 @@ public:
 public:
 	void setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> & _materials);
 
+public:
+	inline CQMesh * getMesh() const { return mesh_; }
+
+	inline CQLight * getLight() const { return light_; }
+
+	inline std::vector<CQMaterial*> & getMaterials() { return materials_; }
+
+	inline std::vector<MeshVertexArrayHandle> & getSubMeshHandles() { return subMeshHandles_; }
+
 private:
 	CQMesh * mesh_;
 
@@ -44,7 +53,7 @@ private:
 	std::vector<CQMaterial*> materials_;
 
 	// array of VAO
-	std::vector<MeshVertexArrayHandle> handles_; 
+	std::vector<MeshVertexArrayHandle> subMeshHandles_; 
 
 };
 
