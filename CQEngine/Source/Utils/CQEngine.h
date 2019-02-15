@@ -52,6 +52,7 @@
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
 #include "CQShaderProgram.h"
+#include "CQMaterial.h"
 #include "CQRenderer.h"
 
 // Core

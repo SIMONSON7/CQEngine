@@ -19,6 +19,8 @@ class ResIDDef
 public:
 	static const ResID DEF_VERTEX_SHADER;
 	static const ResID DEF_FRAGMENT_SHADER;
+	static const ResID DEF_NO_TEX_VERTEX_SHADER;
+	static const ResID DEF_NO_TEX_FRAGMENT_SHADER;
 
 public:
 	static const ResID HELLOWORLD_WALL_TEX;

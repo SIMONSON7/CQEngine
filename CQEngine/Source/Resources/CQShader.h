@@ -40,6 +40,8 @@ public:
 
 	inline ShaderType getShaderType() const { return type_; }
 
+	inline RawData * getRawData() const { return data_; }
+
 public:
 	virtual ResID getResID() const { return resID_; }
 

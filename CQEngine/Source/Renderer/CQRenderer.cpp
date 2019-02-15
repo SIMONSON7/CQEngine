@@ -83,7 +83,7 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 	CQASSERT(_meshRender);
 
 	// TODO:
-	// * glClear
+	// * glClear should no be here.
 	// * sharedMesh()[0]
 	auto handles = _meshRender->getSubMeshHandles();
 	auto mesh = _meshRender->getMesh()->sharedMesh()[0];
@@ -92,7 +92,7 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 
 	program->load();
 
-	glClearColor(1.0f, 1.f, 0.f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// draw elements

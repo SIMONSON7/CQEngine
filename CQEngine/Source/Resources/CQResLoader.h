@@ -61,7 +61,7 @@ public:
 
 	void unloadImg(Img * _img);
 
-	std::vector<SubMesh*> loadSubMeshesSync(const std::string & _abPath);
+	std::vector<SubMesh*> * loadSubMeshesSync(const std::string & _abPath);
 
 	void unloadMesh(SubMesh * _mesh);
 
@@ -71,7 +71,9 @@ private:
 	void __doCallBack();
 
 private:
-	SubMesh * __processSubMesh(aiMesh* mesh);
+	void __recursiveProcessNode(aiNode * _node, const aiScene * _scene, std::vector<SubMesh*> * _subMeshes);
+
+	SubMesh * __processSubMesh(aiMesh * _mesh);
 
 private:
 	explicit CQResLoader();

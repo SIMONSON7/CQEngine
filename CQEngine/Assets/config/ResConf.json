@@ -14,6 +14,18 @@
         },
 
         {
+            "name" : "DEF_NO_TEX_VERTEX_SHADER",
+            "url" : "shader/def_no_tex.vs",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_NO_TEX_FRAGMENT_SHADER",
+            "url" : "shader/def_no_tex.fs",
+            "type" : 2
+        },
+
+        {
             "name" : "HELLOWORLD_WALL_TEX",
             "url" : "texture/img.jpg",
             "type" : 1

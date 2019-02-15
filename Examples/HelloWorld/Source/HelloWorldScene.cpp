@@ -1,7 +1,7 @@
 #include <memory>
 #include "HelloWorldScene.h"
 
-REGISTER_START_SCENE(HelloWorldScene)
+//REGISTER_START_SCENE(HelloWorldScene)
 
 void HelloWorldScene::onInit()
 {

@@ -17,7 +17,7 @@ CQMesh::~CQMesh()
 
 void CQMesh::onLoadDiskRes(const std::string & _abPath)
 {
-	meshes_ = CQResLoader::shareLoader()->loadSubMeshesSync(_abPath);
+	meshes_ = *(CQResLoader::shareLoader()->loadSubMeshesSync(_abPath));
 }
 
 void CQMesh::onDestory()

@@ -31,11 +31,17 @@ CQResLoader::CQResLoader()
 
 RawData * CQResLoader::loadRawDataSync(const std::string & _abPath)
 {
-	RawData * rData = (RawData*)CQ_MALLOC(sizeof(RawData));
+	// TODO :
+	// csLoadFile should NOT ret shared_ptr;
+	// otherwise data will be recycled out of scope.
 	auto data = CQIO::cvLoadFile(_abPath);
-	if (data->LOAD_SUCCESS)
+
+	RawData * rData = (RawData*)CQ_MALLOC(sizeof(RawData));
+	rData->data_ = (unsigned char*)CQ_MALLOC(data->size_ * sizeof(char));
+
+	if (data->staus_ == Data::LOAD_SUCCESS)
 	{
-		rData->data_ = reinterpret_cast<unsigned char *>(data->buff_);
+		rData->data_ = (unsigned char *)::memcpy(rData->data_, data->buff_, data->size_ * sizeof(char));
 		rData->size_ = data->size_;
 	}
 
@@ -142,25 +148,21 @@ void CQResLoader::unloadImg(Img * _img)
 	}
 }
 
-std::vector<SubMesh*> CQResLoader::loadSubMeshesSync(const std::string & _abPath)
+std::vector<SubMesh*> * CQResLoader::loadSubMeshesSync(const std::string & _abPath)
 {
-	std::vector<SubMesh*> vector;
+	auto subMeshes = CQ_NEW(std::vector<SubMesh*>);
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(_abPath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		return vector;
+		return subMeshes;
 	}
 
 	auto root = scene->mRootNode;
-	for (unsigned int i = 0; i < root->mNumMeshes; ++i)
-	{
-		aiMesh * mesh = scene->mMeshes[root->mMeshes[i]];
-		vector.push_back(__processSubMesh(mesh));
-	}
+	__recursiveProcessNode(root, scene, subMeshes);
 
-	return vector;
+	return subMeshes;
 }
 
 void CQResLoader::unloadMesh(SubMesh * _mesh)
@@ -171,29 +173,43 @@ void CQResLoader::unloadMesh(SubMesh * _mesh)
 	}
 }
 
-SubMesh * CQResLoader::__processSubMesh(aiMesh* mesh)
+void CQResLoader::__recursiveProcessNode(aiNode * _node, const aiScene * _scene, std::vector<SubMesh*> * _subMeshes)
+{
+	for (unsigned int i = 0; i < _node->mNumMeshes; ++i)
+	{
+		aiMesh * mesh = _scene->mMeshes[_node->mMeshes[i]];
+		_subMeshes->push_back(__processSubMesh(mesh));
+	}
+
+	for (unsigned int i = 0 ; i < _node->mNumChildren; ++i)
+	{
+		__recursiveProcessNode(_node->mChildren[i], _scene, _subMeshes);
+	}
+}
+
+SubMesh * CQResLoader::__processSubMesh(aiMesh * _mesh)
 {
 	SubMesh* subMesh = CQ_NEW(SubMesh);
 
 	// Vertex
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+	for (unsigned int i = 0; i < _mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
 		// pos
-		vertex.pos_.x = mesh->mVertices[i].x;
-		vertex.pos_.y = mesh->mVertices[i].y;
-		vertex.pos_.z = mesh->mVertices[i].z;
+		vertex.pos_.x = _mesh->mVertices[i].x;
+		vertex.pos_.y = _mesh->mVertices[i].y;
+		vertex.pos_.z = _mesh->mVertices[i].z;
 
 		// normal
-		vertex.normal_.x = mesh->mNormals[i].x;
-		vertex.normal_.y = mesh->mNormals[i].y;
-		vertex.normal_.z = mesh->mNormals[i].z;
+		vertex.normal_.x = _mesh->mNormals[i].x;
+		vertex.normal_.y = _mesh->mNormals[i].y;
+		vertex.normal_.z = _mesh->mNormals[i].z;
 
 		// uv
-		if (mesh->mTextureCoords[0])
+		if (_mesh->mTextureCoords[0])
 		{
-			vertex.uv_.x = mesh->mTextureCoords[0][i].x;
-			vertex.uv_.y = mesh->mTextureCoords[0][i].y;
+			vertex.uv_.x = _mesh->mTextureCoords[0][i].x;
+			vertex.uv_.y = _mesh->mTextureCoords[0][i].y;
 		}
 
 		subMesh->vBuff_.push_back(vertex);
@@ -201,9 +217,9 @@ SubMesh * CQResLoader::__processSubMesh(aiMesh* mesh)
 
 	// Index
 	// face == triangle
-	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	for (unsigned int i = 0; i < _mesh->mNumFaces; i++)
 	{
-		aiFace face = mesh->mFaces[i];
+		aiFace face = _mesh->mFaces[i];
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
 			subMesh->iBuff_.push_back(face.mIndices[j]);

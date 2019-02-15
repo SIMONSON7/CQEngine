@@ -27,7 +27,7 @@ public:
 	typedef std::string string;
 
 public:
-	CQSceneNode(CQSceneNode* _parent, CQObject* _obj, const string & _name);
+	CQSceneNode(CQObject* _obj, const string & _name);
 
 	virtual ~CQSceneNode();
 
@@ -44,7 +44,7 @@ public:
 
 	inline CQSceneNode* getParent() { return parent_; }
 
-	inline SceneNodePtrVec& getChildren() { return children_; }
+	inline SceneNodePtrVec & getChildren() { return children_; }
 
 	inline CQObject* getObj() { return obj_; }
 
