@@ -49,6 +49,9 @@ CQContext * CQRenderer::getContext()
 
 void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 {
+	glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	for each (auto obj in _visibleObjs)
 	{
 		//auto type = obj->getMaterial().type();
@@ -92,10 +95,7 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 
 	program->load();
 
-	glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// draw elements
+	//// draw elements
 	CQ_GLCHECK(glBindVertexArray(handles[0]));
 	{
 		CQ_GLCHECK(glDrawElements(GL_TRIANGLES, mesh->iBuff_.size(), GL_UNSIGNED_INT, 0));

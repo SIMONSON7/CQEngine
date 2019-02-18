@@ -44,6 +44,9 @@ void SkyBoxScene::onInit()
 	program->attachNativeShader((const char *)(fs->buff_), ShaderType::PIXEL);
 	program->genProgram();
 
+	// TODO
+	program_ = program;
+
 	// material
 	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
@@ -61,7 +64,23 @@ void SkyBoxScene::onInit()
 
 void SkyBoxScene::update()
 {
+	auto transform = camera_->getTransform();
+	transform->buildLocalCoordinate(Vector3(0, 0, camRadisZ_), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	float aspect(800.0f / 600.0f);
+	auto viewMat = transform->calWorldToLcalMatRH();
+	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
 
+	// program
+	program_->load();
+
+	////tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
+	Matrix4 tmp(1.0f);
+	Vector3 v(0.0f, 1.0f, 0.0f);
+	Matrix4 rotateMat = rotate(tmp, ++modelAngle_, v);
+	Matrix4 modelMat = rotateMat;
+
+	Matrix4 mvp = projMat * viewMat * modelMat;
+	program_->setMatrix("mvp", mvp);
 
 
 

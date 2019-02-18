@@ -38,6 +38,8 @@ private:
 	float camRadisZ_ = 1.0f;
 
 	CQSceneNode * bunnyNode_;
+	CQShaderProgram * program_;
+	float modelAngle_ = 0;
 
 	std::shared_ptr<CQEvtListener> clickListener_;
 	std::shared_ptr<CQEvtListener> wheelListener_;
