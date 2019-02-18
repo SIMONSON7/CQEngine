@@ -27,9 +27,7 @@ void SkyBoxScene::onInit()
 	// Bunny
 	CQObject * bunnyObj = CQ_NEW(CQObject);
 	bunnyObj->setName("bunnyObj");
-	bunnyNode_ = CQ_NEW(CQSceneNode, bunnyObj, "bunny");
-	CQSceneNode::s_root_ = bunnyNode_;
-	/*bunnyNode_->attachParent(CQSceneNode::s_root_);*/
+	bunnyNode_ = CQ_NEW(CQSceneNode, CQSceneNode::s_root_, bunnyObj, "bunny");
 
 	// mesh
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));

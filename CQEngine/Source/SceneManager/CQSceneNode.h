@@ -27,7 +27,7 @@ public:
 	typedef std::string string;
 
 public:
-	CQSceneNode(CQObject* _obj, const string & _name);
+	CQSceneNode(CQSceneNode * _parent, CQObject * _obj, const string & _name);
 
 	virtual ~CQSceneNode();
 

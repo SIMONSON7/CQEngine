@@ -6,18 +6,33 @@
 
 USING_NS_CQ
 
-CQSceneNode* CQSceneNode::s_root_ = CQ_NEW(CQSceneNode, nullptr, "ROOT");
+CQSceneNode* CQSceneNode::s_root_ = CQ_NEW(CQSceneNode, nullptr, nullptr, "ROOT");
 
-CQSceneNode::CQSceneNode(CQObject* _obj, const string & _name)
+CQSceneNode::CQSceneNode(CQSceneNode * _parent, CQObject* _obj, const string & _name)
 	:
-	parent_(nullptr),
 	name_(_name),
 	isDirty_(false),
 	isVisited_(false)
 {
-	if (_obj == nullptr)
+	if (_obj)
+	{
+		obj_ = _obj;
+	}
+	else
 	{
 		obj_ = CQ_NEW(CQObject);
+		obj_->setName("DEFAULT");
+	}
+
+	// TODO
+	if (_parent)
+	{
+		parent_ = _parent;
+		parent_->children_.push_back(this);
+	}
+	else
+	{
+		parent_ = nullptr;
 	}
 }
 
@@ -50,7 +65,7 @@ bool CQSceneNode::attachParent(CQSceneNode* _parent)
 
 	// TODO
 	parent_ = _parent;
-	//parent_->children_.push_back(this);
+	parent_->children_.push_back(this);
 	//__updateGraph(_parent);
 	//_parent->attachChild(this);
 	return true;
@@ -79,7 +94,7 @@ bool CQSceneNode::detach(const string & _childName)
 	if (itr != children_.end())
 	{
 		children_.erase(itr);
-		__updateGraph(*itr);
+		//__updateGraph(*itr);
 		return true;
 	}
 	return false;

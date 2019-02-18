@@ -9,7 +9,7 @@ USING_NS_CQ;
 
 CQMeshRenderer::CQMeshRenderer()
 {
-
+	name_ = "MeshRender";
 }
 
 CQMeshRenderer::~CQMeshRenderer()
@@ -19,6 +19,10 @@ CQMeshRenderer::~CQMeshRenderer()
 
 void CQMeshRenderer::setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> & _materials)
 {
+	mesh_ = _mesh;
+	light_ = _light;
+	materials_ = _materials;
+
 #define VERTEX_POS_SIZE			3
 #define VERTEX_NORMAL_SIZE		3
 #define VERTEX_TANGENT_SIZE 	3
