@@ -34,14 +34,10 @@ void SkyBoxScene::onInit()
 
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
-	//auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_VERTEX_SHADER)));
-	//auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_NO_TEX_FRAGMENT_SHADER)));
-	//program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
-	//program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
-	auto vs = CQIO::cvLoadFile("def_no_tex.vs");
-	auto fs = CQIO::cvLoadFile("def_no_tex.fs");
-	program->attachNativeShader((const char *)(vs->buff_), ShaderType::VERTEX);
-	program->attachNativeShader((const char *)(fs->buff_), ShaderType::PIXEL);
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_NO_TEX_FRAGMENT_SHADER)));
+	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
+	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
 
 	// TODO

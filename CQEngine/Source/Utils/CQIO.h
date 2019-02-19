@@ -73,10 +73,10 @@ class CQIO
 {
 public :
 	static
-	std::shared_ptr<Data> cvLoadFile(const std::string _fileName);
+	Data * cvLoadFile(const std::string _fileName);
 
 	static
-	std::shared_ptr<Data> loadFile(const std::string _fileName, const char *_mode);
+	Data * loadFile(const std::string _fileName, const char *_mode);
 
 public:
 	static

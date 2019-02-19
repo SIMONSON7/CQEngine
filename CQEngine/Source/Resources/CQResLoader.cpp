@@ -31,17 +31,13 @@ CQResLoader::CQResLoader()
 
 RawData * CQResLoader::loadRawDataSync(const std::string & _abPath)
 {
-	// TODO :
-	// csLoadFile should NOT ret shared_ptr;
-	// otherwise data will be recycled out of scope.
 	auto data = CQIO::cvLoadFile(_abPath);
 
 	RawData * rData = (RawData*)CQ_MALLOC(sizeof(RawData));
-	rData->data_ = (unsigned char*)CQ_MALLOC(data->size_ * sizeof(char));
+	rData->data_ = (unsigned char*)(data->buff_);
 
 	if (data->staus_ == Data::LOAD_SUCCESS)
 	{
-		rData->data_ = (unsigned char *)::memcpy(rData->data_, data->buff_, data->size_ * sizeof(char));
 		rData->size_ = data->size_;
 	}
 

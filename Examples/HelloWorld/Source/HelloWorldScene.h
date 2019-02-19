@@ -43,8 +43,8 @@ private:
 	unsigned int VBO, VAO, EBO;
 	unsigned int indexs_[3];
 
-	std::shared_ptr<Data> d1_;
-	std::shared_ptr<Data> d2_;
+	Data * d1_;
+	Data * d2_;
 
 	CQCamera* camera_;
 

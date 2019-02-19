@@ -194,7 +194,9 @@ void HelloWorldScene::onDestory()
 
 	program_.unLoad();
 	CQ_DELETE(texture_, CQGLTexture);
-	CQ_DELETE(camera_, CQCamera);	
+	CQ_DELETE(camera_, CQCamera);
+	CQ_DELETE(d1_, Data);
+	CQ_DELETE(d2_, Data);
 	CQCore::shareCore()->shareResManager()->destroyRes("HELLOWORLD_WALL_TEX");
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);

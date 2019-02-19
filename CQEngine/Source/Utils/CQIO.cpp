@@ -7,18 +7,18 @@ USING_NS_CQ
 std::vector<std::string>			CQIO::searchPath_;
 std::map<std::string, std::string>	CQIO::fullPathCache_;
 
-std::shared_ptr<Data> CQIO::loadFile(const std::string _fileName, const char *_mode)
+Data * CQIO::loadFile(const std::string _fileName, const char *_mode)
 {
 	FILE *fp = nullptr;
 	std::string fileFullPath = "";
-	std::shared_ptr<Data> sp(Data::CREATE()/*, [](Data *p) { Data::RELEASE(p); }*/);
+	Data * ret = CQ_NEW(Data);
 
 	fileFullPath = searchFullPath(_fileName);
 	fp = fopen(fileFullPath.c_str(), _mode);
 	if (!fp)
 	{
-		sp->staus_ = Data::LOAD_FILE_OPEN_FAILURE;
-		return sp;
+		ret->staus_ = Data::LOAD_FILE_OPEN_FAILURE;
+		return ret;
 	}
 
 	fseek(fp, 0, SEEK_END);
@@ -26,29 +26,29 @@ std::shared_ptr<Data> CQIO::loadFile(const std::string _fileName, const char *_m
 	fseek(fp, 0, SEEK_SET);
 	if (fileLength <= 0)
 	{
-		sp->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
+		ret->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
 		fclose(fp);
-		return sp;
+		return ret;
 	}
 
-	sp->buff_ = CQ_RAW_NEW1(char,fileLength + 1);
-	size_t len = fread(sp->buff_,sizeof(char),fileLength,fp);
+	ret->buff_ = CQ_RAW_NEW1(char,fileLength + 1);
+	size_t len = fread(ret->buff_,sizeof(char),fileLength,fp);
 	if (len != fileLength)
 	{
-		sp->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
+		ret->staus_ = Data::LOAD_FILE_LENGTH_EXCEPTION;
 		fclose(fp);
-		return sp;
+		return ret;
 	}
 
-	sp->buff_[fileLength] = 0;
-	sp->staus_ = Data::LOAD_SUCCESS;
-	sp->size_ = len;
+	ret->buff_[fileLength] = 0;
+	ret->staus_ = Data::LOAD_SUCCESS;
+	ret->size_ = len;
 
 	fclose(fp);
-	return sp;
+	return ret;
 }
 
-std::shared_ptr<Data> CQIO::cvLoadFile(const std::string _fileName)
+Data * CQIO::cvLoadFile(const std::string _fileName)
 {
 	return loadFile(_fileName, "rb");;
 }
