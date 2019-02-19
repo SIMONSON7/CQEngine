@@ -59,6 +59,7 @@ struct Data
 	}
 
 	char*			buff_;
+	// bytes
 	size_t			size_;
 	LOAD_STATUS		staus_;
 
@@ -77,6 +78,9 @@ public :
 
 	static
 	Data * loadFile(const std::string _fileName, const char *_mode);
+
+	static
+	bool unloadFile(Data * _data);
 
 public:
 	static

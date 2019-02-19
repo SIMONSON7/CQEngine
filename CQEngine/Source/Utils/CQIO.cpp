@@ -42,7 +42,7 @@ Data * CQIO::loadFile(const std::string _fileName, const char *_mode)
 
 	ret->buff_[fileLength] = 0;
 	ret->staus_ = Data::LOAD_SUCCESS;
-	ret->size_ = len;
+	ret->size_ = sizeof(char) * (fileLength + 1);
 
 	fclose(fp);
 	return ret;
@@ -51,6 +51,20 @@ Data * CQIO::loadFile(const std::string _fileName, const char *_mode)
 Data * CQIO::cvLoadFile(const std::string _fileName)
 {
 	return loadFile(_fileName, "rb");;
+}
+
+bool CQIO::unloadFile(Data * _data)
+{
+	if (_data == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		CQ_RAW_DELETE(_data->buff_);
+		CQ_DELETE(_data, Data);
+		return true;
+	}
 }
 
 bool CQIO::addSearchPath(const std::string _path)

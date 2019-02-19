@@ -34,13 +34,15 @@ RawData * CQResLoader::loadRawDataSync(const std::string & _abPath)
 	auto data = CQIO::cvLoadFile(_abPath);
 
 	RawData * rData = (RawData*)CQ_MALLOC(sizeof(RawData));
-	rData->data_ = (unsigned char*)(data->buff_);
+	rData->data_ = (unsigned char*)CQ_MALLOC(data->size_);
 
 	if (data->staus_ == Data::LOAD_SUCCESS)
 	{
 		rData->size_ = data->size_;
+		::memcpy(rData->data_, data->buff_, data->size_);
 	}
 
+	CQIO::unloadFile(data);
 	return rData;
 }
 
