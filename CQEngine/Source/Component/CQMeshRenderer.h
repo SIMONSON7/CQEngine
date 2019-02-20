@@ -34,7 +34,7 @@ public:
 	CQMeshRenderer& operator=(const CQMeshRenderer& other) = default;
 
 public:
-	void setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> & _materials);
+	void setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> _materials);
 
 public:
 	inline CQMesh * getMesh() const { return mesh_; }

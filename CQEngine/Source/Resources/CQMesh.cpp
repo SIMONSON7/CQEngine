@@ -1,3 +1,4 @@
+#include "CQMemory.h"
 #include "CQMesh.h"
 #include "CQResLoader.h"
 
@@ -17,7 +18,7 @@ CQMesh::~CQMesh()
 
 void CQMesh::onLoadDiskRes(const std::string & _abPath)
 {
-	meshes_ = *(CQResLoader::shareLoader()->loadSubMeshesSync(_abPath));
+	meshes_ = CQResLoader::shareLoader()->loadSubMeshesSync(_abPath);
 }
 
 void CQMesh::onDestory()
@@ -27,4 +28,6 @@ void CQMesh::onDestory()
 	{
 		loader->unloadMesh(subMesh);
 	}
+
+	meshes_.clear();
 }

@@ -119,7 +119,7 @@ bool CQResManager::destroyRes(const std::string & _resName)
 
 void CQResManager::__parseResCfg()
 {
-	std::string assestsPath = CQIO::getCurDir() /*+ "/GIT_SOURCE"*/ + "/CQEngine/CQEngine/Assets/";
+	std::string assestsPath = CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/";
 	CQIO::addSearchPath(assestsPath + "config/");
 	CQIO::addSearchPath(assestsPath + "img/");
 	CQIO::addSearchPath(assestsPath + "shader/");
@@ -162,5 +162,7 @@ void CQResManager::__parseResCfg()
 			}
 		}
 	}
+
+	CQIO::unloadFile(jsonData);
 }
 

@@ -12,7 +12,7 @@ CQShader::CQShader(ShaderType _type)
 
 CQShader::~CQShader()
 {
-
+	onDestory();
 }
 
 void CQShader::onLoadDiskRes(const std::string & _abPath)

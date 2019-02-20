@@ -32,8 +32,6 @@ public:
 	virtual ~CQSceneNode();
 
 public:
-	bool attachParent(CQSceneNode* _parent);
-
 	bool attachChild(CQSceneNode* _child);
 
 	void attachObj(CQObject* _obj);
