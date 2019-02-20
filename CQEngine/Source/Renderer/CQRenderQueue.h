@@ -27,6 +27,8 @@ public:
 
 	void pushTransQueue(CQMeshRenderer* _com);
 
+	void clearAll();
+
 private:
 	explicit CQRenderQueue();
 

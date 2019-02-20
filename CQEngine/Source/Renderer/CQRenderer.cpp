@@ -79,6 +79,8 @@ void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 	{
 		__drawTransparent(meshRender);
 	}
+
+	renderQueue_->clearAll();
 }
 
 void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)

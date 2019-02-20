@@ -24,12 +24,10 @@ void SkyBoxScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
-
 	// Bunny
 	CQObject * bunnyObj = CQ_NEW(CQObject);
 	bunnyObj->setName("bunnyObj");
 	bunnyNode_ = CQ_NEW(CQSceneNode, CQSceneNode::s_root_, bunnyObj, "bunny");
-
 
 	// mesh
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));
@@ -71,7 +69,8 @@ void SkyBoxScene::update()
 	auto program = mr->getMaterials()[0]->getProgram();
 	program->load();
 
-	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
+	// TODO
+	// use transform.
 	Matrix4 tmp(1.0f);
 	Vector3 v(0.0f, 1.0f, 0.0f);
 	Matrix4 rotateMat = rotate(tmp, ++modelAngle_, v);
