@@ -54,7 +54,7 @@ NS_CQ_END
 #ifdef CQDEBUG
 #define DEFAULT_ALLOCATOR_ALLOC(_size) DEFAULT_ALLOCATOR->alloc(_size,__FILE__,__LINE__)
 #define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr,__FILE__,__LINE__)
-#elif
+#else
 #define DEFAULT_ALLOCATOR_ALLOC(_size1) DEFAULT_ALLOCATOR->alloc(_size1)
 #define DEFAULT_ALLOCATOR_FREE(_ptr) DEFAULT_ALLOCATOR->free(_ptr)
 #endif
