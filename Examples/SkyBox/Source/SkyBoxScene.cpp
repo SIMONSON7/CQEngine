@@ -42,9 +42,6 @@ void SkyBoxScene::onInit()
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
 
-	// TODO
-	program_ = program;
-
 	// material
 	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
@@ -70,7 +67,9 @@ void SkyBoxScene::update()
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
 
 	// program
-	program_->load();
+	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(bunnyNode_->getObj()->getComponentByName("MeshRender"));
+	auto program = mr->getMaterials()[0]->getProgram();
+	program->load();
 
 	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
 	Matrix4 tmp(1.0f);
@@ -79,7 +78,9 @@ void SkyBoxScene::update()
 	Matrix4 modelMat = rotateMat;
 
 	Matrix4 mvp = projMat * viewMat * modelMat;
-	program_->setMatrix("mvp", mvp);
+	program->setMatrix("mvp", mvp);
+
+
 
 
 
