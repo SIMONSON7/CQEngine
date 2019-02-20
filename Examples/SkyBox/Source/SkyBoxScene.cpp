@@ -53,8 +53,10 @@ void SkyBoxScene::onInit()
 	auto bunnyMR = std::make_shared<CQMeshRenderer>();
 	bunnyMR->setup(bunnyMesh.get(), nullptr, *materials);
 
-
 	bunnyObj->setComponent(std::dynamic_pointer_cast<CQComponent>(bunnyMR));
+
+	//// move
+	//bunnyObj->getTransform()->moveTo(Vector3(0, 10, 0));
 
 }
 
@@ -69,7 +71,7 @@ void SkyBoxScene::update()
 	// program
 	program_->load();
 
-	////tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
+	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
 	Matrix4 tmp(1.0f);
 	Vector3 v(0.0f, 1.0f, 0.0f);
 	Matrix4 rotateMat = rotate(tmp, ++modelAngle_, v);
