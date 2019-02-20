@@ -146,9 +146,9 @@ void CQResLoader::unloadImg(Img * _img)
 	}
 }
 
-std::vector<SubMesh*> * CQResLoader::loadSubMeshesSync(const std::string & _abPath)
+std::vector<SubMesh*> CQResLoader::loadSubMeshesSync(const std::string & _abPath)
 {
-	auto subMeshes = CQ_NEW(std::vector<SubMesh*>);
+	std::vector<SubMesh*> subMeshes;
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(_abPath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -158,7 +158,7 @@ std::vector<SubMesh*> * CQResLoader::loadSubMeshesSync(const std::string & _abPa
 	}
 
 	auto root = scene->mRootNode;
-	__recursiveProcessNode(root, scene, subMeshes);
+	__recursiveProcessNode(root, scene, &subMeshes);
 
 	return subMeshes;
 }

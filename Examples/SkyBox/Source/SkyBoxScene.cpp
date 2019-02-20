@@ -24,10 +24,12 @@ void SkyBoxScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
+
 	// Bunny
 	CQObject * bunnyObj = CQ_NEW(CQObject);
 	bunnyObj->setName("bunnyObj");
 	bunnyNode_ = CQ_NEW(CQSceneNode, CQSceneNode::s_root_, bunnyObj, "bunny");
+
 
 	// mesh
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));
@@ -46,18 +48,17 @@ void SkyBoxScene::onInit()
 	// material
 	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
-	auto materials = new std::vector<CQMaterial*>();
-	materials->push_back(material);
+	std::vector<CQMaterial*> materials;
+	materials.push_back(material);
 
 	// meshRender
 	auto bunnyMR = std::make_shared<CQMeshRenderer>();
-	bunnyMR->setup(bunnyMesh.get(), nullptr, *materials);
+	bunnyMR->setup(bunnyMesh.get(), nullptr, materials);
 
 	bunnyObj->setComponent(std::dynamic_pointer_cast<CQComponent>(bunnyMR));
 
 	//// move
 	//bunnyObj->getTransform()->moveTo(Vector3(0, 10, 0));
-
 }
 
 void SkyBoxScene::update()

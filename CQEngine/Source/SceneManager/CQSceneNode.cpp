@@ -14,6 +14,7 @@ CQSceneNode::CQSceneNode(CQSceneNode * _parent, CQObject* _obj, const string & _
 	isDirty_(false),
 	isVisited_(false)
 {
+	// obj
 	if (_obj)
 	{
 		obj_ = _obj;
@@ -24,16 +25,19 @@ CQSceneNode::CQSceneNode(CQSceneNode * _parent, CQObject* _obj, const string & _
 		obj_->setName("DEFAULT");
 	}
 
-	// TODO
+	// parent
 	if (_parent)
 	{
 		parent_ = _parent;
-		parent_->children_.push_back(this);
+		parent_->attachChild(this);
 	}
 	else
 	{
 		parent_ = nullptr;
 	}
+
+	// children
+	children_.clear();
 }
 
 CQSceneNode::~CQSceneNode()
@@ -41,6 +45,7 @@ CQSceneNode::~CQSceneNode()
 	if (parent_)
 	{
 		parent_->detach(name_);
+		parent_ = nullptr;
 	}
 
 	CQ_DELETE(obj_, CQObject);
@@ -50,32 +55,10 @@ CQSceneNode::~CQSceneNode()
 	}
 }
 
-bool CQSceneNode::attachParent(CQSceneNode* _parent)
-{
-	if (_parent == nullptr || parent_ == _parent)
-	{
-		return false;
-	}
-
-	if (parent_)
-	{
-		parent_->detach(name_);
-		parent_ = nullptr;
-	}
-
-	// TODO
-	parent_ = _parent;
-	parent_->children_.push_back(this);
-	//__updateGraph(_parent);
-	//_parent->attachChild(this);
-	return true;
-}
-
 bool CQSceneNode::attachChild(CQSceneNode* _child)
 {
 	CQASSERT(_child);
 	children_.push_back(_child);
-	_child->parent_ = this;
 	//__updateGraph(this);
 	return true;
 }

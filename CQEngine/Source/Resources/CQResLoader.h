@@ -61,7 +61,7 @@ public:
 
 	void unloadImg(Img * _img);
 
-	std::vector<SubMesh*> * loadSubMeshesSync(const std::string & _abPath);
+	std::vector<SubMesh*> loadSubMeshesSync(const std::string & _abPath);
 
 	void unloadMesh(SubMesh * _mesh);
 

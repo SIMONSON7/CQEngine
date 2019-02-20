@@ -1,4 +1,5 @@
 #include <glad/glad.h>
+#include "CQMemory.h"
 #include "CQDebug.h"
 #include "CQMesh.h"
 #include "CQLight.h"
@@ -14,10 +15,13 @@ CQMeshRenderer::CQMeshRenderer()
 
 CQMeshRenderer::~CQMeshRenderer()
 {
-
+	for each (auto mtl in materials_)
+	{
+		CQ_DELETE(mtl, CQMaterial);
+	}
 }
 
-void CQMeshRenderer::setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> & _materials)
+void CQMeshRenderer::setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> _materials)
 {
 	mesh_ = _mesh;
 	light_ = _light;
