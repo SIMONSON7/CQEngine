@@ -162,5 +162,7 @@ void CQResManager::__parseResCfg()
 			}
 		}
 	}
+
+	CQIO::unloadFile(jsonData);
 }
 
