@@ -82,7 +82,7 @@ void CQTransform::rotateZ(const float _angle)
 
 Matrix4 CQTransform::getTranslateMat()
 {
-	Matrix4 res;
+	Matrix4 res(1);
 	return translate(res, worldPos_);
 }
 
@@ -177,7 +177,7 @@ void CQTransform::__updateModelMat()
 	auto rotMat = getRotMat();
 	auto transMat = getTranslateMat();
 
-	srtMat_ = transMat * rotMat * transMat;
+	srtMat_ = transMat * rotMat * scaleMat;
 }
 
 void CQTransform::__updateAxis()
