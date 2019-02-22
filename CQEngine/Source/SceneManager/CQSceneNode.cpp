@@ -59,7 +59,7 @@ bool CQSceneNode::attachChild(CQSceneNode* _child)
 {
 	CQASSERT(_child);
 	children_.push_back(_child);
-	//__updateGraph(this);
+	__updateSubGraph(this);
 	return true;
 }
 
@@ -77,7 +77,7 @@ bool CQSceneNode::detach(const string & _childName)
 	if (itr != children_.end())
 	{
 		children_.erase(itr);
-		//__updateGraph(*itr);
+		//__updateSubGraph(*itr);
 		return true;
 	}
 	return false;
@@ -93,25 +93,25 @@ void CQSceneNode::detachChildren()
 	children_.clear();
 }
 
-void CQSceneNode::__updateGraph(CQSceneNode* _root)
+void CQSceneNode::__updateSubGraph(CQSceneNode* _root)
 {
 	if (_root == nullptr)
 	{
 		return;
 	}
 
-	if (_root->getParent() && _root->getParent()->getObj())
+	if (_root->getParent())
 	{
 		auto obj = _root->getObj();
-		if (obj != nullptr)
+		if (obj)
 		{
-			auto sp = obj->getTransform();
-			sp->setParent(_root->getParent()->getObj()->getTransform().get());
+			auto trans = obj->getTransform();
+			trans->setParent(_root->getParent()->getObj()->getTransform().get());
 		}
 	}
 
-	for each (auto child in children_)
+	for each (auto child in _root->children_)
 	{
-		__updateGraph(child);
+		__updateSubGraph(child);
 	}
 }

@@ -53,7 +53,7 @@ public:
 	inline bool isDirty() const { return isDirty_; }
 
 private:
-	void __updateGraph(CQSceneNode* _root);
+	void __updateSubGraph(CQSceneNode* _root);
 
 private:
 	friend class CQCuller;
