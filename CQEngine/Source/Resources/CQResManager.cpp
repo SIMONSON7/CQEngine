@@ -119,6 +119,7 @@ bool CQResManager::destroyRes(const std::string & _resName)
 
 void CQResManager::__parseResCfg()
 {
+	//+ "/Assets/";
 	std::string assestsPath = CQIO::getCurDir() + "/GIT_SOURCE" + "/CQEngine/CQEngine/Assets/";
 	CQIO::addSearchPath(assestsPath + "config/");
 	CQIO::addSearchPath(assestsPath + "img/");

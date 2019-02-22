@@ -169,6 +169,7 @@ void CQWinApp::init()
 	CQASSERT(context_);
 	context_->setWndContext(hWnd_);
 	context_->initRenderContext();
+	context_->printRenderInfo();
 }
 
 void CQWinApp::tick()
