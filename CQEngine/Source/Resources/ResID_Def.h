@@ -27,6 +27,7 @@ public:
 
 public:
 	static const ResID BUNNY_MESH;
+	static const ResID AIRCRAFT_MESH;
 
 
 
