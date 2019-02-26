@@ -34,8 +34,11 @@ void SkyBoxScene::onInit()
 
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_NO_TEX_FRAGMENT_SHADER)));
+	// TMP
+	/*auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_NO_TEX_FRAGMENT_SHADER)));*/
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_FRAGMENT_SHADER)));
 	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
@@ -79,10 +82,19 @@ void SkyBoxScene::update()
 	// TODO:
 	// user should NOT manipulate mvp Matrix.
 	Matrix4 mvp = projMat * viewMat * modelMat;
-	program->setMatrix("mvp", mvp);
+	// TMP
+	//program->setMatrix("mvp", mvp);
+	Matrix4 mv = viewMat * modelMat;
 
+	program->setVector("uLightPosEyeSpace", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	program->setVector("uKd", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uLd", Vector3(1.0f, 1.0f, 1.0f));
 
-
+	program->setMatrix("uModelViewMatrix", mv);
+	program->setMatrix("uMVP", mvp);
+	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z), 
+												Vector3(mv[1].x, mv[1].y, mv[1].z), 
+												Vector3(mv[2].x, mv[2].y, mv[2].z)));
 
 
 }

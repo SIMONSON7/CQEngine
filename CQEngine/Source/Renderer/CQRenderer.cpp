@@ -49,6 +49,10 @@ CQContext * CQRenderer::getContext()
 
 void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 {
+	// TODO:
+	// render state should call once.
+	glEnable(GL_DEPTH_TEST);
+
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

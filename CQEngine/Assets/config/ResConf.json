@@ -9,25 +9,37 @@
 
         {
             "name" : "DEF_VERTEX_SHADER",
-            "url" : "shader/def.vs",
+            "url" : "shader/def.vert",
             "type" : 2
         },
 
         {
             "name" : "DEF_FRAGMENT_SHADER",
-            "url" : "shader/def.fs",
+            "url" : "shader/def.frag",
             "type" : 2
         },
 
         {
             "name" : "DEF_NO_TEX_VERTEX_SHADER",
-            "url" : "shader/def_no_tex.vs",
+            "url" : "shader/def_no_tex.vert",
             "type" : 2
         },
 
         {
             "name" : "DEF_NO_TEX_FRAGMENT_SHADER",
-            "url" : "shader/def_no_tex.fs",
+            "url" : "shader/def_no_tex.frag",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_DIFFUSE_VERTEX_SHADER",
+            "url" : "shader/def_diffuse.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_DIFFUSE_FRAGMENT_SHADER",
+            "url" : "shader/def_diffuse.frag",
             "type" : 2
         },
 
