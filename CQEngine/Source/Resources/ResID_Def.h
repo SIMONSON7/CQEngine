@@ -23,6 +23,8 @@ public:
 	static const ResID DEF_NO_TEX_FRAGMENT_SHADER;
 	static const ResID DEF_DIFFUSE_VERTEX_SHADER;
 	static const ResID DEF_DIFFUSE_FRAGMENT_SHADER;
+	static const ResID DEF_PHONG_VERTEX_SHADER;
+	static const ResID DEF_PHONG_FRAGMENT_SHADER;
 
 public:
 	static const ResID HELLOWORLD_WALL_TEX;

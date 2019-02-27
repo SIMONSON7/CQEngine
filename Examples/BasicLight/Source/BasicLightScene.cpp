@@ -36,9 +36,8 @@ void BasicLightScene::onInit()
 
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
-	// TMP
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_FRAGMENT_SHADER)));
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
 	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
@@ -86,9 +85,17 @@ void BasicLightScene::update()
 	Matrix4 mvp = projMat * viewMat * modelMat;
 	Matrix4 mv = viewMat * modelMat;
 
-	program->setVector("uLightPosEyeSpace", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	program->setVector("uKd", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uLd", Vector3(1.0f, 1.0f, 1.0f));
+	// TODO
+	// light pos : embed to class CQLight.
+	program->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	program->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
+	program->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
+	program->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
+
+	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
+	program->setFloat ("uMat.shineFactor", 110.0f);
 
 	program->setMatrix("uModelViewMatrix", mv);
 	program->setMatrix("uMVP", mvp);

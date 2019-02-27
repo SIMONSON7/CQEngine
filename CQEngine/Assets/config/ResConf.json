@@ -44,6 +44,18 @@
         },
 
         {
+            "name" : "DEF_PHONG_VERTEX_SHADER",
+            "url" : "shader/def_phong.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_PHONG_FRAGMENT_SHADER",
+            "url" : "shader/def_phong.frag",
+            "type" : 2
+        },
+
+        {
             "name" : "BUNNY_MESH",
             "url" : "mesh/bunny/bunny.obj",
             "type" : 3
