@@ -1,10 +1,12 @@
-#include "SkyBoxScene.h"
+#include "BasicLightScene.h"
 
-//REGISTER_START_SCENE(SkyBoxScene)
+REGISTER_START_SCENE(BasicLightScene)
 
-void SkyBoxScene::onInit()
+void BasicLightScene::onInit()
 {
-	dbgPuts("[SkyBoxScene] init success!");
+	dbgPuts("[BasicLightScene] init success!");
+
+	isADS_ = false;
 
 	// camera
 	// TODO : should have a default camera.
@@ -15,11 +17,11 @@ void SkyBoxScene::onInit()
 
 	clickListener_ = std::make_shared<CQEvtListener>();
 	clickListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
-	clickListener_->setCB(std::bind(&SkyBoxScene::onMouseClick, this, std::placeholders::_1));
+	clickListener_->setCB(std::bind(&BasicLightScene::onMouseClick, this, std::placeholders::_1));
 
 	wheelListener_ = std::make_shared<CQEvtListener>();
 	wheelListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
-	wheelListener_->setCB(std::bind(&SkyBoxScene::onMouseWheel, this, std::placeholders::_1));
+	wheelListener_->setCB(std::bind(&BasicLightScene::onMouseWheel, this, std::placeholders::_1));
 
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
@@ -35,8 +37,6 @@ void SkyBoxScene::onInit()
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
 	// TMP
-	/*auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_NO_TEX_FRAGMENT_SHADER)));*/
 	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_VERTEX_SHADER)));
 	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_DIFFUSE_FRAGMENT_SHADER)));
 	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
@@ -60,8 +60,10 @@ void SkyBoxScene::onInit()
 	bunnyObj->getTransform()->moveTo(Vector3(0, -0.5f, -1.5f));
 }
 
-void SkyBoxScene::update()
+void BasicLightScene::update()
 {
+	if (isADS_) return;
+
 	// program
 	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(bunnyNode_->getObj()->getComponentByName("MeshRender"));
 	auto program = mr->getMaterials()[0]->getProgram();
@@ -82,8 +84,6 @@ void SkyBoxScene::update()
 	// TODO:
 	// user should NOT manipulate mvp Matrix.
 	Matrix4 mvp = projMat * viewMat * modelMat;
-	// TMP
-	//program->setMatrix("mvp", mvp);
 	Matrix4 mv = viewMat * modelMat;
 
 	program->setVector("uLightPosEyeSpace", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
@@ -92,33 +92,35 @@ void SkyBoxScene::update()
 
 	program->setMatrix("uModelViewMatrix", mv);
 	program->setMatrix("uMVP", mvp);
-	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z), 
-												Vector3(mv[1].x, mv[1].y, mv[1].z), 
+	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
+												Vector3(mv[1].x, mv[1].y, mv[1].z),
 												Vector3(mv[2].x, mv[2].y, mv[2].z)));
 
 
 }
 
-void SkyBoxScene::onMouseClick(void* _clickData)
+void BasicLightScene::onMouseClick(void* _clickData)
 {
 	if (_clickData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_clickData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
 		{
-			dbgPrintf("[SkyBoxScene] click x : %d", evt->x_);
+			dbgPrintf("[BasicLightScene] click x : %d", evt->x_);
+
+			isADS_ = true;
 		}
 	}
 }
 
-void SkyBoxScene::onMouseWheel(void* _wheelData)
+void BasicLightScene::onMouseWheel(void* _wheelData)
 {
 	if (_wheelData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_wheelData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_WHEEL)
 		{
-			dbgPrintf("[SkyBoxScene] wheel delta : %d", evt->delta_);
+			dbgPrintf("[BasicLightScene] wheel delta : %d", evt->delta_);
 
 			if (evt->delta_ > 0)
 			{
@@ -133,7 +135,7 @@ void SkyBoxScene::onMouseWheel(void* _wheelData)
 	}
 }
 
-void SkyBoxScene::onDestory()
+void BasicLightScene::onDestory()
 {
 	CQ_DELETE(camera_, CQCamera);
 	CQ_DELETE(bunnyNode_, CQSceneNode);
