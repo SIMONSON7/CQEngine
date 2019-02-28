@@ -28,7 +28,7 @@ uniform mat3 uNormalMatrix;
 
 out vec3 LightIntensity;
 
-void main()
+vec3 phongModel()
 {
 	vec3 normEyeSpace = normalize( uNormalMatrix * aVertexNormal );
 	vec4 vertPosEyeSpace =  uModelViewMatrix * vec4(aVertexPos, 1.0);
@@ -45,8 +45,12 @@ void main()
 		spec = uLight.s * uMat.s * pow(max(dot(ref, vert2viewer), 0.0), uMat.shineFactor);
 	}
 
-	LightIntensity = ambient + diffuse + spec;
+	return ambient + diffuse + spec;
+}
+
+void main()
+{
+	LightIntensity = phongModel();
 
 	gl_Position = uMVP * vec4(aVertexPos, 1.0);
-
 }
