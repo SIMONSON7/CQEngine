@@ -10,10 +10,50 @@
 #define __CQLIGHT_H__
 
 #include "CQMacros.h"
+#include "CQObject.h"
 
 NS_CQ_BEGIN;
 
-class CQLight
+enum class LightType
+{
+	NONE = 0,
+	POINT,
+	SPOT,
+	DIRECTIONAL
+};
+
+class CQLight /*: public CQObject*/
+{
+public:
+	explicit CQLight() = default;
+
+	~CQLight() = default;
+
+public:
+	inline LightType getLightType() { return type_; }
+
+	inline void  setLightType(LightType _type) { type_ = _type; }
+
+
+private:
+	LightType type_;
+
+};
+
+class CQPointLight : public CQLight
+{
+
+
+private:
+	
+};
+
+class CQSpotLight : public CQLight
+{
+
+};
+
+class CQDirectionalLight : public CQLight
 {
 
 };

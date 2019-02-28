@@ -26,6 +26,7 @@ uniform mat4 uModelViewMatrix;
 uniform mat4 uMVP;
 uniform mat3 uNormalMatrix;
 
+//flat out vec3 LightIntensity;
 out vec3 LightIntensity;
 
 vec3 phongModel()
