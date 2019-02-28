@@ -1,12 +1,10 @@
-#include "BasicLightScene.h"
+#include "LightExScene.h"
 
-//REGISTER_START_SCENE(BasicLightScene)
+REGISTER_START_SCENE(LightExScene)
 
-void BasicLightScene::onInit()
+void LightExScene::onInit()
 {
-	dbgPuts("[BasicLightScene] init success!");
-
-	isADS_ = false;
+	dbgPuts("[LightExScene] init success!");
 
 	// camera
 	// TODO : should have a default camera.
@@ -17,11 +15,11 @@ void BasicLightScene::onInit()
 
 	clickListener_ = std::make_shared<CQEvtListener>();
 	clickListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
-	clickListener_->setCB(std::bind(&BasicLightScene::onMouseClick, this, std::placeholders::_1));
+	clickListener_->setCB(std::bind(&LightExScene::onMouseClick, this, std::placeholders::_1));
 
 	wheelListener_ = std::make_shared<CQEvtListener>();
 	wheelListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
-	wheelListener_->setCB(std::bind(&BasicLightScene::onMouseWheel, this, std::placeholders::_1));
+	wheelListener_->setCB(std::bind(&LightExScene::onMouseWheel, this, std::placeholders::_1));
 
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
@@ -35,16 +33,16 @@ void BasicLightScene::onInit()
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));
 
 	// shader 
-	auto program = CQ_NEW(CQShaderProgram);
+	auto mLightProgram = CQ_NEW(CQShaderProgram);
 	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
 	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
-	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
-	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
-	program->genProgram();
+	mLightProgram->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
+	mLightProgram->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
+	mLightProgram->genProgram();
 
 	// material
 	auto material = CQ_NEW(CQMaterial);
-	material->setProgram(program);
+	material->setProgram(mLightProgram);
 	std::vector<CQMaterial*> materials;
 	materials.push_back(material);
 
@@ -59,14 +57,12 @@ void BasicLightScene::onInit()
 	bunnyObj->getTransform()->moveTo(Vector3(0, -0.5f, -1.5f));
 }
 
-void BasicLightScene::update()
+void LightExScene::update()
 {
-	if (isADS_) return;
-
-	// program
+	// mLightProgram
 	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(bunnyNode_->getObj()->getComponentByName("MeshRender"));
-	auto program = mr->getMaterials()[0]->getProgram();
-	program->load();
+	auto mLightProgram = mr->getMaterials()[0]->getProgram();
+	mLightProgram->load();
 
 	// bunny transform
 	auto bunnyTrans = bunnyNode_->getObj()->getTransform();
@@ -87,47 +83,45 @@ void BasicLightScene::update()
 
 	// TODO
 	// light pos : embed to class CQLight.
-	program->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	program->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
-	program->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
-	program->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
+	mLightProgram->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	mLightProgram->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
+	mLightProgram->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
+	mLightProgram->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
 
-	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
-	program->setFloat ("uMat.shineFactor", 110.0f);
+	mLightProgram->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
+	mLightProgram->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
+	mLightProgram->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
+	mLightProgram->setFloat("uMat.shineFactor", 110.0f);
 
-	program->setMatrix("uModelViewMatrix", mv);
-	program->setMatrix("uMVP", mvp);
-	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
-												Vector3(mv[1].x, mv[1].y, mv[1].z),
-												Vector3(mv[2].x, mv[2].y, mv[2].z)));
+	mLightProgram->setMatrix("uModelViewMatrix", mv);
+	mLightProgram->setMatrix("uMVP", mvp);
+	mLightProgram->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
+		Vector3(mv[1].x, mv[1].y, mv[1].z),
+		Vector3(mv[2].x, mv[2].y, mv[2].z)));
 
 
 }
 
-void BasicLightScene::onMouseClick(void* _clickData)
+void LightExScene::onMouseClick(void* _clickData)
 {
 	if (_clickData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_clickData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
 		{
-			dbgPrintf("[BasicLightScene] click x : %d", evt->x_);
-
-			isADS_ = true;
+			dbgPrintf("[LightExScene] click x : %d", evt->x_);
 		}
 	}
 }
 
-void BasicLightScene::onMouseWheel(void* _wheelData)
+void LightExScene::onMouseWheel(void* _wheelData)
 {
 	if (_wheelData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_wheelData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_WHEEL)
 		{
-			dbgPrintf("[BasicLightScene] wheel delta : %d", evt->delta_);
+			dbgPrintf("[LightExScene] wheel delta : %d", evt->delta_);
 
 			if (evt->delta_ > 0)
 			{
@@ -142,7 +136,7 @@ void BasicLightScene::onMouseWheel(void* _wheelData)
 	}
 }
 
-void BasicLightScene::onDestory()
+void LightExScene::onDestory()
 {
 	CQ_DELETE(camera_, CQCamera);
 	CQ_DELETE(bunnyNode_, CQSceneNode);
