@@ -56,6 +56,18 @@
         },
 
         {
+            "name" : "DEF_MULTILIGHT_VERTEX_SHADER",
+            "url" : "shader/def_mulitiLight.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_MULTILIGHT_FRAGMENT_SHADER",
+            "url" : "shader/def_mulitiLight.frag",
+            "type" : 2
+        },
+
+        {
             "name" : "BUNNY_MESH",
             "url" : "mesh/bunny/bunny.obj",
             "type" : 3
