@@ -10,7 +10,7 @@
 #define __CQLIGHT_H__
 
 #include "CQMacros.h"
-#include "CQObject.h"
+#include "CQMath.h"
 
 NS_CQ_BEGIN;
 
@@ -22,30 +22,50 @@ enum class LightType
 	DIRECTIONAL
 };
 
-class CQLight /*: public CQObject*/
+class CQLight 
 {
+public:
+	typedef Vector3 ColorIntensity;
+
 public:
 	explicit CQLight() = default;
 
-	~CQLight() = default;
+	virtual ~CQLight() = default;
+
+	CQLight(LightType _type, ColorIntensity _color);
 
 public:
-	inline LightType getLightType() { return type_; }
+	inline LightType getLightType() const { return type_; }
+
+	inline ColorIntensity getColor() const { return color_; }
 
 	inline void  setLightType(LightType _type) { type_ = _type; }
 
+	inline void  setColor(ColorIntensity _color) { color_ = _color; }
 
 private:
 	LightType type_;
+
+	ColorIntensity color_;
 
 };
 
 class CQPointLight : public CQLight
 {
+public:
+	explicit CQPointLight() = default;
 
+	virtual ~CQPointLight() = default;
+
+	CQPointLight(LightType _type, ColorIntensity _color, Vector4 _pos);
+
+public:
+	inline Vector4 getWorldPos() const { return pos_; }
+
+	inline void setWorldPos(Vector4 _pos) { pos_ = _pos; }
 
 private:
-	
+	Vector4 pos_;
 };
 
 class CQSpotLight : public CQLight

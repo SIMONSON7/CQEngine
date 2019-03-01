@@ -32,10 +32,23 @@ void LightExScene::onInit()
 	// mesh
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));
 
+	// light
+	lights_[0].setWorldPos(Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	lights_[1].setWorldPos(Vector4(20.0f, -10.0f, 10.0f, 1.0f));
+	lights_[2].setWorldPos(Vector4(10.0f, 20.0f, -10.0f, 1.0f));
+	lights_[3].setWorldPos(Vector4(10.0f, -10.0f, 20.0f, 1.0f));
+	lights_[4].setWorldPos(Vector4(-10.0f, 10.0f, 10.0f, 1.0f));
+
+	lights_[0].setColor(Vector3(0.0f, 1.0f, 1.0f));
+	lights_[1].setColor(Vector3(0.0f, 0.0f, 1.0f));
+	lights_[2].setColor(Vector3(1.0f, 0.0f, 0.0f));
+	lights_[3].setColor(Vector3(0.0f, 0.8f, 0.0f));
+	lights_[4].setColor(Vector3(1.0f, 1.0f, 0.0f));
+
 	// shader 
 	auto mLightProgram = CQ_NEW(CQShaderProgram);
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTILIGHT_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTILIGHT_FRAGMENT_SHADER)));
 	mLightProgram->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
 	mLightProgram->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	mLightProgram->genProgram();
@@ -55,6 +68,7 @@ void LightExScene::onInit()
 	// bunny transform
 	bunnyObj->getTransform()->setScale(0.8f);
 	bunnyObj->getTransform()->moveTo(Vector3(0, -0.5f, -1.5f));
+
 }
 
 void LightExScene::update()
@@ -83,14 +97,15 @@ void LightExScene::update()
 
 	// TODO
 	// light pos : embed to class CQLight.
-	mLightProgram->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	mLightProgram->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
-	mLightProgram->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
-	mLightProgram->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
+	for (int i = 0 ; i < 5; ++i)
+	{
+		mLightProgram->setVector("uLights[0].colorIntensity", lights_[i].getColor());
+		mLightProgram->setVector("uLights[0].pos", viewMat * lights_[i].getWorldPos());
+	}
 
-	mLightProgram->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
-	mLightProgram->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
-	mLightProgram->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
+	mLightProgram->setVector("uMat.a", Vector3(0.4f, 0.4f, 0.4f));
+	mLightProgram->setVector("uMat.d", Vector3(0.9f, 0.9f, 0.9f));
+	mLightProgram->setVector("uMat.s", Vector3(0.1f, 0.1f, 0.1f));
 	mLightProgram->setFloat("uMat.shineFactor", 110.0f);
 
 	mLightProgram->setMatrix("uModelViewMatrix", mv);

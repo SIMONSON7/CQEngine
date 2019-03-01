@@ -57,13 +57,13 @@
 
         {
             "name" : "DEF_MULTILIGHT_VERTEX_SHADER",
-            "url" : "shader/def_mulitiLight.vert",
+            "url" : "shader/def_multiLight.vert",
             "type" : 2
         },
 
         {
             "name" : "DEF_MULTILIGHT_FRAGMENT_SHADER",
-            "url" : "shader/def_mulitiLight.frag",
+            "url" : "shader/def_multiLight.frag",
             "type" : 2
         },
 

@@ -40,6 +40,9 @@ private:
 	CQSceneNode * bunnyNode_;
 	float modelAngle_ = 0;
 
+	// TMP
+	CQPointLight lights_[5];
+
 	std::shared_ptr<CQEvtListener> clickListener_;
 	std::shared_ptr<CQEvtListener> wheelListener_;
 };
