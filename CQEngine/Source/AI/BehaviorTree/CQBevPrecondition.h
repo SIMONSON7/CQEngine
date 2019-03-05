@@ -9,10 +9,7 @@
 #ifndef __CQBEVPRECONDITION_H__
 #define __CQBEVPRECONDITION_H__
 
-#include "CQAny.h"
-
-using BevInParam = CQAny;
-using BevOutParam = CQAny;
+#include "CQBevNode.h"
 
 class CQBevPrecondition
 {

@@ -1,4 +1,5 @@
 #include "CQBevNode.h"
+#include "CQBevPrecondition.h"
 
 USING_NS_CQ;
 
@@ -19,4 +20,41 @@ CQBevNode & CQBevNode::addChild(CQBevNode * _child)
 	return (*this);
 }
 
+CQBevNode & CQBevNode::setPevcondition(CQBevPrecondition * _condition)
+{
+	CQASSERT(_condition);
+	if (preconditon_ != _condition)
+	{
+		CQ_RAW_DELETE(preconditon_);
+		preconditon_ = _condition;
+	}
 
+	return (*this);
+}
+
+void CQBevNode::setActiveNode(CQBevNode * _node)
+{
+	CQASSERT(_node);
+	lastActiveChild_ = activeChild_;
+	activeChild_ = _node;
+
+	if (parent_)
+	{
+		parent_->setActiveNode(_node);
+	}
+}
+
+bool CQBevNode::evaluate(const BevInParam & _input)
+{
+	return (preconditon_ == nullptr || preconditon_->externalCondition(_input)) && doEvaluate(_input);
+}
+
+void CQBevNode::transition(const BevInParam & _input)
+{
+	return doTransition(_input);
+}
+
+BevRunningStatus CQBevNode::tick(const BevInParam & _input, BevOutParam & _output)
+{
+	return doTick(_input, _output);
+}
