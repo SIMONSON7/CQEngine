@@ -9,52 +9,122 @@
 #ifndef __CQANY_H__
 #define __CQANY_H__
 
+#include <iostream>
+#include <typeindex>
+#include <memory>
 #include "CQMacros.h"
 #include "CQMemory.h"
 
 NS_CQ_BEGIN;
 
-template<typename T>
 class CQAny
 {
 public:
-	CQAny(T * _content)
+	CQAny()
 		:
-		content_(_content)
+		tIdx_(typeid(void))
 	{}
-	
-	CQAny & operator=(T * _content)
+
+	CQAny(const CQAny & _other)
+		:
+		tIdx_(_other.tIdx_),
+		ptr_(_other.ptr_->move())
+	{}
+
+	CQAny(CQAny && _other)
+		:
+		tIdx_(_other.tIdx_),
+		ptr_(std::move(_other.ptr_))
+	{}
+
+	template<typename T, 
+			 class = typename std::enable_if<!std::is_same<std::decay<T>::type, CQAny>::value, T>
+											::type>
+	CQAny(T && _other)
+		:
+		tIdx_(typeid(std::decay<T>::type)),
+		ptr_(new Derived<std::decay<T>::type>(std::forward<T>(_other)))
+	{}
+
+	CQAny & operator=(const CQAny & _other)
 	{
-		__set(_content);
+		if (ptr_ == _other.ptr_)
+		{
+			return *this;
+		}
+
+		tIdx_ = _other.tIdx_;
+		ptr_ = _other.ptr_->move();
 		return *this;
 	}
 
-	~CQAny()
-	{
-		CQ_DELETE(content_, T);
-	}
-
 public:
-	T & getRealContent()
+	bool isNull()
 	{
-		CQASSERT(content_);
-		return *reinterpret_cast<T*>(content_);
+		return !bool(ptr_);
 	}
-	
-	const T & getRealContent() const
+
+	// CQAny any;
+	// any = 1;
+	// any.is<int>();
+	template<typename T>
+	bool is() const
 	{
-		CQASSERT(content_);
-		return *reinterpret_cast<T*>(content_);
+		return tIdx_ == type_index(typeid(T));
+	}
+
+	// any.cast<string>();
+	template<typename T>
+	T & cast()
+	{
+		if (!is<T>())
+		{
+			throw bad_cast();
+		}
+
+		// core
+		auto d = std::dynamic_cast<Derived<T>*>(ptr_->get());
+		return d->value_;
 	}
 
 private:
-	void __set(T * _realContent)
+	struct Base;
+	using BaseUPtr = std::unique_ptr<Base>;
+
+	// Just placeholder
+	struct Base
 	{
-		content_ = reinterpret_cast<void*>(_realContent);
-	}
+		virtual ~Base() {}
+		virtual BaseUPtr move() const = 0;
+	};
+
+	// Hold type info : T
+	template<typename T>
+	struct Derived : Base
+	{
+		template<typename U>
+		Derived( U && _v )
+			:
+			value_(std::forward<U>(_v))
+		{}
+
+
+		BaseUPtr move() const
+		{
+			return BaseUPtr(new Derived<T>(value_));
+		}
+
+		T value_;
+	};
 
 private:
-	void * content_;
+
+
+private:
+	BaseUPtr ptr_;
+
+	// type_index is a wrapper class around a std::type_info obj;
+	std::type_index tIdx_;
 };
 
 NS_CQ_END;
