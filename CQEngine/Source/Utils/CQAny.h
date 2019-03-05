@@ -108,7 +108,6 @@ private:
 			value_(std::forward<U>(_v))
 		{}
 
-
 		BaseUPtr move() const
 		{
 			return BaseUPtr(new Derived<T>(value_));

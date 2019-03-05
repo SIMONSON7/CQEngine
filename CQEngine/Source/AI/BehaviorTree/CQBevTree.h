@@ -15,7 +15,6 @@ NS_CQ_BEGIN
 
 
 
-
 NS_CQ_END
 
 #endif /* __CQBEVTREE_H__ */
