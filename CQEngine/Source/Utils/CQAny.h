@@ -38,8 +38,8 @@ public:
 	{}
 
 	template<typename T, 
-			 class = typename std::enable_if<!std::is_same<std::decay<T>::type, CQAny>::value, T>
-											::type>
+			 class = typename std::enable_if<!std::is_same<std::decay<T>::type, CQAny>::value, T>::type
+			>
 	CQAny(T && _other)
 		:
 		tIdx_(typeid(std::decay<T>::type)),

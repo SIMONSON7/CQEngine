@@ -48,6 +48,9 @@
 #include "CQSceneManager.h"
 #include "CQCuller.h"
 
+// AI
+//#include "CQBevNode.h"
+
 // Render
 #include "CQCamera.h"
 #include "CQGLProgram.h"
