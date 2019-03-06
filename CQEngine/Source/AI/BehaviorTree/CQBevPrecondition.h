@@ -9,7 +9,7 @@
 #ifndef __CQBEVPRECONDITION_H__
 #define __CQBEVPRECONDITION_H__
 
-#include "CQBevNode.h"
+#include "CQBevTree.h"
 
 class CQBevPrecondition
 {

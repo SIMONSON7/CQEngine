@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include "CQMacros.h"
-#include "CQBevTree.h"
 #include "CQBevPrecondition.h"
 
 NS_CQ_BEGIN
