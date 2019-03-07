@@ -13,29 +13,37 @@
 
 NS_CQ_BEGIN
 
+enum class BevLeafStatus
+{
+	READY = 0,
+	EXECUTING = 1,
+	FINISH = 2,
+};
+
 class CQBevLeaf : public CQBevNode
 {
 public:
+	CQBevLeaf(CQBevNode * _parent, CQBevPrecondition * _precondition);
 
+	virtual ~CQBevLeaf() = default;
 
 public:
-	virtual bool doEvaluate(const BevInParam &)
-	{
-		return true;
-	}
+	// Leaf node NO need doEvaluate();
+	virtual void doTransition(const BevInParam &);
 
-	virtual void doTransition(const BevInParam &)
-	{
+	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &);
 
-	}
+public:
+	virtual void onEnter(const BevInParam & _input) {}
 
-	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &)
-	{
-		return BevRunningStatus::FINISH;
-	}
+	virtual BevRunningStatus onExecute(const BevInParam & _input, BevOutParam & _output) { return BevRunningStatus::FINISH; }
+
+	virtual void onExit(const BevInParam & _input, BevRunningStatus _exitStatus) {}
 
 private:
+	bool isNeedExit_;
 
+	BevLeafStatus leafStatus_;
 };
 
 NS_CQ_END

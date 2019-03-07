@@ -24,34 +24,26 @@ public:
 	virtual ~CQBevNode();
 
 public:
-	virtual bool doEvaluate(const BevInParam &)
-	{
-		return true;
-	}
-
-	virtual void doTransition(const BevInParam &)
-	{
-	
-	}
-
-	virtual BevRunningStatus doTick(const BevInParam & ,BevOutParam &)
-	{
-		return BevRunningStatus::FINISH;
-	}
-
-public:
 	CQBevNode & addChild(CQBevNode * _child);
 
 	CQBevNode & setPevcondition(CQBevPrecondition * _condition);
 
 	void setActiveNode(CQBevNode * _node);
 
+public:
 	bool evaluate(const BevInParam & _input);
 
 	void transition(const BevInParam & _input);
 
 	BevRunningStatus tick(const BevInParam & _input, BevOutParam & _output);
-	
+
+public:
+	virtual bool doEvaluate(const BevInParam &) { return true; }
+
+	virtual void doTransition(const BevInParam &) {}
+
+	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &) { return BevRunningStatus::FINISH; }
+
 public:
 	inline void setName(const std::string & _name)
 	{

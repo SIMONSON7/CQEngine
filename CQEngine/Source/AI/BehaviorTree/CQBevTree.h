@@ -21,7 +21,7 @@ enum class  BevRunningStatus
 {
 	EXECUTING = 0,
 	FINISH = 1,
-	ERROR_TRANSITION = -1,
+	TRANSITION = 2,
 };
 
 NS_CQ_END
