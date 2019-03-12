@@ -29,9 +29,9 @@ public:
 
 public:
 	// Leaf node NO need doEvaluate();
-	virtual void doTransition(const BevInParam &);
+	virtual void doTransition(const BevInParam &) override final;
 
-	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &);
+	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &) override final;
 
 public:
 	virtual void onEnter(const BevInParam & _input) {}
