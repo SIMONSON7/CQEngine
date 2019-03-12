@@ -17,9 +17,9 @@ void CQBevLeaf::doTransition(const BevInParam & _input)
 	{
 		onExit(_input, BevRunningStatus::TRANSITION);
 	}
+	isNeedExit_ = false;
 
 	setActiveNode(nullptr);
-	//isNeedExit_ = false;
 	leafStatus_ = BevLeafStatus::READY;
 }
 
@@ -31,12 +31,17 @@ BevRunningStatus CQBevLeaf::doTick(const BevInParam & _input, BevOutParam & _out
 	{
 	case CQEngine::BevLeafStatus::READY:
 		onEnter(_input);
+		isNeedExit_ = true;
+
+		setActiveNode(this);
 		leafStatus_ = BevLeafStatus::EXECUTING;
 		break;
 	case CQEngine::BevLeafStatus::EXECUTING:
+		setActiveNode(this);
 		runningState = onExecute(_input, _output);
-		//setActiveNode(this);
-		if (runningState == BevRunningStatus::FINISH)
+		if (runningState == BevRunningStatus::FINISH ||
+			// Less than 0 means ERRO occur.
+			static_cast<int>(runningState) < 0)
 		{
 			leafStatus_ = BevLeafStatus::FINISH;
 		}
@@ -46,12 +51,13 @@ BevRunningStatus CQBevLeaf::doTick(const BevInParam & _input, BevOutParam & _out
 		{
 			onExit(_input, runningState);
 		}
+		isNeedExit_ = false;
+
+		setActiveNode(nullptr);
 		leafStatus_ = BevLeafStatus::READY;
-		//setActiveNode(nullptr);
 		break;
 	default:
 		break;
 	}
-
 	return runningState;
 }

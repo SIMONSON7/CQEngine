@@ -41,6 +41,7 @@ public:
 	virtual void onExit(const BevInParam & _input, BevRunningStatus _exitStatus) {}
 
 private:
+	// If has called onEnter(), it need to call onExit();
 	bool isNeedExit_;
 
 	BevLeafStatus leafStatus_;
