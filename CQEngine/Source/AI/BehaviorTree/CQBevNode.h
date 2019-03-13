@@ -45,28 +45,20 @@ public:
 	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &) { return BevRunningStatus::FINISH; }
 
 public:
-	inline void setName(const std::string & _name)
-	{
-		name_ = _name;
-	}
+	inline void setName(const std::string & _name) { name_ = _name; }
 
-	inline const std::string & getName() const
-	{
-		return name_;
-	}
+	inline const std::string & getName() const { return name_; }
 
-	inline CQBevNode * getLastActiveNode() const
-	{
-		return lastActiveChild_;
-	}
+	inline CQBevNode * getLastActiveNode() const { return lastActiveChild_; }
+
+	inline void setID(const int32_t _id) { id_ = _id; }
+
+	inline int32_t getID() const { return id_; }
 
 protected:
-	inline void setParent(CQBevNode * _parent)
-	{
-		parent_ = _parent;
-	}
+	inline void setParent(CQBevNode * _parent) { parent_ = _parent; }
 
-private:
+protected:
 	std::vector<CQBevNode*> children_;
 
 	CQBevNode * parent_;
@@ -78,6 +70,8 @@ private:
 	CQBevNode * lastActiveChild_;
 
 	std::string name_;
+
+	int32_t id_;
 };
 
 NS_CQ_END

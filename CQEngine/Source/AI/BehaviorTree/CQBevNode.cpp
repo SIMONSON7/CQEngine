@@ -3,6 +3,13 @@
 USING_NS_CQ;
 
 CQBevNode::CQBevNode(CQBevNode * _parent, CQBevPrecondition * _precondition)
+	:
+	parent_(_parent),
+	preconditon_(_precondition),
+	activeChild_(nullptr),
+	lastActiveChild_(nullptr),
+	name_("DEFNAME"),
+	id_(-1)
 {
 
 }
