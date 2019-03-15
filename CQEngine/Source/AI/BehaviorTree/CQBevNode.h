@@ -65,6 +65,7 @@ protected:
 
 	CQBevPrecondition * preconditon_;
 
+	// Active Node just for Debugi.
 	CQBevNode * activeChild_;
 
 	CQBevNode * lastActiveChild_;
