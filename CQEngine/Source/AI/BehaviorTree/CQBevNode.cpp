@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "CQBevNode.h"
 
 USING_NS_CQ;
@@ -63,4 +64,16 @@ void CQBevNode::transition(const BevInParam & _input)
 BevRunningStatus CQBevNode::tick(const BevInParam & _input, BevOutParam & _output)
 {
 	return doTick(_input, _output);
+}
+
+CQBevNode * CQBevNode::findChildByID(const int32_t _id)
+{
+	CQBevNode * ret = nullptr;
+	auto it = std::find_if(children_.begin(), children_.end(),
+		[=](CQBevNode *_node) { return _node->getID() == _id; });
+	if (it != children_.end())
+	{
+		ret = *it;
+	}
+	return ret;
 }

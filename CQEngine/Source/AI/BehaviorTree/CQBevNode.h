@@ -58,6 +58,8 @@ public:
 protected:
 	inline void setParent(CQBevNode * _parent) { parent_ = _parent; }
 
+	CQBevNode * findChildByID(const int32_t _id);
+
 protected:
 	std::vector<CQBevNode*> children_;
 
@@ -65,7 +67,7 @@ protected:
 
 	CQBevPrecondition * preconditon_;
 
-	// Active Node just for Debugi.
+	// Active Node just for Debuging.
 	CQBevNode * activeChild_;
 
 	CQBevNode * lastActiveChild_;

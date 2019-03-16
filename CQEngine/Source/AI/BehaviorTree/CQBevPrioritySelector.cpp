@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "CQBevPrioritySelector.h"
 
 CQBevPrioritySelector::CQBevPrioritySelector(CQBevNode * _parent, CQBevPrecondition * _precondition)
@@ -23,12 +24,48 @@ bool CQBevPrioritySelector::doEvaluate(const BevInParam & _input)
 	return false;
 }
 
-void CQBevPrioritySelector::doTransition(const BevInParam &)
+void CQBevPrioritySelector::doTransition(const BevInParam & _input)
 {
+	if (lastSelectedID_ >= 0)
+	{
+		auto child = findChildByID(lastSelectedID_);
+		if (child)
+		{
+			child->doTransition(_input);
+		}
+	}
 
+	lastSelectedID_ = -1;
 }
 
-BevRunningStatus CQBevPrioritySelector::doTick(const BevInParam &, BevOutParam &)
+BevRunningStatus CQBevPrioritySelector::doTick(const BevInParam & _input, BevOutParam & _output)
 {
+	BevRunningStatus status = BevRunningStatus::FINISH;
 
+	// DoTransition and Update lastSelectedID_ if necessary.
+	if (curSelectedID_ != lastSelectedID_)
+	{
+		auto child = findChildByID(lastSelectedID_);
+		if (child)
+		{
+			child->doTransition(_input);
+		}
+		lastSelectedID_ = curSelectedID_;
+	}
+
+	// Get running node and call DoTick().
+	if (lastSelectedID_ >= 0)
+	{
+		auto child = findChildByID(lastSelectedID_);
+		if (child)
+		{
+			status = child->doTick(_input, _output);
+			if (status == BevRunningStatus::FINISH)
+			{
+				lastSelectedID_ = -1;
+			}
+		}
+	}
+
+	return status;
 }
