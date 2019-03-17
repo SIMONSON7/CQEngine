@@ -1,6 +1,8 @@
 #include <algorithm>
 #include "CQBevPrioritySelector.h"
 
+USING_NS_CQ;
+
 CQBevPrioritySelector::CQBevPrioritySelector(CQBevNode * _parent, CQBevPrecondition * _precondition)
 	:
 	CQBevNode(_parent, _precondition),

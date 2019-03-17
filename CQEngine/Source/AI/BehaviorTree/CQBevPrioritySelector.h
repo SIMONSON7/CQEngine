@@ -27,7 +27,7 @@ public:
 
 	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &);
 
-private:
+protected:
 	int32_t curSelectedID_;
 
 	int32_t lastSelectedID_;
