@@ -9,7 +9,7 @@
 #ifndef __CQBEVPARALLEL_H__
 #define __CQBEVPARALLEL_H__
 
-#include <vector>
+#include <unordered_map>
 #include "CQBevNode.h"
 
 NS_CQ_BEGIN
@@ -35,14 +35,14 @@ public:
 	virtual BevRunningStatus doTick(const BevInParam &, BevOutParam &);
 
 public:
-	inline void setFinishCondition(ParallelFinishCondition _condition) { finishCondition_ = _condition; }
+	inline CQBevParallel& setFinishCondition(ParallelFinishCondition _condition) { finishCondition_ = _condition; return *this; }
 
 	inline ParallelFinishCondition getFinishCondition() const { return finishCondition_; }
 
 private:
 	ParallelFinishCondition finishCondition_;
 
-	std::vector<BevRunningStatus> childRunningStatus_;
+	std::unordered_map<int32_t, BevRunningStatus> childRunningStatusMap_;
 };
 
 NS_CQ_END
