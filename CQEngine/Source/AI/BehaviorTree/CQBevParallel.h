@@ -40,6 +40,9 @@ public:
 	inline ParallelFinishCondition getFinishCondition() const { return finishCondition_; }
 
 private:
+	void __resetChildrenRunningStatusMap(BevRunningStatus _status);
+
+private:
 	ParallelFinishCondition finishCondition_;
 
 	std::unordered_map<int32_t, BevRunningStatus> childRunningStatusMap_;

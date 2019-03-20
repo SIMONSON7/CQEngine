@@ -7,10 +7,7 @@ CQBevParallel::CQBevParallel(CQBevNode * _parent, CQBevPrecondition * _precondit
 	CQBevNode(_parent, _precondition),
 	finishCondition_(ParallelFinishCondition::OR)
 {
-	for each (auto child in children_)
-	{
-		childRunningStatusMap_.insert({child->getID(), BevRunningStatus::EXECUTING});
-	}
+	__ResetChildrenRunningStatusMap(BevRunningStatus::EXECUTING);
 }
 
 bool CQBevParallel::doEvaluate(const BevInParam & _input)
@@ -38,7 +35,61 @@ void CQBevParallel::doTransition(const BevInParam & _input)
 	}
 }
 
-BevRunningStatus CQBevParallel::doTick(const BevInParam &, BevOutParam &)
+BevRunningStatus CQBevParallel::doTick(const BevInParam & _input, BevOutParam & _output)
 {
+	if (finishCondition_ == ParallelFinishCondition::OR)
+	{
+		for each (auto child in children_)
+		{
+			if (childRunningStatusMap_[child->getID()] == BevRunningStatus::EXECUTING)
+			{
+				childRunningStatusMap_[child->getID()] = child->tick(_input, _output);
+			}
+			// Find ONE node's tick() return FINISH.
+			//if (childRunningStatusMap_[child->getID()] == BevRunningStatus::FINISH ||
+			//	childRunningStatusMap_[child->getID()] == BevRunningStatus::TRANSITION)
+			if (childRunningStatusMap_[child->getID()] != BevRunningStatus::EXECUTING)
+			{
+				__resetChildrenRunningStatusMap(CQEngine::BevRunningStatus::EXECUTING);
+				return CQEngine::BevRunningStatus::FINISH;
+			}
+		}
+	}
+	else if (finishCondition_ == ParallelFinishCondition::AND)
+	{
+		int finishedChildCnt = 0;
 
+		for each (auto child in children_)
+		{
+			// tick
+			if (childRunningStatusMap_[child->getID()] == BevRunningStatus::EXECUTING)
+			{
+				childRunningStatusMap_[child->getID()] = child->tick(_input, _output);
+			}
+
+			// check result.
+			if (childRunningStatusMap_[child->getID()] != BevRunningStatus::EXECUTING)
+			{
+				++finishedChildCnt;
+			}
+		}
+		
+		if (finishedChildCnt == children_.size())
+		{
+			__resetChildrenRunningStatusMap(CQEngine::BevRunningStatus::EXECUTING);
+			return CQEngine::BevRunningStatus::FINISH;
+		}
+	}
+
+	return BevRunningStatus::EXECUTING;
+}
+
+void CQBevParallel::__resetChildrenRunningStatusMap(BevRunningStatus _status)
+{
+	childRunningStatusMap_.clear();
+
+	for each (auto child in children_)
+	{
+		childRunningStatusMap_.insert({ child->getID(), _status });
+	}
 }
