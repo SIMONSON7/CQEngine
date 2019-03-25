@@ -74,6 +74,8 @@ protected:
 
 	std::string name_;
 
+	// e.g.,0 1 2 3...
+	// -1 means EROOR.
 	int32_t id_;
 };
 

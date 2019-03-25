@@ -15,7 +15,7 @@ void CQBevLeaf::doTransition(const BevInParam & _input)
 {
 	if (isNeedExit_)
 	{
-		onExit(_input, BevRunningStatus::TRANSITION);
+		onExit(_input, BevRunningStatus::ERROR_TRANSITION);
 	}
 	isNeedExit_ = false;
 
