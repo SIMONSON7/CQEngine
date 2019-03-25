@@ -7,7 +7,7 @@ CQBevParallel::CQBevParallel(CQBevNode * _parent, CQBevPrecondition * _precondit
 	CQBevNode(_parent, _precondition),
 	finishCondition_(ParallelFinishCondition::OR)
 {
-	__ResetChildrenRunningStatusMap(BevRunningStatus::EXECUTING);
+	__resetChildrenRunningStatusMap(BevRunningStatus::EXECUTING);
 }
 
 bool CQBevParallel::doEvaluate(const BevInParam & _input)
