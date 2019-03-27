@@ -47,7 +47,7 @@ BevRunningStatus CQBevParallel::doTick(const BevInParam & _input, BevOutParam & 
 			}
 			// Find ONE node's tick() return FINISH.
 			//if (childRunningStatusMap_[child->getID()] == BevRunningStatus::FINISH ||
-			//	childRunningStatusMap_[child->getID()] == BevRunningStatus::TRANSITION)
+			//	childRunningStatusMap_[child->getID()] == BevRunningStatus::ERROR_TRANSITION)
 			if (childRunningStatusMap_[child->getID()] != BevRunningStatus::EXECUTING)
 			{
 				__resetChildrenRunningStatusMap(CQEngine::BevRunningStatus::EXECUTING);

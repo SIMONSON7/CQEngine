@@ -2,7 +2,7 @@
 
 USING_NS_CQ
 
-CQBevLoop::CQBevLoop(CQBevNode * _parent, CQBevPrecondition * _precondition, int _loopCnt = INFINITY_LOOP)
+CQBevLoop::CQBevLoop(CQBevNode * _parent, CQBevPrecondition * _precondition, int _loopCnt)
 	:
 	CQBevNode(_parent, _precondition),
 	loopCnt_(_loopCnt),
