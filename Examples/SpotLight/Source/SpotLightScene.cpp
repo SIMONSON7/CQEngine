@@ -34,8 +34,8 @@ void SpotLightScene::onInit()
 
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_SPOTLIGHT_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_SPOTLIGHT_FRAGMENT_SHADER)));
 	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
@@ -80,25 +80,28 @@ void SpotLightScene::update()
 	// user should NOT manipulate mvp Matrix.
 	Matrix4 mvp = projMat * viewMat * modelMat;
 	Matrix4 mv = viewMat * modelMat;
-
-	// TODO
-	// light pos : embed to class CQLight.
-	program->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	program->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
-	program->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
-	program->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
-
-	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
-	program->setFloat("uMat.shineFactor", 110.0f);
+	Matrix3 normal = Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
+		Vector3(mv[1].x, mv[1].y, mv[1].z),
+		Vector3(mv[2].x, mv[2].y, mv[2].z));
 
 	program->setMatrix("uModelViewMatrix", mv);
 	program->setMatrix("uMVP", mvp);
-	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
-		Vector3(mv[1].x, mv[1].y, mv[1].z),
-		Vector3(mv[2].x, mv[2].y, mv[2].z)));
+	program->setMatrix("uNormalMatrix", normal);
 
+	// TODO
+	// light pos : embed to class CQLight.
+	program->setVector("uLight.intensity", Vector3(0.9f, 0.9f, 0.9f));
+	program->setFloat("uLight.exponent", 30.0f);
+	program->setFloat("uLight.cutoff", 15.0f);
+
+	auto lightPos = Vector4(0.0f, 7.5f, 0.0f, 1.0f);
+	program->setVector("uLight.pos", viewMat * lightPos);
+	program->setVector("uLight.dir", normal * Vector3(-lightPos.x, -lightPos.y, -lightPos.z));
+
+	program->setVector("uA", Vector3(0.3f, 0.2f, 0.1f));
+	program->setVector("uD", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uS", Vector3(0.9f, 0.5f, 0.3f));
+	program->setFloat("uShininess", 180.0f);
 
 }
 
