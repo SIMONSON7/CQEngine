@@ -1,10 +1,10 @@
-#include "LightExScene.h"
+#include "SpotLightScene.h"
 
-//REGISTER_START_SCENE(LightExScene)
+REGISTER_START_SCENE(SpotLightScene)
 
-void LightExScene::onInit()
+void SpotLightScene::onInit()
 {
-	dbgPuts("[LightExScene] init success!");
+	dbgPuts("[SpotLightScene] init success!");
 
 	// camera
 	// TODO : should have a default camera.
@@ -15,11 +15,11 @@ void LightExScene::onInit()
 
 	clickListener_ = std::make_shared<CQEvtListener>();
 	clickListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
-	clickListener_->setCB(std::bind(&LightExScene::onMouseClick, this, std::placeholders::_1));
+	clickListener_->setCB(std::bind(&SpotLightScene::onMouseClick, this, std::placeholders::_1));
 
 	wheelListener_ = std::make_shared<CQEvtListener>();
 	wheelListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
-	wheelListener_->setCB(std::bind(&LightExScene::onMouseWheel, this, std::placeholders::_1));
+	wheelListener_->setCB(std::bind(&SpotLightScene::onMouseWheel, this, std::placeholders::_1));
 
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
@@ -32,30 +32,17 @@ void LightExScene::onInit()
 	// mesh
 	auto bunnyMesh = std::dynamic_pointer_cast<CQMesh>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::BUNNY_MESH)));
 
-	// light
-	lights_[0].setWorldPos(Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	lights_[1].setWorldPos(Vector4(20.0f, -10.0f, 10.0f, 1.0f));
-	lights_[2].setWorldPos(Vector4(10.0f, 20.0f, -10.0f, 1.0f));
-	lights_[3].setWorldPos(Vector4(10.0f, -10.0f, 20.0f, 1.0f));
-	lights_[4].setWorldPos(Vector4(-10.0f, 10.0f, 10.0f, 1.0f));
-
-	lights_[0].setColor(Vector3(0.0f, 1.0f, 1.0f));
-	lights_[1].setColor(Vector3(0.0f, 0.0f, 1.0f));
-	lights_[2].setColor(Vector3(1.0f, 0.0f, 0.0f));
-	lights_[3].setColor(Vector3(0.0f, 0.8f, 0.0f));
-	lights_[4].setColor(Vector3(1.0f, 1.0f, 0.0f));
-
 	// shader 
-	auto mLightProgram = CQ_NEW(CQShaderProgram);
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTILIGHT_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTILIGHT_FRAGMENT_SHADER)));
-	mLightProgram->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
-	mLightProgram->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
-	mLightProgram->genProgram();
+	auto program = CQ_NEW(CQShaderProgram);
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
+	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
+	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
+	program->genProgram();
 
 	// material
 	auto material = CQ_NEW(CQMaterial);
-	material->setProgram(mLightProgram);
+	material->setProgram(program);
 	std::vector<CQMaterial*> materials;
 	materials.push_back(material);
 
@@ -68,15 +55,14 @@ void LightExScene::onInit()
 	// bunny transform
 	bunnyObj->getTransform()->setScale(0.8f);
 	bunnyObj->getTransform()->moveTo(Vector3(0, -0.5f, -1.5f));
-
 }
 
-void LightExScene::update()
+void SpotLightScene::update()
 {
-	// mLightProgram
+	// program
 	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(bunnyNode_->getObj()->getComponentByName("MeshRender"));
-	auto mLightProgram = mr->getMaterials()[0]->getProgram();
-	mLightProgram->load();
+	auto program = mr->getMaterials()[0]->getProgram();
+	program->load();
 
 	// bunny transform
 	auto bunnyTrans = bunnyNode_->getObj()->getTransform();
@@ -97,46 +83,45 @@ void LightExScene::update()
 
 	// TODO
 	// light pos : embed to class CQLight.
-	for (int i = 0 ; i < 5; ++i)
-	{
-		mLightProgram->setVector("uLights[0].colorIntensity", lights_[i].getColor());
-		mLightProgram->setVector("uLights[0].pos", viewMat * lights_[i].getWorldPos());
-	}
+	program->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	program->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
+	program->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
+	program->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
 
-	mLightProgram->setVector("uMat.a", Vector3(0.4f, 0.4f, 0.4f));
-	mLightProgram->setVector("uMat.d", Vector3(0.9f, 0.9f, 0.9f));
-	mLightProgram->setVector("uMat.s", Vector3(0.1f, 0.1f, 0.1f));
-	mLightProgram->setFloat("uMat.shineFactor", 110.0f);
+	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
+	program->setFloat("uMat.shineFactor", 110.0f);
 
-	mLightProgram->setMatrix("uModelViewMatrix", mv);
-	mLightProgram->setMatrix("uMVP", mvp);
-	mLightProgram->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
+	program->setMatrix("uModelViewMatrix", mv);
+	program->setMatrix("uMVP", mvp);
+	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
 		Vector3(mv[1].x, mv[1].y, mv[1].z),
 		Vector3(mv[2].x, mv[2].y, mv[2].z)));
 
 
 }
 
-void LightExScene::onMouseClick(void* _clickData)
+void SpotLightScene::onMouseClick(void* _clickData)
 {
 	if (_clickData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_clickData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
 		{
-			dbgPrintf("[LightExScene] click x : %d", evt->x_);
+			dbgPrintf("[SpotLightScene] click x : %d", evt->x_);
 		}
 	}
 }
 
-void LightExScene::onMouseWheel(void* _wheelData)
+void SpotLightScene::onMouseWheel(void* _wheelData)
 {
 	if (_wheelData)
 	{
 		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_wheelData);
 		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_WHEEL)
 		{
-			dbgPrintf("[LightExScene] wheel delta : %d", evt->delta_);
+			dbgPrintf("[SpotLightScene] wheel delta : %d", evt->delta_);
 
 			if (evt->delta_ > 0)
 			{
@@ -151,7 +136,7 @@ void LightExScene::onMouseWheel(void* _wheelData)
 	}
 }
 
-void LightExScene::onDestory()
+void SpotLightScene::onDestory()
 {
 	CQ_DELETE(camera_, CQCamera);
 	CQ_DELETE(bunnyNode_, CQSceneNode);

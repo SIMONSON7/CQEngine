@@ -68,6 +68,18 @@
         },
 
         {
+            "name" : "DEF_SPOTLIGHT_VERTEX_SHADER",
+            "url" : "shader/def_spotlight.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_SPOTLIGHT_FRAGMENT_SHADER",
+            "url" : "shader/def_spotlight.frag",
+            "type" : 2
+        },
+
+        {
             "name" : "BUNNY_MESH",
             "url" : "mesh/bunny/bunny.obj",
             "type" : 3
