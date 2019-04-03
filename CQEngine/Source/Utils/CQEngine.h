@@ -49,7 +49,15 @@
 #include "CQCuller.h"
 
 // AI
-//#include "CQBevNode.h"
+#include "CQBevTree.h"
+#include "CQBevPrecondition.h"
+#include "CQBevNode.h"
+#include "CQBevLeaf.h"
+#include "CQBevLoop.h"
+#include "CQBevPrioritySelector.h"
+#include "CQBevNonePrioritySelector.h"
+#include "CQBevParallel.h"
+#include "CQBevSequence.h"
 
 // Render
 #include "CQCamera.h"
