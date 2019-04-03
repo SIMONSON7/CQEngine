@@ -96,7 +96,7 @@ void SpotLightScene::update()
 
 	auto lightPos = Vector4(0.0f, 7.5f, 0.0f, 1.0f);
 	program->setVector("uLight.pos", viewMat * lightPos);
-	program->setVector("uLight.dir", normal * Vector3(-lightPos.x, -lightPos.y, -lightPos.z));
+	program->setVector("uLight.dir", /*normal * */Vector3(-lightPos.x, -lightPos.y, -lightPos.z));
 
 	program->setVector("uA", Vector3(0.3f, 0.2f, 0.1f));
 	program->setVector("uD", Vector3(0.9f, 0.5f, 0.3f));
