@@ -1,7 +1,10 @@
-#version 400
+#version 430
+
+layout (early_fragment_tests) in;
 
 in vec3 Position;
 in vec3 Normal;
+
 
 layout( location = 0 ) out vec4 FragColor;
 
