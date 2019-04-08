@@ -63,4 +63,7 @@
 
 #define VNAME(var) (#var)
 
+#define Interface  class
+#define implements public	
+
 #endif /* __CQMACROS_H__ */

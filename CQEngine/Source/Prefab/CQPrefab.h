@@ -10,12 +10,21 @@
 #define __CQPREFAB_H__
 
 #include "CQMacros.h"
+#include <vector>
 
 NS_CQ_BEGIN
 
-class CQPrefab
+Interface ICQPrefab
 {
+public:
+	ICQPrefab() = default;
 
+	virtual ~ICQPrefab() {};
+
+public:
+	virtual void setupGeometry() = 0;
+
+	virtual void setupSurface() = 0;
 };
 
 NS_CQ_END
