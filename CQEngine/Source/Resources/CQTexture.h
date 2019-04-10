@@ -25,6 +25,19 @@ enum class TexMapType
 	CUBE, 
 };
 
+enum class TexWrapMode
+{
+	REPEAT,
+	CLAMP,
+};
+
+enum class TexFilterMode
+{
+	POINT, // None
+	BILLINEAR,
+	TRILINEAR,
+};
+
 struct Img
 {
 	enum Format

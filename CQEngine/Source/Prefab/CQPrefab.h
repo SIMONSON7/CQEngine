@@ -14,12 +14,12 @@
 
 NS_CQ_BEGIN
 
-Interface ICQPrefab
+Interface CQPrefabI
 {
 public:
-	ICQPrefab() = default;
+	CQPrefabI() = default;
 
-	virtual ~ICQPrefab() {};
+	virtual ~CQPrefabI() {};
 
 public:
 	virtual void setupGeometry() = 0;

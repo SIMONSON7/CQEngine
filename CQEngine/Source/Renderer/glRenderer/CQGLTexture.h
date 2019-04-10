@@ -18,19 +18,27 @@ class CQGLTexture
 {
 public:
 	CQGLTexture(int _width, int _height, void *_data);
+
 	virtual ~CQGLTexture();
 public:
-	const unsigned int GetTextureID() const;
+	inline const unsigned int GetTextureID() const { return textureID_; }
 public:
 	void Bind(int _stage = 0);
+
 	void Unbind();
+
 public:
 	inline void setIsMipMap(const bool _isMipMap);
+
 private:
 	bool isMipMap_ = true;
+
 	unsigned int textureID_;
+
 	int width_;
+
 	int height_;
+
 	void *data_;
 
 	//typedef std::map<TextureID, CQTexture*> TextureIDMap;

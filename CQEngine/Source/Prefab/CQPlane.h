@@ -14,7 +14,7 @@
 
 NS_CQ_BEGIN
 
-class CQPlane : public ICQPrefab
+class CQPlane : public CQPrefabI
 {
 
 };
