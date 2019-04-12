@@ -14,6 +14,10 @@
 
 NS_CQ_BEGIN
 
+class CQMesh;
+class CQMaterial;
+class CQSceneNode;
+
 Interface CQPrefabI
 {
 public:
@@ -22,12 +26,10 @@ public:
 	virtual ~CQPrefabI() {};
 
 public:
-	virtual void setupGeometry() = 0;
+	virtual void setupGeometry(CQMesh * _mesh) = 0;
 
-	virtual void setupSurface() = 0;
+	virtual void setupSurface(CQMaterial * _mat) = 0;
 };
-
-class CQObject;
 
 class CQPrefab : implements CQPrefabI
 {
@@ -37,14 +39,10 @@ public:
 	virtual ~CQPrefab();
 
 public:
-	inline CQObject * getSceneObject() { return obj_; }
+	inline CQSceneNode * getSceneNode() { return node_; }
 
 private:
-	void __createObj();
-
-private:
-	CQObject * obj_;
-
+	CQSceneNode * node_;
 };
 
 NS_CQ_END
