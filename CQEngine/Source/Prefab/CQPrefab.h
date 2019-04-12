@@ -27,6 +27,26 @@ public:
 	virtual void setupSurface() = 0;
 };
 
+class CQObject;
+
+class CQPrefab : implements CQPrefabI
+{
+public:
+	CQPrefab();
+
+	virtual ~CQPrefab();
+
+public:
+	inline CQObject * getSceneObject() { return obj_; }
+
+private:
+	void __createObj();
+
+private:
+	CQObject * obj_;
+
+};
+
 NS_CQ_END
 
 #endif /* __CQPREFAB_H__ */

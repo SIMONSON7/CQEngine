@@ -14,9 +14,17 @@
 
 NS_CQ_BEGIN
 
-class CQPlane : public CQPrefabI
+class CQPlane : public CQPrefab
 {
+public:
+	CQPlane();
 
+	virtual ~CQPlane();
+
+public:
+	virtual void setupGeometry();
+
+	virtual void setupSurface();
 };
 
 NS_CQ_END
