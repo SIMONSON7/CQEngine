@@ -96,7 +96,7 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 	// * sharedMesh()[0]
 	auto handles = _meshRender->getSubMeshHandles();
 	auto mesh = _meshRender->getMesh()->sharedMesh()[0];
-	auto mat = _meshRender->getMaterials()[0];
+	auto mat = (*_meshRender->getMaterials())[0];
 	auto program = mat->getProgram();
 
 	program->load();

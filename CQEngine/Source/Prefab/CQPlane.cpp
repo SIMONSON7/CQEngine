@@ -33,7 +33,7 @@ void CQPlane::setupSurface(CQMaterial * _mat)
 	mr->setup(nullptr, nullptr, matList);
 }
 
-SubMesh * CQPlane::__genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0F, float tmax = 1.0F)
+SubMesh * CQPlane::__genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax, float tmax)
 {
 	//std::vector<GLfloat> p(3 * (xdivs + 1) * (zdivs + 1));
 	//std::vector<GLfloat> n(3 * (xdivs + 1) * (zdivs + 1));
@@ -86,6 +86,8 @@ SubMesh * CQPlane::__genGeoData(float xsize, float zsize, int xdivs, int zdivs, 
 	//std::cout << " END " << std::endl;
 
 	////initBuffers(&el, &p, &n, &tex);
+
+	return nullptr;
 }
 
 

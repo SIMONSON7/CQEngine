@@ -43,8 +43,8 @@ void SpotLightScene::onInit()
 	// material
 	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
-	std::vector<CQMaterial*> materials;
-	materials.push_back(material);
+	auto materials = CQ_NEW(std::vector<CQMaterial*>);
+	materials->push_back(material);
 
 	// meshRender
 	auto bunnyMR = std::make_shared<CQMeshRenderer>();
@@ -61,7 +61,7 @@ void SpotLightScene::update()
 {
 	// program
 	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(bunnyNode_->getObj()->getComponentByName("MeshRender"));
-	auto program = mr->getMaterials()[0]->getProgram();
+	auto program = (*mr->getMaterials())[0]->getProgram();
 	program->load();
 
 	// bunny transform
