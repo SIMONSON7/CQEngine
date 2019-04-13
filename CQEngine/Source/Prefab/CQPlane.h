@@ -14,6 +14,8 @@
 
 NS_CQ_BEGIN
 
+struct SubMesh;
+
 class CQPlane : public CQPrefab
 {
 public:
@@ -22,9 +24,14 @@ public:
 	virtual ~CQPlane();
 
 public:
-	virtual void setupGeometry();
+	virtual void setupGeometry(CQMesh * _mesh);
 
-	virtual void setupSurface();
+	virtual void setupSurface(CQMaterial * _mat);
+
+private:
+	SubMesh * __genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0F, float tmax = 1.0F);
+
+
 };
 
 NS_CQ_END

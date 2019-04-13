@@ -34,14 +34,14 @@ public:
 	CQMeshRenderer& operator=(const CQMeshRenderer& other) = default;
 
 public:
-	void setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> _materials);
+	void setup(CQMesh * _mesh = nullptr, CQLight * _light = nullptr, std::vector<CQMaterial*> * _materials = nullptr);
 
 public:
 	inline CQMesh * getMesh() const { return mesh_; }
 
 	inline CQLight * getLight() const { return light_; }
 
-	inline std::vector<CQMaterial*> & getMaterials() { return materials_; }
+	inline std::vector<CQMaterial*> * getMaterials() { return materials_; }
 
 	inline std::vector<MeshVertexArrayHandle> & getSubMeshHandles() { return subMeshHandles_; }
 
@@ -50,7 +50,7 @@ private:
 
 	CQLight * light_;
 
-	std::vector<CQMaterial*> materials_;
+	std::vector<CQMaterial*> * materials_;
 
 	// array of VAO
 	std::vector<MeshVertexArrayHandle> subMeshHandles_; 

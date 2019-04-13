@@ -1,6 +1,6 @@
 #include "SpotLightScene.h"
 
-REGISTER_START_SCENE(SpotLightScene)
+//REGISTER_START_SCENE(SpotLightScene)
 
 void SpotLightScene::onInit()
 {

@@ -41,7 +41,7 @@ public:
 public:
 	inline CQSceneNode * getSceneNode() { return node_; }
 
-private:
+protected:
 	CQSceneNode * node_;
 };
 
