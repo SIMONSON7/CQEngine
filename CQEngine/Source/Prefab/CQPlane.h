@@ -30,8 +30,6 @@ public:
 
 private:
 	SubMesh * __genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0F, float tmax = 1.0F);
-
-
 };
 
 NS_CQ_END
