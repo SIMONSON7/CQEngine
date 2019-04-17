@@ -26,8 +26,6 @@ public:
 	virtual ~CQPrefabI() {};
 
 public:
-	virtual void setupGeometry(CQMesh * _mesh) = 0;
-
 	virtual void setupSurface(CQMaterial * _mat) = 0;
 };
 
@@ -39,10 +37,14 @@ public:
 	virtual ~CQPrefab();
 
 public:
+	virtual void setupSurface(CQMaterial * _mat);
+
+public:
 	inline CQSceneNode * getSceneNode() { return node_; }
 
 protected:
 	CQSceneNode * node_;
+
 };
 
 NS_CQ_END

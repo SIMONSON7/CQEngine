@@ -6,7 +6,17 @@
 
 USING_NS_CQ
 
-SubMesh * CQCube::__genGeoData(float _side)
+CQCube::CQCube()
+{
+
+}
+
+CQCube::~CQCube()
+{
+
+}
+
+SubMesh * CQCube::genGeoData(float _side)
 {
 	SubMesh * mesh = CQ_NEW(SubMesh);
 	std::vector<Vertex>			verList(24);	// 4 * 6

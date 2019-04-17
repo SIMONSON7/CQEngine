@@ -16,25 +16,7 @@ CQPlane::~CQPlane()
 
 }
 
-void CQPlane::setupGeometry(CQMesh * _mesh)
-{
-	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>
-		(node_->getObj()->getComponentByName("MeshRender")).get();
-
-	mr->setup(_mesh);
-}
-
-void CQPlane::setupSurface(CQMaterial * _mat)
-{
-	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>
-		(node_->getObj()->getComponentByName("MeshRender")).get();
-
-	auto matList = CQ_NEW(std::vector<CQMaterial*>);
-	matList->push_back(_mat);
-	mr->setup(nullptr, nullptr, matList);
-}
-
-SubMesh * CQPlane::__genGeoData(float _xsize, float _zsize, int _xdivs, int _zdivs, float _smax, float _tmax)
+SubMesh * CQPlane::genGeoData(float _xsize, float _zsize, int _xdivs, int _zdivs, float _smax, float _tmax)
 {
 	SubMesh * mesh = CQ_NEW(SubMesh);
 	std::vector<Vertex>			verList((_xdivs + 1) * (_zdivs + 1));
