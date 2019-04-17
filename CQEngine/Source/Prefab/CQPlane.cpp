@@ -34,24 +34,24 @@ void CQPlane::setupSurface(CQMaterial * _mat)
 	mr->setup(nullptr, nullptr, matList);
 }
 
-SubMesh * CQPlane::__genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax, float tmax)
+SubMesh * CQPlane::__genGeoData(float _xsize, float _zsize, int _xdivs, int _zdivs, float _smax, float _tmax)
 {
 	SubMesh * mesh = CQ_NEW(SubMesh);
-	std::vector<Vertex>			verList((xdivs + 1) * (zdivs + 1));
-	std::vector<unsigned int>	idxList(6 * xdivs * zdivs);
+	std::vector<Vertex>			verList((_xdivs + 1) * (_zdivs + 1));
+	std::vector<unsigned int>	idxList(6 * _xdivs * _zdivs);
 
-	float x2 = xsize / 2.0f;
-	float z2 = zsize / 2.0f;
-	float iFactor = (float)zsize / zdivs;
-	float jFactor = (float)xsize / xdivs;
-	float texi = smax / zdivs;
-	float texj = tmax / xdivs;
+	float x2 = _xsize / 2.0f;
+	float z2 = _zsize / 2.0f;
+	float iFactor = (float)_zsize / _zdivs;
+	float jFactor = (float)_xsize / _xdivs;
+	float texi = _smax / _zdivs;
+	float texj = _tmax / _xdivs;
 	float x, z;
 	int vidx = 0;
-	for (int i = 0; i <= zdivs; i++) 
+	for (int i = 0; i <= _zdivs; i++) 
 	{
 		z = iFactor * i - z2;
-		for (int j = 0; j <= xdivs; j++) 
+		for (int j = 0; j <= _xdivs; j++) 
 		{
 			x = jFactor * j - x2;
 
@@ -72,11 +72,11 @@ SubMesh * CQPlane::__genGeoData(float xsize, float zsize, int xdivs, int zdivs, 
 
 	unsigned rowStart, nextRowStart;
 	int idx = 0;
-	for (int i = 0; i < zdivs; i++) 
+	for (int i = 0; i < _zdivs; i++) 
 	{
-		rowStart = (unsigned)(i * (xdivs + 1));
-		nextRowStart = (unsigned)((i + 1) * (xdivs + 1));
-		for (int j = 0; j < xdivs; j++) 
+		rowStart = (unsigned)(i * (_xdivs + 1));
+		nextRowStart = (unsigned)((i + 1) * (_xdivs + 1));
+		for (int j = 0; j < _xdivs; j++) 
 		{
 			idxList[idx] = rowStart + j;
 			idxList[idx + 1] = nextRowStart + j;

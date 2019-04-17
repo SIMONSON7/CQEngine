@@ -29,7 +29,7 @@ public:
 	virtual void setupSurface(CQMaterial * _mat);
 
 private:
-	SubMesh * __genGeoData(float xsize, float zsize, int xdivs, int zdivs, float smax = 1.0F, float tmax = 1.0F);
+	SubMesh * __genGeoData(float _xsize, float _zsize, int _xdivs, int _zdivs, float _smax = 1.0F, float _tmax = 1.0F);
 };
 
 NS_CQ_END

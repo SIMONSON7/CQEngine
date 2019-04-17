@@ -15,6 +15,8 @@ NS_CQ_BEGIN
 
 class CQCube : public CQPrefab
 {
+private:
+	SubMesh * __genGeoData(float _side);
 
 };
 
