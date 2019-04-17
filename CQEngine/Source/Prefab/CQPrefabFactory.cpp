@@ -13,14 +13,14 @@ CQPrefab * CQPrefabFactory::createPlane(float _xsize, float _zsize, int _xdivs, 
 	return plane;
 }
 
-CQPrefab * createCube(float _side)
+CQPrefab * CQPrefabFactory::createCube(float _side)
 {
 	CQCube * cube = CQ_NEW(CQCube);
 	cube->genGeoData(_side);
 	return cube;
 }
 
-CQPrefab * createSphere()
+CQPrefab * CQPrefabFactory::createSphere()
 {
 	return nullptr;
 }

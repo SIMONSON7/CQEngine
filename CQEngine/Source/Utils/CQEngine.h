@@ -68,6 +68,12 @@
 #include "CQMaterial.h"
 #include "CQRenderer.h"
 
+// Prefab
+#include "CQPrefab.h"
+#include "CQPlane.h"
+#include "CQCube.h"
+#include "CQPrefabFactory.h"
+
 // Core
 #include "CQCore.h"
 
