@@ -89,25 +89,37 @@ void CQRenderer::draw(std::vector<CQObject*> _visibleObjs)
 
 void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 {
-	CQASSERT(_meshRender);
-
 	// TODO:
 	// * glClear should no be here.
-	// * sharedMesh()[0]
-	auto handles = _meshRender->getSubMeshHandles();
-	auto mesh = _meshRender->getMesh()->sharedMesh()[0];
-	auto mat = (*_meshRender->getMaterials())[0];
-	auto program = mat->getProgram();
+	// mat[0]
 
-	program->load();
+	CQASSERT(_meshRender);
 
-	//// draw elements
-	CQ_GLCHECK(glBindVertexArray(handles[0]));
+	if (!_meshRender->getMesh())
 	{
-		CQ_GLCHECK(glDrawElements(GL_TRIANGLES, mesh->iBuff_.size(), GL_UNSIGNED_INT, 0));
+		return;
 	}
-	CQ_GLCHECK(glBindVertexArray(0));
 
+	auto handles = _meshRender->getSubMeshHandles();
+
+	for each (auto subMesh in _meshRender->getMesh()->sharedMesh())
+	{
+		auto mats = _meshRender->getMaterials();
+		if (mats && mats->size() > 0)
+		{
+			// TODO
+			auto mat = (*mats)[0];
+			auto program = mat->getProgram();
+			program->load();
+
+			// draw elements
+			CQ_GLCHECK(glBindVertexArray(handles[0]));
+			{
+				CQ_GLCHECK(glDrawElements(GL_TRIANGLES, subMesh->iBuff_.size(), GL_UNSIGNED_INT, 0));
+			}
+			CQ_GLCHECK(glBindVertexArray(0));
+		}
+	}
 }
 
 void CQRenderer::__drawTransparent(CQMeshRenderer * _meshRender)

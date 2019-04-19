@@ -34,7 +34,11 @@ public:
 	CQMeshRenderer& operator=(const CQMeshRenderer& other) = default;
 
 public:
-	void setup(CQMesh * _mesh = nullptr, CQLight * _light = nullptr, std::vector<CQMaterial*> * _materials = nullptr);
+	bool setGeometryData(CQMesh * _mesh);
+
+	bool setSurfaceData(CQLight * _light, std::vector<CQMaterial*> * _materials);
+	
+	bool setup(CQMesh * _mesh = nullptr, CQLight * _light = nullptr, std::vector<CQMaterial*> * _materials = nullptr);
 
 public:
 	inline CQMesh * getMesh() const { return mesh_; }
