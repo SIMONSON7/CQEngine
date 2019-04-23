@@ -125,5 +125,7 @@ SubMesh * CQCube::genGeoData(float _side)
 		20,21,22,20,22,23
 	};
 
+	mesh->vBuff_ = verList;
+	mesh->iBuff_ = idxList;
 	return mesh;
 }

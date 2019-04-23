@@ -9,8 +9,14 @@
 USING_NS_CQ;
 
 CQMeshRenderer::CQMeshRenderer()
+	:
+	light_(nullptr),
+	materials_(nullptr),
+	mesh_(nullptr)
 {
 	name_ = "MeshRender";
+
+	subMeshHandles_.clear();
 }
 
 CQMeshRenderer::~CQMeshRenderer()
