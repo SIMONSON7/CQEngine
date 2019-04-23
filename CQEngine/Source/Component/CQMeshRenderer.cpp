@@ -15,8 +15,6 @@ CQMeshRenderer::CQMeshRenderer()
 	mesh_(nullptr)
 {
 	name_ = "MeshRender";
-
-	subMeshHandles_.clear();
 }
 
 CQMeshRenderer::~CQMeshRenderer()
@@ -38,6 +36,8 @@ CQMeshRenderer::~CQMeshRenderer()
 			CQ_DELETE(mtl, CQMaterial);
 		}
 	}
+
+	subMeshHandles_.clear();
 }
 
 bool CQMeshRenderer::setGeometryData(CQMesh * _mesh)
