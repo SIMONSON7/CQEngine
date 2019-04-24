@@ -28,6 +28,15 @@ public:
 	static
 	CQPrefab * createSphere();
 
+	static
+	void destroyPlane(CQPrefab * _plane);
+
+	static
+	void destroyCube(CQPrefab * _cube);
+
+	static
+	void destroySphere(CQPrefab * _sphere);
+
 private:
 	CQPrefabFactory() = default;
 
