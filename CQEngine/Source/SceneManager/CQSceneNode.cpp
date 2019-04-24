@@ -42,17 +42,13 @@ CQSceneNode::CQSceneNode(CQSceneNode * _parent, CQObject* _obj, const string & _
 
 CQSceneNode::~CQSceneNode()
 {
-	if (parent_)
-	{
-		parent_->detach(name_);
-		parent_ = nullptr;
-	}
-
+	//if (parent_)
+	//{
+	//	parent_->detach(name_);
+	//	parent_ = nullptr;
+	//}
+	parent_ = nullptr;
 	CQ_DELETE(obj_, CQObject);
-	for each (auto child in children_)
-	{
-		CQ_DELETE(child, CQSceneNode);
-	}
 }
 
 bool CQSceneNode::attachChild(CQSceneNode* _child)

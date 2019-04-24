@@ -59,5 +59,11 @@ void CQSceneManager::cleanAllScene()
 	}
 
 	// CQSceneNode::s_root_ shared by every scene.
+
+	// TODO
+	for each (auto child in CQSceneNode::s_root_->getChildren())
+	{
+		CQ_DELETE(child, CQSceneNode);
+	}
 	CQ_DELETE(CQSceneNode::s_root_, CQSceneNode);
 }

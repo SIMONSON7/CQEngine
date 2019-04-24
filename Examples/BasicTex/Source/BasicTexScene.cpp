@@ -6,12 +6,11 @@ REGISTER_START_SCENE(BasicTexScene)
 
 void BasicTexScene::onInit()
 {
-	//auto cubePrefab = CQPrefabFactory::createCube(1.0f);
-	//if (cubePrefab)
-	//{
-	//	cubePrefab->setupSurface(nullptr);
-	//	cube_ = cubePrefab->getSceneNode();
-	//}
+	cube_ = CQPrefabFactory::createCube(1.0f);
+	if (cube_)
+	{
+		cube_->setupSurface(nullptr);
+	}
 
 	//auto planePrefab = CQPrefabFactory::createPlane(50.0f, 50.0f, 1, 1);
 	//if (planePrefab)

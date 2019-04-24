@@ -15,6 +15,7 @@
 NS_CQ_BEGIN
 
 class CQMesh;
+class CQLight;
 class CQMaterial;
 class CQSceneNode;
 
@@ -26,7 +27,7 @@ public:
 	virtual ~CQPrefabI() {};
 
 public:
-	virtual void setupSurface(CQMaterial * _mat) = 0;
+	virtual void setupSurface(CQMaterial * _mat, CQLight * _light = nullptr) = 0;
 };
 
 class CQPrefab : implements CQPrefabI
@@ -37,7 +38,7 @@ public:
 	virtual ~CQPrefab();
 
 public:
-	virtual void setupSurface(CQMaterial * _mat);
+	virtual void setupSurface(CQMaterial * _mat, CQLight * _light = nullptr);
 
 public:
 	inline CQSceneNode * getSceneNode() { return node_; }

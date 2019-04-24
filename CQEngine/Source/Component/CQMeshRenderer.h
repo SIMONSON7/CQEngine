@@ -36,7 +36,7 @@ public:
 public:
 	bool setGeometryData(CQMesh * _mesh);
 
-	bool setSurfaceData(CQLight * _light, std::vector<CQMaterial*> * _materials);
+	bool setSurfaceData(std::vector<CQMaterial*> * _materials, CQLight * _light);
 	
 	bool setup(CQMesh * _mesh = nullptr, CQLight * _light = nullptr, std::vector<CQMaterial*> * _materials = nullptr);
 

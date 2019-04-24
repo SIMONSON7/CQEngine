@@ -35,6 +35,8 @@ CQMeshRenderer::~CQMeshRenderer()
 		{
 			CQ_DELETE(mtl, CQMaterial);
 		}
+
+		CQ_RAW_DELETE(materials_);
 	}
 
 	subMeshHandles_.clear();
@@ -107,7 +109,7 @@ bool CQMeshRenderer::setGeometryData(CQMesh * _mesh)
 	return true;
 }
 
-bool CQMeshRenderer::setSurfaceData(CQLight * _light, std::vector<CQMaterial*> * _materials)
+bool CQMeshRenderer::setSurfaceData(std::vector<CQMaterial*> * _materials, CQLight * _light = nullptr)
 {
 	if (_light)
 	{
@@ -124,5 +126,5 @@ bool CQMeshRenderer::setSurfaceData(CQLight * _light, std::vector<CQMaterial*> *
 
 bool CQMeshRenderer::setup(CQMesh * _mesh, CQLight * _light, std::vector<CQMaterial*> * _materials)
 {
-	return setGeometryData(_mesh) && setSurfaceData(_light, _materials);
+	return setGeometryData(_mesh) && setSurfaceData(_materials, _light);
 }

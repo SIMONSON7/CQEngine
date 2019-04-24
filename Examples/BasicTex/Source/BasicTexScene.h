@@ -37,8 +37,8 @@ private:
 	CQCamera* camera_;
 	float camRadisZ_ = 1.0f;
 
-	CQSceneNode * cube_;
-	CQSceneNode * plane_;
+	CQPrefab * cube_;
+	CQPrefab * plane_;
 
 	std::shared_ptr<CQEvtListener> clickListener_;
 	std::shared_ptr<CQEvtListener> wheelListener_;
