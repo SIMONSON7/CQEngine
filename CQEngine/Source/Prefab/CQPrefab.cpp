@@ -17,7 +17,7 @@ CQPrefab::CQPrefab()
 
 CQPrefab::~CQPrefab()
 {
-	CQ_DELETE(node_, CQSceneNode);
+
 }
 
 void CQPrefab::setupSurface(CQMaterial * _mat, CQLight * _light)

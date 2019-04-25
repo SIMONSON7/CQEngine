@@ -1,6 +1,7 @@
-#include "CQSceneManager.h"
+#include <vector>
 #include "CQMemory.h"
 #include "CQSceneNode.h"
+#include "CQSceneManager.h"
 
 USING_NS_CQ
 

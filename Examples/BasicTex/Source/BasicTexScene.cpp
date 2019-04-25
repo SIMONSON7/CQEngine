@@ -27,7 +27,7 @@ void BasicTexScene::update()
 
 void BasicTexScene::onDestory()
 {
-
+	CQPrefabFactory::destroyCube(cube_);
 }
 
 void BasicTexScene::onMouseClick(void* _clickData)
