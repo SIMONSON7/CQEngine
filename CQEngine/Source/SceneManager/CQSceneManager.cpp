@@ -53,17 +53,34 @@ void CQSceneManager::cleanAndPushScene(std::shared_ptr<CQScene> _scene)
 
 void CQSceneManager::cleanAllScene()
 {
+	// CQSceneNode::s_root_ shared by all scenes.
 	for each (auto scene in scenes_)
 	{
 		scene->onDestory();
 	}
+	
+	// Level of traversal.
+	std::vector<CQSceneNode*> queue;
+	std::vector<CQSceneNode*> stack;
+	queue.push_back(CQSceneNode::s_root_);
 
-	// CQSceneNode::s_root_ shared by every scene.
-
-	// TODO
-	for each (auto child in CQSceneNode::s_root_->getChildren())
+	while (!queue.empty())
 	{
-		CQ_DELETE(child, CQSceneNode);
+		auto front = queue.begin();
+		auto node = *front;
+		queue.erase(front);
+		for each (auto child in node->getChildren())
+		{
+			queue.push_back(child);
+		}
+		
+		stack.push_back(node);
 	}
-	CQ_DELETE(CQSceneNode::s_root_, CQSceneNode);
+
+	while (!stack.empty())
+	{
+		auto top = stack.begin();
+		CQ_DELETE((*top), CQSceneNode);
+		stack.erase(top);
+	}
 }
