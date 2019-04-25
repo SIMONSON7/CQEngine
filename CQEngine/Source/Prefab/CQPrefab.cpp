@@ -27,7 +27,7 @@ void CQPrefab::setupSurface(CQMaterial * _mat, CQLight * _light)
 		auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(node_->getObj()->getComponentByName("MeshRender"));
 		if (mr)
 		{
-			auto materials = CQ_RAW_NEW(std::vector<CQMaterial*>);
+			auto materials = CQ_NEW(std::vector<CQMaterial*>);
 			materials->push_back(_mat);
 			
 			mr->setSurfaceData(materials, _light);

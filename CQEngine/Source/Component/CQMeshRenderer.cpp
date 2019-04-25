@@ -35,8 +35,11 @@ CQMeshRenderer::~CQMeshRenderer()
 		{
 			CQ_DELETE(mtl, CQMaterial);
 		}
-
-		CQ_RAW_DELETE(materials_);
+		// std::vector<CQMaterial*> materials_;
+		// "materials_->~std::vector<CQMaterial*>();" is wrong.
+		// Becasuse cannot use qualified name (std::vector<CQMaterial*>) here.
+		// So should use "materials_->~vector<CQMaterial*>()".
+		CQ_DELETE(materials_, vector<CQMaterial*>);
 	}
 
 	subMeshHandles_.clear();
