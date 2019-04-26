@@ -29,6 +29,8 @@ public:
 	static const ResID DEF_MULTILIGHT_FRAGMENT_SHADER;
 	static const ResID DEF_SPOTLIGHT_VERTEX_SHADER;
 	static const ResID DEF_SPOTLIGHT_FRAGMENT_SHADER;
+	static const ResID DEF_TEX_VERTEX_SHADER;
+	static const ResID DEF_TEX_FRAGMENT_SHADER;
 
 public:
 	static const ResID HELLOWORLD_WALL_TEX;

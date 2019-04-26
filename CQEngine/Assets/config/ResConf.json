@@ -80,6 +80,18 @@
         },
 
         {
+            "name" : "DEF_TEX_VERTEX_SHADER",
+            "url" : "shader/def_tex.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_TEX_FRAGMENT_SHADER",
+            "url" : "shader/def_tex.frag",
+            "type" : 2
+        },
+
+        {
             "name" : "BUNNY_MESH",
             "url" : "mesh/bunny/bunny.obj",
             "type" : 3
