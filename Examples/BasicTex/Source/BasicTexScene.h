@@ -36,6 +36,7 @@ public:
 private:
 	CQCamera* camera_;
 	float camRadisZ_ = 1.0f;
+	float modelAngle_ = 0;
 
 	CQPrefab * cube_;
 	CQPrefab * plane_;
