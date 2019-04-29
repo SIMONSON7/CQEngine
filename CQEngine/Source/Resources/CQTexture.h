@@ -38,23 +38,9 @@ enum class TexFilterMode
 	TRILINEAR,
 };
 
-struct Img
-{
-	enum Format
-	{
-		NONE = 0X0,
-		RED,
-		RGB,
-		RGBA
-	};
+class CQImg;
 
-	int width_;
-	int height_;
-	Format format_;
-	unsigned char * data_;
-};
-
-class CQTexture : public CQResI, private CQNoncopyable
+class CQTexture
 {
 public:
 	CQTexture();
@@ -62,31 +48,16 @@ public:
 	virtual ~CQTexture();
 
 public:
-	inline void setResID(ResID & _resID) { resID_ = _resID; }
-
 	inline TexMapType getTexMapType() const { return type_; }
 
-	inline unsigned int getTexWidth() const { return img_->width_; }
+	inline void setRawImg(CQImg * _img) { img_ = _img; };
 
-	inline unsigned int getTexHeight() const { return img_->height_; }
-
-	inline unsigned char * getData() const { return img_->data_; }
-
-public:
-	virtual ResID getResID() const { return resID_; }
-
-	virtual ResType getResType() const { return ResType::TEXTURE; }
-
-	virtual void onLoadDiskRes(const std::string & _abPath);
-
-	virtual void onDestory();
+	inline CQImg * getRawImg() const { return img_; }
 
 private:
-	ResID resID_;
-
 	TexMapType type_;
 
-	Img * img_;
+	CQImg * img_;
 
 };
 

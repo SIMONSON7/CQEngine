@@ -18,7 +18,7 @@ NS_CQ_BEGIN
 enum class ResType
 {
 	NONE = 0,
-	TEXTURE,
+	IMG,
 	SHADER,
 	MESH
 };

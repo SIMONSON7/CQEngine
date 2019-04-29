@@ -97,11 +97,11 @@ void HelloWorldScene::onInit()
 	glBindVertexArray(0);
 
 	// texture
-	std::shared_ptr<CQTexture> tex = std::dynamic_pointer_cast<CQTexture>
+	std::shared_ptr<CQImg> img = std::dynamic_pointer_cast<CQImg>
 		(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
 
 	program_.setInt("uTexture0", 0);
-	texture_ = CQ_NEW(CQGLTexture,tex->getTexWidth(), tex->getTexHeight(), tex->getData());
+	texture_ = CQ_NEW(CQGLTexture,img->getWidth(), img->getHeight(), img->getData());
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

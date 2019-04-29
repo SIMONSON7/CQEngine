@@ -57,9 +57,9 @@ public:
 	void unloadRawData(RawData * _data);
 
 public:
-	Img * loadImgSync(const std::string & _abPath);
+	void loadImgSync(const std::string & _abPath, unsigned char * _data, int * _width, int * _height, int * _nrComponents);
 
-	void unloadImg(Img * _img);
+	void unloadImg(unsigned char * _data);
 
 	std::vector<SubMesh*> loadSubMeshesSync(const std::string & _abPath);
 

@@ -110,40 +110,16 @@ void CQResLoader::__doCallBack()
 	}
 }
 
-Img * CQResLoader::loadImgSync(const std::string & _abPath)
+void CQResLoader::loadImgSync(const std::string & _abPath, unsigned char * _data, int * _width, int * _height, int * _nrComponents)
 {
-	auto img = (Img*)CQ_MALLOC(sizeof(Img));
-	int nrComponents;
-
 	// flip textures y coordinate
 	stbi_set_flip_vertically_on_load(true);
-	img->data_ = stbi_load(_abPath.c_str(), &(img->width_), &(img->height_), &nrComponents, 0);
-	switch (nrComponents)
-	{
-	case 1:
-		img->format_ = Img::Format::RED;
-		break;
-	case 3:
-		img->format_ = Img::Format::RGB;
-		break;
-	case 4:
-		img->format_ = Img::Format::RGBA;
-		break;
-	default:
-		img->format_ = Img::Format::NONE;
-		break;
-	}
-
-	return img;
+	_data = stbi_load(_abPath.c_str(), _width, _height, _nrComponents, 0);
 }
 
-void CQResLoader::unloadImg(Img * _img)
+void CQResLoader::unloadImg(unsigned char * _data)
 {
-	if (_img)
-	{
-		stbi_image_free(_img->data_);
-		CQ_FREE(_img);
-	}
+	stbi_image_free(_data);
 }
 
 std::vector<SubMesh*> CQResLoader::loadSubMeshesSync(const std::string & _abPath)

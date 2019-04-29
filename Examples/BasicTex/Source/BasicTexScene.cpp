@@ -34,14 +34,15 @@ void BasicTexScene::onInit()
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
 
-	// tex
-	std::shared_ptr<CQTexture> tex = std::dynamic_pointer_cast<CQTexture>
-		(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+	// texture
+	auto texture = CQ_NEW(CQTexture);
+	//auto img = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+	//texture->setRawImg(img.get());
 
 	// material
 	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
-	material->setTex(MTexType::AMBIENT, tex.get());
+	material->setTex(MTexType::AMBIENT, texture);
 
 	// Prefab
 	cube_ = CQPrefabFactory::createCube(1.0f);

@@ -8,7 +8,7 @@
 #include "CQIO.h"
 #include "CQDebug.h"
 #include "CQShader.h"
-#include "CQTexture.h"
+#include "CQImg.h"
 #include "CQMesh.h"
 
 USING_NS_CQ
@@ -58,11 +58,11 @@ CQResManager::SpCQResI CQResManager::getRes(const std::string & _resName)
 			baseResSP = std::dynamic_pointer_cast<CQResI>(shaderResSP);
 		}
 		break;
-		case ResType::TEXTURE:
+		case ResType::IMG:
 		{
-			std::shared_ptr<CQTexture> texResSP = std::make_shared<CQTexture>();
-			texResSP->onLoadDiskRes(cfg->second.abPath_);
-			baseResSP = std::dynamic_pointer_cast<CQResI>(texResSP);
+			std::shared_ptr<CQImg> imgResSP = std::make_shared<CQImg>();
+			imgResSP->onLoadDiskRes(cfg->second.abPath_);
+			baseResSP = std::dynamic_pointer_cast<CQResI>(imgResSP);
 		}
 		break;
 		case ResType::MESH:

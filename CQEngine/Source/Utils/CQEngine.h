@@ -32,7 +32,7 @@
 #include "ResID_Def.h"
 #include "CQResLoader.h"
 #include "CQShader.h"
-#include "CQTexture.h"
+#include "CQImg.h"
 #include "CQMesh.h"
 #include "CQResManager.h"
 
@@ -63,6 +63,7 @@
 #include "CQCamera.h"
 #include "CQGLProgram.h"
 #include "CQGLTexture.h"
+#include "CQTexture.h"
 #include "CQShaderProgram.h"
 #include "CQLight.h"
 #include "CQMaterial.h"
