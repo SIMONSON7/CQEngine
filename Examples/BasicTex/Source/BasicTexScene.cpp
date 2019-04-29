@@ -26,27 +26,35 @@ void BasicTexScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
+	// shader 
+	auto program = CQ_NEW(CQShaderProgram);
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
+	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
+	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
+	program->genProgram();
+
+	// tex
+	std::shared_ptr<CQTexture> tex = std::dynamic_pointer_cast<CQTexture>
+		(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+
+	// material
+	auto material = CQ_NEW(CQMaterial);
+	material->setProgram(program);
+	material->setTex(MTexType::AMBIENT, tex.get());
+
 	// Prefab
 	cube_ = CQPrefabFactory::createCube(1.0f);
 	if (cube_)
 	{
-		// shader 
-		auto program = CQ_NEW(CQShaderProgram);
-		auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
-		auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
-		program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
-		program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
-		program->genProgram();
-
-		// material
-		auto material = CQ_NEW(CQMaterial);
-		material->setProgram(program);
-
 		cube_->setupSurface(material);
 
 		// transform
 		cube_->getSceneNode()->getObj()->
 			getTransform()->moveTo(Vector3(0, -1.5f, -1.5f));
+
+		cube_->getSceneNode()->getObj()->
+			getTransform()->rotateY(35.0f);
 	}
 
 	plane_ = CQPrefabFactory::createPlane(50.0f, 50.0f, 1, 1);
@@ -65,7 +73,7 @@ void BasicTexScene::update()
 
 	// bunny transform
 	auto bunnyTrans = cube_->getSceneNode()->getObj()->getTransform();
-	bunnyTrans->rot(++modelAngle_, bunnyTrans->getUp()); // rot self axis.
+	//bunnyTrans->rot(++modelAngle_, bunnyTrans->getUp()); // rot self axis.
 	Matrix4 modelMat = bunnyTrans->getModelMat();
 
 	// camera transform

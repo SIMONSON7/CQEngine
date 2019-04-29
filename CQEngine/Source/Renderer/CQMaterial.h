@@ -31,6 +31,7 @@ enum class MColorType
 enum class MTexType
 {
 	NONE = 0X0,
+	AMBIENT,
 	DIFFUSE,
 	SPECULAR,
 	NORMAL,
@@ -57,6 +58,10 @@ public:
 
 	void setTex(MTexType _type, CQTexture* _tex);
 
+	Color getColor(MColorType _type) const;
+
+	CQTexture * getTex(MTexType _type) const;
+
 private:
 	CQShaderProgram * program_;
 
@@ -65,6 +70,8 @@ private:
 	Color diffuseColor_;
 	
 	Color specularColor_;
+
+	CQTexture * ambientTex_;
 
 	CQTexture * diffuseTex_;
 

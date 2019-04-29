@@ -109,8 +109,13 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 		{
 			// TODO
 			auto mat = (*mats)[0];
+			// render state : shader
 			auto program = mat->getProgram();
 			program->load();
+
+			// tex
+			
+
 
 			// draw elements
 			CQ_GLCHECK(glBindVertexArray(handles[0]));
