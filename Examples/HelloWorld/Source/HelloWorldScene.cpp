@@ -34,9 +34,9 @@ void HelloWorldScene::onInit()
 		return;
 	}
 
-	program_.attachNativeShader(static_cast<char*>(d1_->buff_), CQGLProgram::SHADER_VERTEX);
-	program_.attachNativeShader(static_cast<char*>(d2_->buff_), CQGLProgram::SHADER_PIXEL);
-	program_.genProgram();
+	//program_.attachNativeShader(static_cast<char*>(d1_->buff_), CQGLProgram::SHADER_VERTEX);
+	//program_.attachNativeShader(static_cast<char*>(d2_->buff_), CQGLProgram::SHADER_PIXEL);
+	//program_.genProgram();
 
 	// Node
 	//auto model = std::make_shared<CQVisiableObj>();
@@ -100,8 +100,8 @@ void HelloWorldScene::onInit()
 	std::shared_ptr<CQImg> img = std::dynamic_pointer_cast<CQImg>
 		(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
 
-	program_.setInt("uTexture0", 0);
-	texture_ = CQ_NEW(CQGLTexture,img->getWidth(), img->getHeight(), img->getData());
+	//program_.setInt("uTexture0", 0);
+	//texture_ = CQ_NEW(CQGLTexture,img->getWidth(), img->getHeight(), img->getData());
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -128,7 +128,7 @@ void HelloWorldScene::update()
 	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
 
 	// program
-	program_.load();
+	//program_.load();
 
 	//tmat4x4<T>& rotate(value_type angle, tvec3<T> const & v)
 	Matrix4 tmp(1.0f);
@@ -141,10 +141,10 @@ void HelloWorldScene::update()
 	Matrix4 modelMat = rotateMat;//* translateMat;
 
 	Matrix4 mvp = projMat * viewMat * modelMat;
-	program_.setMatrix("mvp", mvp);
+	//program_.setMatrix("mvp", mvp);
 
-	//
-	texture_->Bind();
+	////
+	//texture_->Bind();
 
 	// rebind VAO
 	glBindVertexArray(VAO);
@@ -192,8 +192,8 @@ void HelloWorldScene::onDestory()
 {
 	dbgPuts("[HelloWorldScene] onDestory success!");
 
-	program_.unLoad();
-	CQ_DELETE(texture_, CQGLTexture);
+	//program_.unLoad();
+	//CQ_DELETE(texture_, CQGLTexture);
 	CQ_DELETE(camera_, CQCamera);
 	CQ_DELETE(d1_, Data);
 	CQ_DELETE(d2_, Data);

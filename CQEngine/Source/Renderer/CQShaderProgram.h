@@ -56,7 +56,7 @@ public:
 	// clean work.
 	void unLoad(); 
 
-	unsigned int getProgram() const;
+	ProgramHandle getProgram() const;
 
 	void setInt(const std::string & _location, const int _value);
 	

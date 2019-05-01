@@ -35,8 +35,8 @@ private:
 
 private:
 	/////////////////////// TMP //////////////////
-	CQGLProgram program_;
-	CQGLTexture *texture_;
+	//CQGLProgram program_;
+	//CQGLTexture *texture_;
 
 	float camRadisZ_ = 1.0f;
 	float modelAngle_ = 0;

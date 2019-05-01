@@ -10,9 +10,6 @@
 #define __CQTEXTURE_H__
 
 #include "CQMacros.h"
-#include "CQResI.h"
-#include "ResID.h"
-#include "CQNoncopyable.h"
 
 NS_CQ_BEGIN
 
@@ -22,7 +19,7 @@ enum class TexMapType
 	D1,	// Rendering line. Rain effect.
 	D2, // Default
 	D3, // Volume Textures
-	CUBE, 
+	CUBE,
 };
 
 enum class TexWrapMode
@@ -43,24 +40,54 @@ class CQImg;
 class CQTexture
 {
 public:
+	typedef unsigned int TextureHandle;
+
+public:
 	CQTexture();
+
+	CQTexture(CQImg * _img);
 
 	virtual ~CQTexture();
 
 public:
+	void genTexHandle(bool _isMipMap = true,
+		TexMapType _mapType = TexMapType::D2,
+		TexWrapMode _warpMode = TexWrapMode::REPEAT,
+		TexFilterMode _filterMode = TexFilterMode::POINT);
+
+	void bind(int _stage = 0);
+
+	void unbind();
+
+public:
+	inline const bool getIsMipMap() const { return isMipMap_; }
+
+	inline TextureHandle getTexHandle() { return texId_; }
+
 	inline TexMapType getTexMapType() const { return type_; }
+
+	// TODO:
+	//inline TexWrapMode getTexWrapMode() const {}
+
+	//inline TexFilterMode getTexFilterMode() const {}
 
 	inline void setRawImg(CQImg * _img) { img_ = _img; };
 
 	inline CQImg * getRawImg() const { return img_; }
 
 private:
-	TexMapType type_;
-
 	CQImg * img_;
 
+	bool isMipMap_;
+
+	TexMapType type_;
+
+	TextureHandle texId_;
 };
 
 NS_CQ_END
 
 #endif /* __CQTEXTURE_H__ */
+
+
+

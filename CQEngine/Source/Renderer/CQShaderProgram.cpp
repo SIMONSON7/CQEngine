@@ -154,7 +154,7 @@ void CQShaderProgram::unLoad()
 	program_ = 0;
 }
 
-unsigned int CQShaderProgram::getProgram() const
+CQShaderProgram::ProgramHandle CQShaderProgram::getProgram() const
 {
 	return program_;
 }

@@ -61,8 +61,6 @@
 
 // Render
 #include "CQCamera.h"
-#include "CQGLProgram.h"
-#include "CQGLTexture.h"
 #include "CQTexture.h"
 #include "CQShaderProgram.h"
 #include "CQLight.h"
