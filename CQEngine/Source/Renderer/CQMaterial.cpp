@@ -61,5 +61,31 @@ CQMaterial::Color CQMaterial::getColor(MColorType _type) const
 
 CQTexture * CQMaterial::getTex(MTexType _type) const
 {
-	return nullptr;
+	CQTexture * tex;
+
+	switch (_type)
+	{
+	case MTexType::NORMAL:
+		tex = normalTex_;
+		break;
+	case MTexType::AMBIENT:
+		tex = ambientTex_;
+		break;
+	case MTexType::DIFFUSE:
+		tex = diffuseTex_;
+		break;
+	case MTexType::SPECULAR:
+		tex = specularTex_;
+		break;
+	case MTexType::HEIGHT:
+		tex = heightTex_;
+		break;
+	case MTexType::ROUGH:
+		tex = roughTex_;
+		break;
+	default:
+		break;
+	}
+
+	return tex;
 }

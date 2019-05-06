@@ -111,11 +111,11 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 			auto mat = (*mats)[0];
 			// render state : shader
 			auto program = mat->getProgram();
-			program->load();
+			if (program) { program->load(); }
 
-			// tex
-			
-
+			// texture
+			auto texture = mat->getTex(MTexType::AMBIENT);
+			if (texture) { texture->bind(); }
 
 			// draw elements
 			CQ_GLCHECK(glBindVertexArray(handles[0]));
@@ -123,6 +123,10 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 				CQ_GLCHECK(glDrawElements(GL_TRIANGLES, subMesh->iBuff_.size(), GL_UNSIGNED_INT, 0));
 			}
 			CQ_GLCHECK(glBindVertexArray(0));
+
+			// End:
+			//if (program) { program->unLoad(); }
+			//if (texture) { texture->unbind(); }
 		}
 	}
 }

@@ -6,6 +6,8 @@ REGISTER_START_SCENE(BasicTexScene)
 
 void BasicTexScene::onInit()
 {
+	//_CrtSetBreakAlloc(1120);
+
 	dbgPuts("[BasicTexScene] init success!");
 
 	// camera
@@ -26,21 +28,23 @@ void BasicTexScene::onInit()
 	dispatcher->registerListener(clickListener_);
 	dispatcher->registerListener(wheelListener_);
 
+	// material
+	auto material = CQ_NEW(CQMaterial);
+
 	// shader 
 	auto program = CQ_NEW(CQShaderProgram);
-	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_VERTEX_SHADER)));
-	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_PHONG_FRAGMENT_SHADER)));
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_TEX_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_TEX_FRAGMENT_SHADER)));
 	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
 	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
 	program->genProgram();
 
 	// texture
 	auto texture = CQ_NEW(CQTexture);
-	//auto img = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
-	//texture->setRawImg(img.get());
+	auto img = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+	texture->setRawImg(img.get());
+	texture->genTexHandle();
 
-	// material
-	auto material = CQ_NEW(CQMaterial);
 	material->setProgram(program);
 	material->setTex(MTexType::AMBIENT, texture);
 
@@ -91,10 +95,8 @@ void BasicTexScene::update()
 
 	// TODO
 	// light pos : embed to class CQLight.
-	program->setVector("uLight.pos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	program->setVector("uLight.a", Vector3(0.4f, 0.4f, 0.4f));
-	program->setVector("uLight.d", Vector3(1.0f, 1.0f, 1.0f));
-	program->setVector("uLight.s", Vector3(1.0f, 1.0f, 1.0f));
+	program->setVector("uLight.eyePos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	program->setVector("uLight.Intensity", Vector3(0.4f, 0.4f, 0.4f));
 
 	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
 	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
@@ -106,6 +108,8 @@ void BasicTexScene::update()
 	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
 		Vector3(mv[1].x, mv[1].y, mv[1].z),
 		Vector3(mv[2].x, mv[2].y, mv[2].z)));
+
+	program->setInt("Tex1", 0);
 }
 
 void BasicTexScene::onDestory()

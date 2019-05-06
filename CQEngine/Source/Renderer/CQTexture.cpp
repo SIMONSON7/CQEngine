@@ -58,6 +58,8 @@ void CQTexture::genTexHandle(bool _isMipMap,
 			}
 		}
 		unbind();
+
+		//img_->onDestory();
 	}
 }
 

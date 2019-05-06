@@ -77,12 +77,12 @@ void CQShaderProgram::genProgram()
 		CQ_GLCHECK(glAttachShader(program_, vertexID_));
 	}
 
-	if (vertexID_)
+	if (pixelID_)
 	{
 		CQ_GLCHECK(glAttachShader(program_, pixelID_));
 	}
 
-	if (vertexID_)
+	if (geometryID_)
 	{
 		CQ_GLCHECK(glAttachShader(program_, geometryID_));
 	}
@@ -138,13 +138,13 @@ void CQShaderProgram::unLoad()
 		CQ_GLCHECK(glDeleteShader(vertexID_));
 	}
 
-	if (vertexID_)
+	if (pixelID_)
 	{
 		CQ_GLCHECK(glDetachShader(program_, pixelID_));
 		CQ_GLCHECK(glDeleteShader(pixelID_));
 	}
 
-	if (vertexID_)
+	if (geometryID_)
 	{
 		CQ_GLCHECK(glDetachShader(program_, geometryID_));
 		CQ_GLCHECK(glDeleteShader(geometryID_));
