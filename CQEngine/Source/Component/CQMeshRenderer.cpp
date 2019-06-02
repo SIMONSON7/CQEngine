@@ -19,10 +19,8 @@ CQMeshRenderer::CQMeshRenderer()
 
 CQMeshRenderer::~CQMeshRenderer()
 {
-	if (mesh_)
-	{
-		CQ_DELETE(mesh_, CQMesh);
-	}
+	// CQMesh is CQResI type and is managed by smart pointer 
+	// without manual release.
 
 	if (light_)
 	{

@@ -136,7 +136,6 @@ void SkyBoxScene::onMouseWheel(void* _wheelData)
 void SkyBoxScene::onDestory()
 {
 	CQ_DELETE(camera_, CQCamera);
-	CQ_DELETE(bunnyNode_, CQSceneNode);
 
 	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(clickListener_);
 	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(wheelListener_);
