@@ -36,17 +36,19 @@ CQPrefab * CQPrefabFactory::createSphere()
 
 void CQPrefabFactory::destroyPlane(CQPrefab * _plane)
 {
+	CQASSERT(_plane);
 	auto prefab = dynamic_cast<CQPlane*>(_plane);
 	CQ_DELETE(prefab, CQPlane);
 }
 
 void CQPrefabFactory::destroyCube(CQPrefab * _cube)
 {
+	CQASSERT(_cube);
 	auto prefab = dynamic_cast<CQCube*>(_cube);
 	CQ_DELETE(prefab, CQCube);
 }
 
 void CQPrefabFactory::destroySphere(CQPrefab * _sphere)
 {
-
+	CQASSERT(_sphere);
 }
