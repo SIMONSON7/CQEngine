@@ -42,21 +42,33 @@ public:
 	void free(void *_ptr);
 
 	void free(void *_ptr, const char *_file, size_t _line);
+
 public:
 	size_t getSize1(void *_ptr);
+
 	size_t getSize2(void *_ptr);
+
 	size_t getSize3(void *_ptr);
+
 	size_t getSize4(void *_ptr) ;
 
 	void setSize1(void *_ptr, const size_t _size1);
+
 	void setSize2(void *_ptr, const size_t _size1);
+
 	void setSize3(void *_ptr, const size_t _size1);
+
 	void setSize4(void *_ptr, const size_t _size1);
 
 private:
 	struct Info
 	{ size_t size_[4] = {};};
+
 	std::map<void *, Info> map_;
+
+	static size_t aIdx_;
+
+	static size_t fIdx_;
 };
 
 NS_CQ_END

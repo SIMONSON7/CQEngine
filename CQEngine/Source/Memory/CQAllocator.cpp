@@ -3,6 +3,9 @@
 
 USING_NS_CQ
 
+size_t DefaultAllocator::aIdx_ = 0;
+size_t DefaultAllocator::fIdx_ = 0;
+
 DefaultAllocator::DefaultAllocator() {}
 
 DefaultAllocator::~DefaultAllocator() {}
@@ -15,7 +18,7 @@ void* DefaultAllocator::alloc(size_t _size)
 void* DefaultAllocator::alloc(size_t _size, const char *_file, size_t _line)
 {
 	void *ret = alloc(_size);
-	dbgPrintf("\n[ALLOC]: \n\tFILE : %s\n\tLINE : %d\n\tPTR : %p\n\tSIZE : %d BYTE\n[ALLOC]\n", _file, _line, ret, _size);
+	dbgPrintf("\n[ALLOC]: \n\tINEX : %d\n\tFILE : %s\n\tLINE : %d\n\tPTR  : %p\n\tSIZE : %d BYTE\n[ALLOC]\n", aIdx_++, _file, _line, ret, _size);
 	return ret;
 }
 
@@ -27,7 +30,7 @@ void DefaultAllocator::free(void *_ptr)
 
 void DefaultAllocator::free(void *_ptr, const char *_file, size_t _line)
 {
-	dbgPrintf("\n[FREE]: \n\tFILE : %s\n\tLINE : %d\n\tPTR : %p\n[FREE]\n", _file, _line,_ptr);
+	dbgPrintf("\n[FREE]: \n\tINEX : %d\n\tFILE : %s\n\tLINE : %d\n\tPTR  : %p\n[FREE]\n", fIdx_++, _file, _line, _ptr);
 	free(_ptr);
 }
 
