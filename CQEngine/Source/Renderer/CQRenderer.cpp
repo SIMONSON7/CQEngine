@@ -95,7 +95,8 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 
 	CQASSERT(_meshRender);
 
-	if (!_meshRender->getMesh())
+	auto mesh = _meshRender->getMesh();
+	if (!mesh || mesh->sharedMesh().size() <= 0)
 	{
 		return;
 	}

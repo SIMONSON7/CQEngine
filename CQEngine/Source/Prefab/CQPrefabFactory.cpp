@@ -22,7 +22,7 @@ CQPrefab * CQPrefabFactory::createPlane(float _xsize, float _zsize, int _xdivs, 
 CQPrefab * CQPrefabFactory::createCube(float _side)
 {
 	CQCube * cube = CQ_NEW(CQCube);
-	auto mesh = CQ_NEW(CQMesh);
+	CQMesh * mesh = CQ_NEW(CQMesh);
 	mesh->sharedMesh().push_back(cube->genGeoData(_side));
 	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(cube->getSceneNode()->getObj()->getComponentByName("MeshRender"));
 	mr->setGeometryData(mesh);

@@ -62,11 +62,11 @@ void BasicTexScene::onInit()
 			getTransform()->rotateY(35.0f);
 	}
 
-	plane_ = CQPrefabFactory::createPlane(50.0f, 50.0f, 1, 1);
-	if (plane_)
-	{
-		plane_->setupSurface(nullptr);
-	}
+	//plane_ = CQPrefabFactory::createPlane(50.0f, 50.0f, 1, 1);
+	//if (plane_)
+	//{
+	//	plane_->setupSurface(nullptr);
+	//}
 }
 
 void BasicTexScene::update()
@@ -117,7 +117,7 @@ void BasicTexScene::onDestory()
 	CQ_DELETE(camera_, CQCamera);
 
 	CQPrefabFactory::destroyCube(cube_);
-	CQPrefabFactory::destroyPlane(plane_);
+	//CQPrefabFactory::destroyPlane(plane_);
 
 	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(clickListener_);
 	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(wheelListener_);

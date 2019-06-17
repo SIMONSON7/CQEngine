@@ -8,7 +8,7 @@ CQMesh::CQMesh()
 	:
 	resID_(ResID::INVALID)
 {
-
+	meshes_.clear();
 }
 
 CQMesh::~CQMesh()
