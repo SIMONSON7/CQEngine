@@ -110,11 +110,11 @@ void CQResLoader::__doCallBack()
 	}
 }
 
-void CQResLoader::loadImgSync(const std::string & _abPath, unsigned char * _data, int * _width, int * _height, int * _nrComponents)
+void CQResLoader::loadImgSync(const std::string & _abPath, unsigned char ** _data, int * _width, int * _height, int * _nrComponents)
 {
 	// flip textures y coordinate
 	stbi_set_flip_vertically_on_load(true);
-	_data = stbi_load(_abPath.c_str(), _width, _height, _nrComponents, 0);
+	*_data = stbi_load(_abPath.c_str(), _width, _height, _nrComponents, 0);
 }
 
 void CQResLoader::unloadImg(unsigned char * _data)

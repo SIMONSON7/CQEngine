@@ -96,7 +96,7 @@ void BasicTexScene::update()
 	// TODO
 	// light pos : embed to class CQLight.
 	program->setVector("uLight.eyePos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
-	program->setVector("uLight.Intensity", Vector3(0.4f, 0.4f, 0.4f));
+	program->setVector("uLight.Intensity", Vector3(0.6f, 0.6f, 0.6f));
 
 	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
 	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));

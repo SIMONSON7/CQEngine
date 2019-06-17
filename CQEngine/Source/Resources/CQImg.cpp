@@ -23,7 +23,7 @@ CQImg::~CQImg()
 void CQImg::onLoadDiskRes(const std::string & _abPath)
 {
 	int nrComponents;
-	CQResLoader::shareLoader()->loadImgSync(_abPath, data_, &width_, &height_, &nrComponents);
+	CQResLoader::shareLoader()->loadImgSync(_abPath, &data_, &width_, &height_, &nrComponents);
 	switch (nrComponents)
 	{
 	case 1:

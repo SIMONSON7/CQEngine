@@ -57,7 +57,7 @@ public:
 	void unloadRawData(RawData * _data);
 
 public:
-	void loadImgSync(const std::string & _abPath, unsigned char * _data, int * _width, int * _height, int * _nrComponents);
+	void loadImgSync(const std::string & _abPath, unsigned char ** _data, int * _width, int * _height, int * _nrComponents);
 
 	void unloadImg(unsigned char * _data);
 
