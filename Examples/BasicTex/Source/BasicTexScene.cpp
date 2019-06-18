@@ -6,7 +6,7 @@ REGISTER_START_SCENE(BasicTexScene)
 
 void BasicTexScene::onInit()
 {
-	//_CrtSetBreakAlloc(1120);
+	//_CrtSetBreakAlloc(1163);
 
 	dbgPuts("[BasicTexScene] init success!");
 
@@ -42,6 +42,7 @@ void BasicTexScene::onInit()
 	// texture
 	auto texture = CQ_NEW(CQTexture);
 	auto img = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+	// ! img.get() is danger operation !//
 	texture->setRawImg(img.get());
 	texture->genTexHandle();
 
@@ -100,8 +101,8 @@ void BasicTexScene::update()
 
 	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
 	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
-	program->setVector("uMat.s", Vector3(0.8f, 0.8f, 0.8f));
-	program->setFloat("uMat.shineFactor", 110.0f);
+	program->setVector("uMat.s", Vector3(1.0f, 1.0f, 1.0f));
+	program->setFloat("uMat.shineFactor", 210.0f);
 
 	program->setMatrix("uModelViewMatrix", mv);
 	program->setMatrix("uMVP", mvp);
@@ -109,7 +110,7 @@ void BasicTexScene::update()
 		Vector3(mv[1].x, mv[1].y, mv[1].z),
 		Vector3(mv[2].x, mv[2].y, mv[2].z)));
 
-	program->setInt("Tex1", 0);
+	//program->setInt("Tex1", 0);
 }
 
 void BasicTexScene::onDestory()

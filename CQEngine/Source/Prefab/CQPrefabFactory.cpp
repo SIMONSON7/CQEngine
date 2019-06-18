@@ -37,15 +37,25 @@ CQPrefab * CQPrefabFactory::createSphere()
 void CQPrefabFactory::destroyPlane(CQPrefab * _plane)
 {
 	CQASSERT(_plane);
-	auto prefab = dynamic_cast<CQPlane*>(_plane);
-	CQ_DELETE(prefab, CQPlane);
+
+	auto plane = dynamic_cast<CQPlane*>(_plane);
+	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(plane->getSceneNode()->getObj()->getComponentByName("MeshRender"));
+	auto mesh = mr->getMesh();
+
+	CQ_DELETE(mesh, CQMesh);
+	CQ_DELETE(plane, CQPlane);
 }
 
 void CQPrefabFactory::destroyCube(CQPrefab * _cube)
 {
 	CQASSERT(_cube);
-	auto prefab = dynamic_cast<CQCube*>(_cube);
-	CQ_DELETE(prefab, CQCube);
+
+	auto cube = dynamic_cast<CQCube*>(_cube);
+	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(cube->getSceneNode()->getObj()->getComponentByName("MeshRender"));
+	auto mesh = mr->getMesh();
+
+	CQ_DELETE(mesh, CQMesh);
+	CQ_DELETE(cube, CQCube);
 }
 
 void CQPrefabFactory::destroySphere(CQPrefab * _sphere)

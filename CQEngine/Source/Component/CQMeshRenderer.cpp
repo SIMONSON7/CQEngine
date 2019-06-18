@@ -19,8 +19,8 @@ CQMeshRenderer::CQMeshRenderer()
 
 CQMeshRenderer::~CQMeshRenderer()
 {
-	// CQMesh is CQResI type and is managed by smart pointer 
-	// without manual release.
+	// CQMesh is CQResI type and is managed by smart pointer without manual release.
+	// It's not good design!
 
 	if (light_)
 	{
