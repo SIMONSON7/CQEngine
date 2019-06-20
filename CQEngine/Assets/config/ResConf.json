@@ -8,6 +8,12 @@
         },
 
         {
+            "name" : "MASK_0_TEX",
+            "url" : "texture/mask_0.jpg",
+            "type" : 1
+        },
+
+        {
             "name" : "DEF_VERTEX_SHADER",
             "url" : "shader/def.vert",
             "type" : 2
@@ -88,6 +94,30 @@
         {
             "name" : "DEF_TEX_FRAGMENT_SHADER",
             "url" : "shader/def_tex.frag",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_TEX_VERTEX_SHADER",
+            "url" : "shader/def_tex.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_TEX_FRAGMENT_SHADER",
+            "url" : "shader/def_tex.frag",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_MULTI_TEX_VERTEX_SHADER",
+            "url" : "shader/def_multiTex.vert",
+            "type" : 2
+        },
+
+        {
+            "name" : "DEF_MULTI_TEX_FRAGMENT_SHADER",
+            "url" : "shader/def_multiTex.frag",
             "type" : 2
         },
 

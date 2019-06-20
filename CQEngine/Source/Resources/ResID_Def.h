@@ -31,9 +31,12 @@ public:
 	static const ResID DEF_SPOTLIGHT_FRAGMENT_SHADER;
 	static const ResID DEF_TEX_VERTEX_SHADER;
 	static const ResID DEF_TEX_FRAGMENT_SHADER;
+	static const ResID DEF_MULTI_TEX_VERTEX_SHADER;
+	static const ResID DEF_MULTI_TEX_FRAGMENT_SHADER;
 
 public:
 	static const ResID HELLOWORLD_WALL_TEX;
+	static const ResID MASK_0_TEX;
 
 public:
 	static const ResID BUNNY_MESH;
