@@ -1,3 +1,168 @@
 #include "TexExScene.h"
 
 USING_NS_CQ;
+
+REGISTER_START_SCENE(TexExScene)
+
+void TexExScene::onInit()
+{
+	//_CrtSetBreakAlloc(1163);
+
+	dbgPuts("[TexExScene] init success!");
+
+	// camera
+	// TODO : should have a default camera.
+	camera_ = CQ_NEW(CQCamera);
+
+	// Evt
+	CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+
+	clickListener_ = std::make_shared<CQEvtListener>();
+	clickListener_->setEvtID(CQInput::EvtID::MOUSE_L_CLICK_BEGIN);
+	clickListener_->setCB(std::bind(&TexExScene::onMouseClick, this, std::placeholders::_1));
+
+	wheelListener_ = std::make_shared<CQEvtListener>();
+	wheelListener_->setEvtID(CQInput::EvtID::MOUSE_WHEEL);
+	wheelListener_->setCB(std::bind(&TexExScene::onMouseWheel, this, std::placeholders::_1));
+
+	dispatcher->registerListener(clickListener_);
+	dispatcher->registerListener(wheelListener_);
+
+	// material
+	auto material = CQ_NEW(CQMaterial);
+
+	// shader 
+	auto program = CQ_NEW(CQShaderProgram);
+	auto vs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTI_TEX_VERTEX_SHADER)));
+	auto fs = std::dynamic_pointer_cast<CQShader>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::DEF_MULTI_TEX_FRAGMENT_SHADER)));
+	program->attachNativeShader((const char *)(vs->getRawData()->data_), ShaderType::VERTEX);
+	program->attachNativeShader((const char *)(fs->getRawData()->data_), ShaderType::PIXEL);
+	program->genProgram();
+
+	material->setProgram(program);
+
+	// texture1
+	auto texture = CQ_NEW(CQTexture);
+	auto img = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::HELLOWORLD_WALL_TEX)));
+	// ! img.get() is danger operation !//
+	texture->setRawImg(img.get());
+	texture->genTexHandle();
+
+	// texture2
+	auto texture_mask = CQ_NEW(CQTexture);
+	auto img_mask = std::dynamic_pointer_cast<CQImg>(CQCore::shareCore()->shareResManager()->getRes(VNAME(ResIDDef::MASK_0_TEX)));
+	// ! img.get() is danger operation !//
+	texture_mask->setRawImg(img_mask.get());
+	texture_mask->genTexHandle(true, true);
+
+	material->setTex(MTexType::AMBIENT, texture);
+	material->setTex(MTexType::DIFFUSE, texture_mask);
+
+	// Prefab
+	cube_ = CQPrefabFactory::createCube(1.0f);
+	if (cube_)
+	{
+		cube_->setupSurface(material);
+
+		// transform
+		cube_->getSceneNode()->getObj()->
+			getTransform()->moveTo(Vector3(0, -1.5f, -1.5f));
+
+		cube_->getSceneNode()->getObj()->
+			getTransform()->rotateY(35.0f);
+	}
+
+	//plane_ = CQPrefabFactory::createPlane(50.0f, 50.0f, 1, 1);
+	//if (plane_)
+	//{
+	//	plane_->setupSurface(nullptr);
+	//}
+}
+
+void TexExScene::update()
+{
+	// program
+	auto mr = std::dynamic_pointer_cast<CQMeshRenderer>(cube_->getSceneNode()->getObj()->getComponentByName("MeshRender"));
+	auto program = (*mr->getMaterials())[0]->getProgram();
+	program->load();
+
+	// bunny transform
+	auto bunnyTrans = cube_->getSceneNode()->getObj()->getTransform();
+	//bunnyTrans->rot(++modelAngle_, bunnyTrans->getUp()); // rot self axis.
+	Matrix4 modelMat = bunnyTrans->getModelMat();
+
+	// camera transform
+	auto transform = camera_->getTransform();
+	transform->buildLocalCoordinate(Vector3(0, 0, camRadisZ_), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	float aspect(800.0f / 600.0f);
+	auto viewMat = transform->calWorldToLcalMatRH();
+	auto projMat = camera_->calPerspectiveMat(60, aspect, 0.1f, 100.0f);
+
+	// TODO:
+	// user should NOT manipulate mvp Matrix.
+	Matrix4 mvp = projMat * viewMat * modelMat;
+	Matrix4 mv = viewMat * modelMat;
+
+	// TODO
+	// light pos : embed to class CQLight.
+	program->setVector("uLight.eyePos", viewMat * Vector4(10.0f, 10.0f, 10.0f, 1.0f));
+	program->setVector("uLight.Intensity", Vector3(0.6f, 0.6f, 0.6f));
+
+	program->setVector("uMat.a", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.d", Vector3(0.9f, 0.5f, 0.3f));
+	program->setVector("uMat.s", Vector3(1.0f, 1.0f, 1.0f));
+	program->setFloat("uMat.shineFactor", 210.0f);
+
+	program->setMatrix("uModelViewMatrix", mv);
+	program->setMatrix("uMVP", mvp);
+	program->setMatrix("uNormalMatrix", Matrix3(Vector3(mv[0].x, mv[0].y, mv[0].z),
+		Vector3(mv[1].x, mv[1].y, mv[1].z),
+		Vector3(mv[2].x, mv[2].y, mv[2].z)));
+
+	//program->setInt("Tex1", 0);
+}
+
+void TexExScene::onDestory()
+{
+	CQ_DELETE(camera_, CQCamera);
+
+	CQPrefabFactory::destroyCube(cube_);
+	//CQPrefabFactory::destroyPlane(plane_);
+
+	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(clickListener_);
+	CQCore::shareCore()->shareEvtDispatcher()->unregisterListener(wheelListener_);
+}
+
+void TexExScene::onMouseClick(void* _clickData)
+{
+	if (_clickData)
+	{
+		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_clickData);
+		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_L_CLICK_BEGIN)
+		{
+			dbgPrintf("[BasicLightScene] click x : %d", evt->x_);
+		}
+	}
+}
+
+void TexExScene::onMouseWheel(void* _wheelData)
+{
+	if (_wheelData)
+	{
+		CQInput::MouseEvt *evt = static_cast<CQInput::MouseEvt*>(_wheelData);
+		if (evt && evt->id_ == CQEngine::CQInput::MOUSE_WHEEL)
+		{
+			dbgPrintf("[BasicLightScene] wheel delta : %d", evt->delta_);
+
+			if (evt->delta_ > 0)
+			{
+				camRadisZ_ *= 1.2f;
+			}
+
+			if (evt->delta_ < 0)
+			{
+				camRadisZ_ *= 0.8f;
+			}
+		}
+	}
+}

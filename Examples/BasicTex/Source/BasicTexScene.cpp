@@ -2,7 +2,7 @@
 
 USING_NS_CQ;
 
-REGISTER_START_SCENE(BasicTexScene)
+//REGISTER_START_SCENE(BasicTexScene)
 
 void BasicTexScene::onInit()
 {

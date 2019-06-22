@@ -115,8 +115,11 @@ void CQRenderer::__drawNormal(CQMeshRenderer * _meshRender)
 			if (program) { program->load(); }
 
 			// texture
-			auto texture = mat->getTex(MTexType::AMBIENT);
-			if (texture) { texture->bind(); }
+			auto ambient = mat->getTex(MTexType::AMBIENT);
+			if (ambient) { ambient->bind(0); }
+
+			auto diffuse = mat->getTex(MTexType::DIFFUSE);
+			if (diffuse) { diffuse->bind(1); }
 
 			// draw elements
 			CQ_GLCHECK(glBindVertexArray(handles[0]));

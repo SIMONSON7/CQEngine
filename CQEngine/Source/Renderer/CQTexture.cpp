@@ -35,12 +35,15 @@ CQTexture::~CQTexture()
 }
 
 void CQTexture::genTexHandle(bool _isMipMap,
+	bool _isRGBA,
 	TexMapType _mapType,
 	TexWrapMode _warpMode,
 	TexFilterMode _filterMode)
 {
 	if (img_)
 	{
+		GLint format = _isRGBA ? GL_RGBA : GL_RGB;
+
 		CQ_GLCHECK(glGenTextures(1, &texId_));
 
 		bind();
@@ -51,7 +54,7 @@ void CQTexture::genTexHandle(bool _isMipMap,
 			CQ_GLCHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 			CQ_GLCHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-			CQ_GLCHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_->getWidth(), img_->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, img_->getData()));
+			CQ_GLCHECK(glTexImage2D(GL_TEXTURE_2D, 0, format, img_->getWidth(), img_->getHeight(), 0, format, GL_UNSIGNED_BYTE, img_->getData()));
 			if (isMipMap_)
 			{
 				CQ_GLCHECK(glGenerateMipmap(GL_TEXTURE_2D));

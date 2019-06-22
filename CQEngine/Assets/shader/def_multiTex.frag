@@ -55,5 +55,6 @@ void main()
     phongModel( Position, Normal, ambAndDiff, spec );
 
 	vec4 texColor = mix(texColor1, texColor2, texColor2.a);
+	
     FragColor = (vec4( ambAndDiff, 1.0 ) * texColor) + vec4(spec,1.0);
 }

@@ -8,7 +8,8 @@ USING_NS_CQ;
 CQMaterial::CQMaterial()
 	:
 	program_(nullptr),
-	ambientTex_(nullptr)
+	ambientTex_(nullptr),
+	diffuseTex_(nullptr)
 {
 
 }
@@ -18,6 +19,7 @@ CQMaterial::~CQMaterial()
 	CQ_DELETE(program_, CQShaderProgram);
 	
 	CQ_DELETE(ambientTex_, CQTexture);
+	CQ_DELETE(diffuseTex_, CQTexture);
 }
 
 void CQMaterial::setColor(MColorType _type, Color _color)

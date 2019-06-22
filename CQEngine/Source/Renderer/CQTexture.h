@@ -51,6 +51,7 @@ public:
 
 public:
 	void genTexHandle(bool _isMipMap = true,
+		bool _isRGBA = false,
 		TexMapType _mapType = TexMapType::D2,
 		TexWrapMode _warpMode = TexWrapMode::REPEAT,
 		TexFilterMode _filterMode = TexFilterMode::POINT);
