@@ -31,7 +31,7 @@ NS_CQ_END
 
 #include "CQApplication.inl"
 
-extern NS_CQ::CQAppI *g_app;
+//extern NS_CQ::CQAppI *g_pApp;
 
 #endif /*__CQAPPLICATION_H__*/
 

@@ -9,15 +9,15 @@ USING_NS_CQ
 
 bool g_isExit = false;
 
-CQAppI *g_app = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
+CQAppI *g_pApp = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
 
 LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
-	if (g_app == nullptr)
+	if (g_pApp == nullptr)
 	{
 		// It should Never be executed here!
-		g_app = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
-		g_app->init();
+		g_pApp = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
+		g_pApp->init();
 	}
 
 	switch (_nMsg)

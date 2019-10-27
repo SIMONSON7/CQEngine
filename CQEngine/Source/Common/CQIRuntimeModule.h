@@ -1,23 +1,23 @@
 //*****************************************************************************
 //
-//! \file IRuntimeModule.h
+//! \file CQIRuntimeModule.h
 //! \brief The interface of engine module.
 //! \author qiu_hao
 //! \date 2019/10/26 11:39.pm
 //
 //*****************************************************************************
-#ifndef __IRUNTIMEMODULE_H__
-#define __IRUNTIMEMODULE_H__
+#ifndef __CQ_IRUNTIMEMODULE_H__
+#define __CQ_IRUNTIMEMODULE_H__
 
 #include "CQMacros.h"
 #include "CQMemory.h"
 
 NS_CQ_BEGIN
 
-Interface IRuntimeModule
+Interface CQIRuntimeModule
 {
 public:
-	virtual ~IRuntimeModule() {};
+	virtual ~CQIRuntimeModule() {};
 public:
 	virtual void initialize() = 0;
 	virtual void tick()		  = 0;
@@ -26,7 +26,7 @@ public:
 
 NS_CQ_END
 
-#endif /*__IRUNTIMEMODULE_H__*/
+#endif /*__CQ_IRUNTIMEMODULE_H__*/
 
 
 
