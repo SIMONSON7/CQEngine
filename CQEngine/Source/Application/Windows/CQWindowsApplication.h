@@ -16,6 +16,7 @@ NS_CQ_BEGIN
 class CQWindowsApplication : public CQApplicationBase
 {
 public:
+	CQWindowsApplication(CQIRenderContext * _context);
 	virtual ~CQWindowsApplication() {};
 public:
 	virtual void initialize();

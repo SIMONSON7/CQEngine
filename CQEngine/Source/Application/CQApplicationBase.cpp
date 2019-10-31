@@ -2,8 +2,12 @@
 
 USING_NS_CQ
 
-CQApplicationBase g_application;
-CQIApplication * g_pApplication = &g_application;
+CQApplicationBase::CQApplicationBase(CQIRenderContext * _context)
+	:
+	renderContext_(_context)
+{
+
+}
 
 void CQApplicationBase::initialize()
 {
