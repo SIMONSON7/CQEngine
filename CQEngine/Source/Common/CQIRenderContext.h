@@ -16,9 +16,6 @@ NS_CQ_BEGIN
 Interface CQIRenderContext
 {
 public:
-	CQIRenderContext(CQFrameConfiguration & config) {}
-	virtual ~CQIRenderContext() {};
-public:
 	virtual void initContext()    = 0;
 	virtual void destroyContext() = 0;
 	virtual void swapFrameBuff()  = 0;

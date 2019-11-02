@@ -9,7 +9,7 @@
 #ifndef __CQ_APPLICATIONBASE_H__
 #define __CQ_APPLICATIONBASE_H__
 
-#include "CQIRenderContext.h"
+#include "CQBaseRenderContext.h"
 #include "CQIApplication.h"
 
 NS_CQ_BEGIN
@@ -17,7 +17,7 @@ NS_CQ_BEGIN
 class CQApplicationBase : implements CQIApplication
 {
 public:
-	CQApplicationBase(CQIRenderContext * _context);
+	CQApplicationBase(CQBaseRenderContext * _context);
 	virtual ~CQApplicationBase() {};
 public:
 	virtual void initialize();
@@ -26,7 +26,7 @@ public:
 	virtual bool isQuit();
 protected:
 	bool isQuit_;
-	CQIRenderContext * renderContext_;
+	CQBaseRenderContext * renderContext_;
 };
 
 NS_CQ_END

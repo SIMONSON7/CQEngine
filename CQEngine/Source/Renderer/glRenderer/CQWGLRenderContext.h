@@ -12,16 +12,16 @@
 // glad : <gl/GL.h> <gl/GLU.h> already included
 #include <glad/glad.h> 
 #include <wgl/wglext.h>
-#include "CQIRenderContext.h"
+#include "CQBaseRenderContext.h"
 
 #pragma comment(lib,"opengl32.lib")
 
 NS_CQ_BEGIN
 
-class CQWGLRenderContext : implements CQIRenderContext
+class CQWGLRenderContext : implements CQBaseRenderContext
 {
 public:
-	CQWGLRenderContext(CQFrameConfiguration & config) : CQIRenderContext(config) {}
+	CQWGLRenderContext(CQFrameConfiguration & config) : CQBaseRenderContext(config) {}
 	virtual ~CQWGLRenderContext() {};
 public:
 	virtual void initContext() {};
