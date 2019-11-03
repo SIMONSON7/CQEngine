@@ -2,6 +2,9 @@
 
 USING_NS_CQ
 
+// define static member data.
+bool CQApplicationBase::isQuit_ = false;
+
 CQApplicationBase::CQApplicationBase(const char * _appName, CQBaseRenderContext * _context)
 	:
 	appName_(_appName),

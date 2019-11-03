@@ -9,8 +9,8 @@
 #ifndef __CQ_APPLICATIONBASE_H__
 #define __CQ_APPLICATIONBASE_H__
 
-#include "CQBaseRenderContext.h"
 #include "CQIApplication.h"
+#include "CQBaseRenderContext.h"
 
 NS_CQ_BEGIN
 
@@ -25,7 +25,7 @@ public:
 	virtual void finalize();
 	virtual bool isQuit();
 protected:
-	bool isQuit_;
+	static bool isQuit_;
 	const char * appName_;
 	CQBaseRenderContext * renderContext_;
 

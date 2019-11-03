@@ -2,7 +2,7 @@
 
 USING_NS_CQ
 
-LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
+LRESULT CALLBACK CQWindowsApplication::msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	//if (g_pApp == nullptr)
 	//{
@@ -128,8 +128,8 @@ LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lP
 	break;
 	case WM_DESTROY:
 	{
-		//g_isExit = true;
-		//PostQuitMessage(0);
+		PostQuitMessage(0);
+		isQuit_ = true;
 	}
 	break;
 	}
@@ -147,16 +147,28 @@ CQWindowsApplication::CQWindowsApplication(const char * _appName, CQBaseRenderCo
 
 void CQWindowsApplication::initialize()
 {
+	CQApplicationBase::initialize();
+
 	createWnd(appName_);
 }
 
 void CQWindowsApplication::finalize()
 {
-
+	CQApplicationBase::finalize();
 }
 
 void CQWindowsApplication::tick()
 {
+	CQApplicationBase::tick();
+
+	MSG msg = {};
+
+	// event.
+	while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 
 }
 

@@ -36,6 +36,10 @@ public:
 protected:
 	void createWnd(const char * _wndName);
 
+private:
+	static LRESULT CALLBACK msWndEvtProc(HWND _hWnd,
+		UINT _nMsg, WPARAM _wParam, LPARAM _lParam);
+
 protected:
 	HWND hWnd_;
 	HINSTANCE hInstance_;
