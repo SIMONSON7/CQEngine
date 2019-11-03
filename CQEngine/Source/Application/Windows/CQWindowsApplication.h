@@ -16,6 +16,8 @@
 */
 #define UNICODE 
 #include <windows.h>
+// NO console window
+#pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
 #include "CQApplicationBase.h"
 
 NS_CQ_BEGIN
@@ -23,7 +25,7 @@ NS_CQ_BEGIN
 class CQWindowsApplication : public CQApplicationBase
 {
 public:
-	CQWindowsApplication(CQIRenderContext * _context);
+	CQWindowsApplication(const char * _appName, CQBaseRenderContext * _context);
 	virtual ~CQWindowsApplication() {};
 
 public:
@@ -32,7 +34,7 @@ public:
 	virtual void finalize();
 
 protected:
-	void createWnd();
+	void createWnd(const char * _wndName);
 
 protected:
 	HWND hWnd_;

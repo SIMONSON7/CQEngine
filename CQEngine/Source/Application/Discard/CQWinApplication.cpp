@@ -11,7 +11,7 @@ bool g_isExit = false;
 
 CQAppI *g_pApp = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
 
-LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
+LRESULT CALLBACK msWndEvtProc_backup(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
 {
 	if (g_pApp == nullptr)
 	{
@@ -253,7 +253,7 @@ void CQWinApp::__createWnd()
 	* CS_OWNDC : for Pixel Format.
 	*/
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc = msWndEvtProc;
+	wc.lpfnWndProc = msWndEvtProc_backup;
 	wc.cbClsExtra = wc.cbWndExtra = NULL;
 	wc.hInstance = hInstance_;
 	wc.hbrBackground = (HBRUSH)GetStockObject(COLOR_WINDOW + 1);

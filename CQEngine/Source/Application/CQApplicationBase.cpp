@@ -2,8 +2,9 @@
 
 USING_NS_CQ
 
-CQApplicationBase::CQApplicationBase(CQIRenderContext * _context)
+CQApplicationBase::CQApplicationBase(const char * _appName, CQBaseRenderContext * _context)
 	:
+	appName_(_appName),
 	renderContext_(_context)
 {
 

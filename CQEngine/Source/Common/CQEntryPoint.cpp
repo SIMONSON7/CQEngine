@@ -20,7 +20,10 @@ int main(int argc, char *argv[])
 
 	g_pApplication->initialize();
 
-	g_pApplication->tick();
+	while (!g_pApplication->isQuit())
+	{
+		g_pApplication->tick();
+	}
 
 	g_pApplication->finalize();
 

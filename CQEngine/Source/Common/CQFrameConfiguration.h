@@ -34,8 +34,8 @@ struct CQFrameConfiguration
 		uint32_t d = 24,
 		uint32_t s = 0,
 		uint32_t msaa = 0,
-		uint32_t width = 1920,
-		uint32_t height = 1080) :
+		uint32_t width = 1080,
+		uint32_t height = 720) :
 		redBits(r), greenBits(g), blueBits(b), alphaBits(a),
 		depthBits(d), stencilBits(s), msaaSamples(msaa),
 		screenWidth(width), screenHeight(height)

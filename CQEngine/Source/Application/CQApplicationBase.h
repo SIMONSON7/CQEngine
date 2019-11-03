@@ -17,7 +17,7 @@ NS_CQ_BEGIN
 class CQApplicationBase : implements CQIApplication
 {
 public:
-	CQApplicationBase(CQBaseRenderContext * _context);
+	CQApplicationBase(const char * _appName, CQBaseRenderContext * _context);
 	virtual ~CQApplicationBase() {};
 public:
 	virtual void initialize();
@@ -26,7 +26,12 @@ public:
 	virtual bool isQuit();
 protected:
 	bool isQuit_;
+	const char * appName_;
 	CQBaseRenderContext * renderContext_;
+
+private:
+	// enforce CQBaseRenderContext.
+	CQApplicationBase() {}
 };
 
 NS_CQ_END

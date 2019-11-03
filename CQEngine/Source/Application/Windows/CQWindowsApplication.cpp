@@ -2,16 +2,152 @@
 
 USING_NS_CQ
 
-CQWindowsApplication::CQWindowsApplication(CQIRenderContext * _context)
+LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
+{
+	//if (g_pApp == nullptr)
+	//{
+	//	// It should Never be executed here!
+	//	g_pApp = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
+	//	g_pApp->init();
+	//}
+
+	switch (_nMsg)
+	{
+	case WM_CREATE:
+	{
+
+	}
+	break;
+	case WM_COMMAND:
+	{
+
+	}
+	break;
+	case WM_PAINT:
+	{
+
+	}
+	break;
+	case WM_LBUTTONDOWN:
+	{
+		//dbgPuts("[WM_LBUTTONDOWN]\n");
+
+		//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+		//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
+		//me->id_ = CQInput::EvtID::MOUSE_L_CLICK_BEGIN;
+		//me->x_ = (int)(LOWORD(_lParam));
+		//me->y_ = (int)(HIWORD(_lParam));
+		//dispatcher->notify(me);
+		//CQ_RAW_DELETE(me);
+	}
+	break;
+	case WM_LBUTTONUP:
+	{
+		//dbgPuts("[WM_LBUTTONUP]\n");
+
+		//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+		//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
+		//me->id_ = CQInput::EvtID::MOUSE_L_CLICK_END;
+		//me->x_ = (int)(LOWORD(_lParam));
+		//me->y_ = (int)(HIWORD(_lParam));
+		//dispatcher->notify(me);
+		//CQ_RAW_DELETE(me);
+	}
+	break;
+	case WM_LBUTTONDBLCLK:
+	{
+
+	}
+	break;
+	case WM_RBUTTONDOWN:
+	{
+		//dbgPuts("[WM_RBUTTONDOWN]\n");
+
+		//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+		//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
+		//me->id_ = CQInput::EvtID::MOUSE_R_CLICK_BEGIN;
+		//me->x_ = (int)(LOWORD(_lParam));
+		//me->y_ = (int)(HIWORD(_lParam));
+		//dispatcher->notify(me);
+		//CQ_RAW_DELETE(me);
+	}
+	break;
+	case WM_RBUTTONUP:
+	{
+		//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+		//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
+		//me->id_ = CQInput::EvtID::MOUSE_R_CLICK_END;
+		//me->x_ = (int)(LOWORD(_lParam));
+		//me->y_ = (int)(HIWORD(_lParam));
+		//dispatcher->notify(me);
+		//CQ_RAW_DELETE(me);
+	}
+	break;
+	case WM_MOUSEMOVE:
+	{
+
+	}
+	break;
+	case WM_MOUSEWHEEL:
+	{
+		//dbgPuts("[WM_MOUSEWHEEL]\n");
+
+		//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
+		//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
+		//me->id_ = CQInput::EvtID::MOUSE_WHEEL;
+		//me->x_ = (int)(LOWORD(_lParam));
+		//me->y_ = (int)(HIWORD(_lParam));
+		//me->delta_ = GET_WHEEL_DELTA_WPARAM(_wParam);
+		//dispatcher->notify(me);
+		//CQ_RAW_DELETE(me);
+	}
+	break;
+	case WM_CHAR:
+	{
+
+	}
+	break;
+	case WM_KEYDOWN:
+	{
+
+	}
+	break;
+	case WM_KEYUP:
+	{
+
+	}
+	break;
+	case WM_SIZE:
+	{
+		//int w = (int)(LOWORD(_lParam));
+		//int h = (int)(HIWORD(_lParam));
+		//auto context = static_cast<CQWglContext*>(CQCore::shareCore()->shareCQRender()->getContext());
+		//CQASSERT(context);
+		//context->resizeView(w, h);
+	}
+	break;
+	case WM_DESTROY:
+	{
+		//g_isExit = true;
+		//PostQuitMessage(0);
+	}
+	break;
+	}
+
+	return DefWindowProc(_hWnd, _nMsg,
+		_wParam, _lParam);
+}
+
+CQWindowsApplication::CQWindowsApplication(const char * _appName, CQBaseRenderContext * _context)
 	:
-	CQApplicationBase(_context)
+	CQApplicationBase(_appName, _context)
 {
 
 }
 
 void CQWindowsApplication::initialize()
 {
-
+	createWnd(appName_);
 }
 
 void CQWindowsApplication::finalize()
@@ -24,7 +160,7 @@ void CQWindowsApplication::tick()
 
 }
 
-void CQWindowsApplication::createWnd()
+void CQWindowsApplication::createWnd(const char * _wndName)
 {
 	CQASSERT(renderContext_);
 
@@ -36,7 +172,7 @@ void CQWindowsApplication::createWnd()
 
 	WCHAR wszAppName[256];
 	memset(wszAppName, 0, sizeof(wszAppName));
-	MultiByteToWideChar(CP_ACP, 0, appName_, strlen(appName_) + 1, wszAppName,
+	MultiByteToWideChar(CP_ACP, 0, _wndName, strlen(_wndName) + 1, wszAppName,
 		sizeof(wszAppName) / sizeof(wszAppName[0]));
 
 	wc.cbSize = sizeof(WNDCLASSEX);
@@ -75,138 +211,3 @@ void CQWindowsApplication::createWnd()
 	UpdateWindow(hWnd_);
 }
 
-LRESULT CALLBACK msWndEvtProc(HWND _hWnd, UINT _nMsg, WPARAM _wParam, LPARAM _lParam)
-{
-	//if (g_pApp == nullptr)
-	//{
-	//	// It should Never be executed here!
-	//	g_pApp = CQ_NEW(CQWinApp, "CQEngine", 0, 0, DEF_WIN_WIDTH, DEF_WIN_HEIGHT);
-	//	g_pApp->init();
-	//}
-
-	switch (_nMsg)
-	{
-		case WM_CREATE:
-		{
-
-		}
-		break;
-		case WM_COMMAND:
-		{
-
-		}
-		break;
-		case WM_PAINT:
-		{
-
-		}
-		break;
-		case WM_LBUTTONDOWN:
-		{
-			//dbgPuts("[WM_LBUTTONDOWN]\n");
-
-			//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
-			//me->id_ = CQInput::EvtID::MOUSE_L_CLICK_BEGIN;
-			//me->x_ = (int)(LOWORD(_lParam));
-			//me->y_ = (int)(HIWORD(_lParam));
-			//dispatcher->notify(me);
-			//CQ_RAW_DELETE(me);
-		}
-		break;
-		case WM_LBUTTONUP:
-		{
-			//dbgPuts("[WM_LBUTTONUP]\n");
-
-			//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
-			//me->id_ = CQInput::EvtID::MOUSE_L_CLICK_END;
-			//me->x_ = (int)(LOWORD(_lParam));
-			//me->y_ = (int)(HIWORD(_lParam));
-			//dispatcher->notify(me);
-			//CQ_RAW_DELETE(me);
-		}
-		break;
-		case WM_LBUTTONDBLCLK:
-		{
-
-		}
-		break;
-		case WM_RBUTTONDOWN:
-		{
-			//dbgPuts("[WM_RBUTTONDOWN]\n");
-
-			//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
-			//me->id_ = CQInput::EvtID::MOUSE_R_CLICK_BEGIN;
-			//me->x_ = (int)(LOWORD(_lParam));
-			//me->y_ = (int)(HIWORD(_lParam));
-			//dispatcher->notify(me);
-			//CQ_RAW_DELETE(me);
-		}
-		break;
-		case WM_RBUTTONUP:
-		{
-			//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
-			//me->id_ = CQInput::EvtID::MOUSE_R_CLICK_END;
-			//me->x_ = (int)(LOWORD(_lParam));
-			//me->y_ = (int)(HIWORD(_lParam));
-			//dispatcher->notify(me);
-			//CQ_RAW_DELETE(me);
-		}
-		break;
-		case WM_MOUSEMOVE:
-		{
-
-		}
-		break;
-		case WM_MOUSEWHEEL:
-		{
-			//dbgPuts("[WM_MOUSEWHEEL]\n");
-
-			//CQEvtDispatcher* dispatcher = CQCore::shareCore()->shareEvtDispatcher();
-			//CQInput::MouseEvt* me = CQ_RAW_NEW(CQInput::MouseEvt);
-			//me->id_ = CQInput::EvtID::MOUSE_WHEEL;
-			//me->x_ = (int)(LOWORD(_lParam));
-			//me->y_ = (int)(HIWORD(_lParam));
-			//me->delta_ = GET_WHEEL_DELTA_WPARAM(_wParam);
-			//dispatcher->notify(me);
-			//CQ_RAW_DELETE(me);
-		}
-		break;
-		case WM_CHAR:
-		{
-
-		}
-		break;
-		case WM_KEYDOWN:
-		{
-
-		}
-		break;
-		case WM_KEYUP:
-		{
-
-		}
-		break;
-		case WM_SIZE:
-		{
-			//int w = (int)(LOWORD(_lParam));
-			//int h = (int)(HIWORD(_lParam));
-			//auto context = static_cast<CQWglContext*>(CQCore::shareCore()->shareCQRender()->getContext());
-			//CQASSERT(context);
-			//context->resizeView(w, h);
-		}
-		break;
-		case WM_DESTROY:
-		{
-			//g_isExit = true;
-			//PostQuitMessage(0);
-		}
-		break;
-	}
-
-	return DefWindowProc(_hWnd, _nMsg,
-		_wParam, _lParam);
-}
